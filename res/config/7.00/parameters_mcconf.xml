@@ -1480,6 +1480,24 @@ p, li { white-space: pre-wrap; }
             <suffix> °</suffix>
             <vTx>9</vTx>
         </foc_synrm_phase_offset>
+        <foc_synrm_hybrid_erpm>
+            <longName>SynRM Encoder→Hall Handoff ERPM</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>EXPERIMENTAL (Encoder sensor mode). Above this electrical RPM the controller commutates on the digital hall sensors (clean edge timing at speed) instead of the analog absolute encoder (which lags/aliases at high RPM). Below it, the encoder is used AND foc_hall_table is auto-learned from the encoder so the handoff is seamless. 0 = disabled (pure encoder). Has hysteresis (drops back to encoder below 0.8× this value).</description>
+            <cDefine>MCCONF_FOC_SYNRM_HYBRID_ERPM</cDefine>
+            <editorDecimalsDouble>0</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>100000</maxDouble>
+            <minDouble>0</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>100</stepDouble>
+            <valDouble>0</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> ERPM</suffix>
+            <vTx>9</vTx>
+        </foc_synrm_hybrid_erpm>
         <foc_motor_r>
             <longName>Motor Resistance (R)</longName>
             <type>1</type>
@@ -4956,6 +4974,7 @@ p, li { white-space: pre-wrap; }
         <ser>foc_motor_ld</ser>
         <ser>foc_motor_lq</ser>
         <ser>foc_synrm_phase_offset</ser>
+        <ser>foc_synrm_hybrid_erpm</ser>
     </SerOrder>
     <Grouping>
         <group>
@@ -5151,6 +5170,7 @@ p, li { white-space: pre-wrap; }
                     <param>foc_motor_ld</param>
                     <param>foc_motor_lq</param>
                     <param>foc_synrm_phase_offset</param>
+                    <param>foc_synrm_hybrid_erpm</param>
                     <param>foc_motor_flux_linkage</param>
                     <param>foc_current_kp</param>
                     <param>foc_current_ki</param>
