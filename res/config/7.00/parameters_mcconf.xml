@@ -1462,6 +1462,24 @@ p, li { white-space: pre-wrap; }
             <suffix> µH</suffix>
             <vTx>9</vTx>
         </foc_motor_lq>
+        <foc_synrm_phase_offset>
+            <longName>SynRM Hall Phase Offset</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>EXPERIMENTAL. Electrical-degree offset added to the hall-sensor commutation angle. Used to test/correct hall-vs-torque-axis misalignment on high-saliency PMa-SynRM motors, where stock pure-iq sensored current control can lock the rotor instead of spinning it. Sweep this (try +/-90 first) until current control produces rotation. 0 = no change (standard PMSM behaviour).</description>
+            <cDefine>MCCONF_FOC_SYNRM_PHASE_OFFSET</cDefine>
+            <editorDecimalsDouble>1</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>360</maxDouble>
+            <minDouble>-360</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>1</stepDouble>
+            <valDouble>0</valDouble>
+            <vTxDoubleScale>1000</vTxDoubleScale>
+            <suffix> °</suffix>
+            <vTx>9</vTx>
+        </foc_synrm_phase_offset>
         <foc_motor_r>
             <longName>Motor Resistance (R)</longName>
             <type>1</type>
@@ -4937,6 +4955,7 @@ p, li { white-space: pre-wrap; }
         <ser>bms.fwd_can_mode</ser>
         <ser>foc_motor_ld</ser>
         <ser>foc_motor_lq</ser>
+        <ser>foc_synrm_phase_offset</ser>
     </SerOrder>
     <Grouping>
         <group>
@@ -5131,6 +5150,7 @@ p, li { white-space: pre-wrap; }
                     <param>foc_motor_ld_lq_diff</param>
                     <param>foc_motor_ld</param>
                     <param>foc_motor_lq</param>
+                    <param>foc_synrm_phase_offset</param>
                     <param>foc_motor_flux_linkage</param>
                     <param>foc_current_kp</param>
                     <param>foc_current_ki</param>
