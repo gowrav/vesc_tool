@@ -315,8 +315,12 @@ MainWindow::MainWindow(QWidget *parent) :
             int type = mVesc->mcConfig()->getParamEnum("motor_type");
             ui->pageList->item(mPageNameIdList.value("motor_bldc"))->setHidden(type != 0);
             ui->pageList->item(mPageNameIdList.value("motor_dc"))->setHidden(type != 1);
-            ui->pageList->item(mPageNameIdList.value("motor_foc"))->setHidden(type != 2);
-            ui->pageList->item(mPageNameIdList.value("motor_gpdrive"))->setHidden(type != 3);
+            // SynRM (type 3) is FOC-based — show the FOC page (its params live in the FOC
+            // group's SynRM subgroup). GPD was removed from the firmware motor_type enum, so
+            // its legacy index-3 page is dead; keep it hidden. (A dedicated SynRM page is a
+            // later step.)
+            ui->pageList->item(mPageNameIdList.value("motor_foc"))->setHidden(type != 2 && type != 3);
+            ui->pageList->item(mPageNameIdList.value("motor_gpdrive"))->setHidden(true);
         }
     };
 
