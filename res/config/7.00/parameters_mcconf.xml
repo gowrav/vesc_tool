@@ -58,6 +58,7 @@ p, li { white-space: pre-wrap; }
             <enumNames>BLDC</enumNames>
             <enumNames>DC</enumNames>
             <enumNames>FOC</enumNames>
+            <enumNames>SynRM</enumNames>
         </motor_type>
         <sensor_mode>
             <longName>Sensor Mode</longName>
@@ -1498,6 +1499,99 @@ p, li { white-space: pre-wrap; }
             <suffix> ERPM</suffix>
             <vTx>9</vTx>
         </foc_synrm_hybrid_erpm>
+        <foc_synrm_src_0>
+            <longName>SynRM Source — Low Band</longName>
+            <type>4</type>
+            <transmittable>1</transmittable>
+            <description>SynRM v2 position pipeline (motor type SynRM only). Position source used below the 0→1 transition ERPM. None/HFI/Hall/Encoder/Observer.</description>
+            <cDefine>MCCONF_FOC_SYNRM_SRC_0</cDefine>
+            <valInt>2</valInt>
+            <enumNames>None</enumNames>
+            <enumNames>HFI</enumNames>
+            <enumNames>Hall</enumNames>
+            <enumNames>Encoder</enumNames>
+            <enumNames>Observer</enumNames>
+        </foc_synrm_src_0>
+        <foc_synrm_src_1>
+            <longName>SynRM Source — Mid Band</longName>
+            <type>4</type>
+            <transmittable>1</transmittable>
+            <description>SynRM v2 position pipeline (motor type SynRM only). Position source between the 0→1 and 1→2 transition ERPMs.</description>
+            <cDefine>MCCONF_FOC_SYNRM_SRC_1</cDefine>
+            <valInt>2</valInt>
+            <enumNames>None</enumNames>
+            <enumNames>HFI</enumNames>
+            <enumNames>Hall</enumNames>
+            <enumNames>Encoder</enumNames>
+            <enumNames>Observer</enumNames>
+        </foc_synrm_src_1>
+        <foc_synrm_src_2>
+            <longName>SynRM Source — High Band</longName>
+            <type>4</type>
+            <transmittable>1</transmittable>
+            <description>SynRM v2 position pipeline (motor type SynRM only). Position source above the 1→2 transition ERPM.</description>
+            <cDefine>MCCONF_FOC_SYNRM_SRC_2</cDefine>
+            <valInt>2</valInt>
+            <enumNames>None</enumNames>
+            <enumNames>HFI</enumNames>
+            <enumNames>Hall</enumNames>
+            <enumNames>Encoder</enumNames>
+            <enumNames>Observer</enumNames>
+        </foc_synrm_src_2>
+        <foc_synrm_erpm_01>
+            <longName>SynRM Transition ERPM 0→1</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM v2 pipeline: ERPM at which the position source switches from the low band to the mid band (blended over ±blend half-width).</description>
+            <cDefine>MCCONF_FOC_SYNRM_ERPM_01</cDefine>
+            <editorDecimalsDouble>0</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>100000</maxDouble>
+            <minDouble>0</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>100</stepDouble>
+            <valDouble>2000</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> ERPM</suffix>
+            <vTx>9</vTx>
+        </foc_synrm_erpm_01>
+        <foc_synrm_erpm_12>
+            <longName>SynRM Transition ERPM 1→2</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM v2 pipeline: ERPM at which the position source switches from the mid band to the high band (blended over ±blend half-width).</description>
+            <cDefine>MCCONF_FOC_SYNRM_ERPM_12</cDefine>
+            <editorDecimalsDouble>0</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>100000</maxDouble>
+            <minDouble>0</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>100</stepDouble>
+            <valDouble>20000</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> ERPM</suffix>
+            <vTx>9</vTx>
+        </foc_synrm_erpm_12>
+        <foc_synrm_blend>
+            <longName>SynRM Transition Blend</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM v2 pipeline: blend half-width (ERPM) around each transition. The two adjacent sources are linearly interpolated within ±this of the transition ERPM.</description>
+            <cDefine>MCCONF_FOC_SYNRM_BLEND</cDefine>
+            <editorDecimalsDouble>0</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>10000</maxDouble>
+            <minDouble>0</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>50</stepDouble>
+            <valDouble>500</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> ERPM</suffix>
+            <vTx>9</vTx>
+        </foc_synrm_blend>
         <foc_motor_r>
             <longName>Motor Resistance (R)</longName>
             <type>1</type>
@@ -4975,6 +5069,12 @@ p, li { white-space: pre-wrap; }
         <ser>foc_motor_lq</ser>
         <ser>foc_synrm_phase_offset</ser>
         <ser>foc_synrm_hybrid_erpm</ser>
+        <ser>foc_synrm_src_0</ser>
+        <ser>foc_synrm_src_1</ser>
+        <ser>foc_synrm_src_2</ser>
+        <ser>foc_synrm_erpm_01</ser>
+        <ser>foc_synrm_erpm_12</ser>
+        <ser>foc_synrm_blend</ser>
     </SerOrder>
     <Grouping>
         <group>
@@ -5169,8 +5269,6 @@ p, li { white-space: pre-wrap; }
                     <param>foc_motor_ld_lq_diff</param>
                     <param>foc_motor_ld</param>
                     <param>foc_motor_lq</param>
-                    <param>foc_synrm_phase_offset</param>
-                    <param>foc_synrm_hybrid_erpm</param>
                     <param>foc_motor_flux_linkage</param>
                     <param>foc_current_kp</param>
                     <param>foc_current_ki</param>
@@ -5312,6 +5410,20 @@ p, li { white-space: pre-wrap; }
                     <param>foc_short_ls_on_zero_duty</param>
                     <param>foc_overmod_factor</param>
                     <param>foc_mag_vd_max</param>
+                </subgroupParams>
+            </subgroup>
+            <subgroup>
+                <subgroupName>SynRM</subgroupName>
+                <subgroupParams>
+                    <param>foc_synrm_src_0</param>
+                    <param>foc_synrm_src_1</param>
+                    <param>foc_synrm_src_2</param>
+                    <param>foc_synrm_erpm_01</param>
+                    <param>foc_synrm_erpm_12</param>
+                    <param>foc_synrm_blend</param>
+                    <param>::sep::Sensored experiments</param>
+                    <param>foc_synrm_phase_offset</param>
+                    <param>foc_synrm_hybrid_erpm</param>
                 </subgroupParams>
             </subgroup>
         </group>
