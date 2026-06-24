@@ -5412,12 +5412,17 @@ p, li { white-space: pre-wrap; }
                     <param>foc_mag_vd_max</param>
                 </subgroupParams>
             </subgroup>
+        </group>
+        <group>
+            <groupName>SynRM</groupName>
             <subgroup>
-                <subgroupName>SynRM</subgroupName>
+                <subgroupName>General</subgroupName>
                 <subgroupParams>
+                    <param>::sep::Position pipeline (low → mid → high band)</param>
                     <param>foc_synrm_src_0</param>
                     <param>foc_synrm_src_1</param>
                     <param>foc_synrm_src_2</param>
+                    <param>::sep::Changeover points</param>
                     <param>foc_synrm_erpm_01</param>
                     <param>foc_synrm_erpm_12</param>
                     <param>foc_synrm_blend</param>

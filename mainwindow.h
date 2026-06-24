@@ -56,6 +56,7 @@
 #include "pages/pageappnrf.h"
 #include "pages/pageapppas.h"
 #include "pages/pagegpd.h"
+#include "pages/pagesynrm.h"
 #include "pages/pageexperiments.h"
 #include "pages/pageimu.h"
 #include "pages/pageswdprog.h"
@@ -208,6 +209,7 @@ private:
     PageDc *mPageDc;
     PageFoc *mPageFoc;
     PageGPD *mPageGpd;
+    PageSynrm *mPageSynrm;
     PageControllers *mPageControllers;
     PageMotorInfo *mPageMotorInfo;
     PageExperiments *mPageExperiments;

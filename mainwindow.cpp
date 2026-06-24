@@ -321,6 +321,8 @@ MainWindow::MainWindow(QWidget *parent) :
             // later step.)
             ui->pageList->item(mPageNameIdList.value("motor_foc"))->setHidden(type != 2 && type != 3);
             ui->pageList->item(mPageNameIdList.value("motor_gpdrive"))->setHidden(true);
+            // Dedicated SynRM tab (pipeline / sensor changeover params), shown alongside FOC.
+            ui->pageList->item(mPageNameIdList.value("motor_synrm"))->setHidden(type != 3);
         }
     };
 
@@ -357,6 +359,7 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->pageList->item(mPageNameIdList.value("motor_dc"))->setHidden(false);
             ui->pageList->item(mPageNameIdList.value("motor_foc"))->setHidden(false);
             ui->pageList->item(mPageNameIdList.value("motor_gpdrive"))->setHidden(false);
+            ui->pageList->item(mPageNameIdList.value("motor_synrm"))->setHidden(false);
             ui->pageList->item(mPageNameIdList.value("motor_pid"))->setHidden(false);
             ui->pageList->item(mPageNameIdList.value("motor_additional_info"))->setHidden(false);
             ui->pageList->item(mPageNameIdList.value("motor_experiments"))->setHidden(false);
@@ -383,6 +386,7 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->pageList->item(mPageNameIdList.value("motor_dc"))->setHidden(true);
             ui->pageList->item(mPageNameIdList.value("motor_foc"))->setHidden(true);
             ui->pageList->item(mPageNameIdList.value("motor_gpdrive"))->setHidden(true);
+            ui->pageList->item(mPageNameIdList.value("motor_synrm"))->setHidden(true);
             ui->pageList->item(mPageNameIdList.value("motor_pid"))->setHidden(true);
             ui->pageList->item(mPageNameIdList.value("motor_additional_info"))->setHidden(true);
             ui->pageList->item(mPageNameIdList.value("motor_experiments"))->setHidden(true);
@@ -412,6 +416,7 @@ MainWindow::MainWindow(QWidget *parent) :
         mPageDc->reloadParams();
         mPageFoc->reloadParams();
         mPageGpd->reloadParams();
+        mPageSynrm->reloadParams();
         mPageControllers->reloadParams();
         mPageMotorInfo->reloadParams();
         mPageAppSettings->reloadParams();
@@ -1501,6 +1506,13 @@ void MainWindow::reloadPages()
     addPageItem(tr("GPDrive"),  theme + "icons/3ph_sine.png",
                 theme + "icons/mcconf.png", false, true);
     mPageNameIdList.insert("motor_gpdrive", ui->pageList->count() - 1);
+
+    mPageSynrm = new PageSynrm(this);
+    mPageSynrm->setVesc(mVesc);
+    ui->pageWidget->addWidget(mPageSynrm);
+    addPageItem(tr("SynRM"),  theme + "icons/3ph_sine.png",
+                theme + "icons/mcconf.png", false, true);
+    mPageNameIdList.insert("motor_synrm", ui->pageList->count() - 1);
 
     mPageControllers = new PageControllers(this);
     mPageControllers->setVesc(mVesc);

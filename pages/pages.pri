@@ -33,6 +33,7 @@ FORMS += \
     $$PWD/pagemotorinfo.ui \
     $$PWD/pagesetupcalculators.ui \
     $$PWD/pagegpd.ui \
+    $$PWD/pagesynrm.ui \
     $$PWD/pageexperiments.ui \
     $$PWD/pageimu.ui \
     $$PWD/pageswdprog.ui \
@@ -74,6 +75,7 @@ HEADERS += \
     $$PWD/pagemotorinfo.h \
     $$PWD/pagesetupcalculators.h \
     $$PWD/pagegpd.h \
+    $$PWD/pagesynrm.h \
     $$PWD/pageexperiments.h \
     $$PWD/pageimu.h \
     $$PWD/pageswdprog.h \
@@ -115,6 +117,7 @@ SOURCES += \
     $$PWD/pagemotorinfo.cpp \
     $$PWD/pagesetupcalculators.cpp \
     $$PWD/pagegpd.cpp \
+    $$PWD/pagesynrm.cpp \
     $$PWD/pageexperiments.cpp \
     $$PWD/pageimu.cpp \
     $$PWD/pageswdprog.cpp \
