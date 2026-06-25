@@ -39,10 +39,15 @@ public:
     void setVesc(VescInterface *vesc);
     void reloadParams();
 
+private slots:
+    void loadMtpaFromCsv();
+
 private:
     Ui::PageSynrm *ui;
     VescInterface *mVesc;
 
+    bool computeMtpaTable(const QString &dir, QVector<int> &lutMilliAmp,
+                          double &imax, QString &err);
 };
 
 #endif // PAGESYNRM_H

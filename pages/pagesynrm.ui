@@ -17,6 +17,40 @@
    <item>
     <widget class="ParamTable" name="paramTab"/>
    </item>
+   <item>
+    <layout class="QHBoxLayout" name="mtpaLayout">
+     <item>
+      <widget class="QPushButton" name="loadMtpaButton">
+       <property name="text">
+        <string>Load MTPA Table from MotorXP CSVs…</string>
+       </property>
+       <property name="toolTip">
+        <string>Select a MotorXP dq-parameter export folder (Id.csv, Iq.csv, Fluxlinkage_d.csv, Fluxlinkage_q.csv). The MTPA id*(|I|) locus is computed here and written into the SynRM MTPA lookup table. Then Write Motor Configuration to upload it.</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="mtpaInfoLabel">
+       <property name="text">
+        <string>MTPA LUT ready (edit/replace via the button)</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="mtpaSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
   </layout>
  </widget>
  <customwidgets>
