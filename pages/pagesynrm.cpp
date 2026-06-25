@@ -150,6 +150,16 @@ bool PageSynrm::computeTrajTable(const QString &csv, QVector<double> &lutAmps,
         err = "CSV needs >=2 speed levels per current.";
         return false;
     }
+    // Anchor a current=0 row with id=0 so the table extrapolates to 0 at zero current (else low
+    // throttle has |id| > |I| -> the firmware magnitude clamp zeroes iq -> no torque).
+    if (cur.first() > 0.0) {
+        cur.prepend(0.0);
+        QMap<double, double> zeros;
+        for (double s : spd) {
+            zeros[s] = 0.0;
+        }
+        grid[0.0] = zeros;
+    }
     imax = cur.last();
     nmax = spd.last();
 

@@ -1605,7 +1605,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-5.410</valDouble>
+            <valDouble>-0.000</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -1623,7 +1623,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-5.410</valDouble>
+            <valDouble>-0.000</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -1641,7 +1641,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-5.410</valDouble>
+            <valDouble>-0.000</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -1659,7 +1659,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-5.410</valDouble>
+            <valDouble>-0.000</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -1677,7 +1677,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-5.410</valDouble>
+            <valDouble>-0.000</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -1695,7 +1695,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-5.410</valDouble>
+            <valDouble>-0.000</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -1713,7 +1713,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-5.410</valDouble>
+            <valDouble>-0.000</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -1731,7 +1731,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-5.410</valDouble>
+            <valDouble>-0.000</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -1749,7 +1749,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-5.410</valDouble>
+            <valDouble>-0.000</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -1767,7 +1767,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-5.410</valDouble>
+            <valDouble>-0.000</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -5261,7 +5261,6 @@ p, li { white-space: pre-wrap; }
             <enumNames>Disabled</enumNames>
             <enumNames>IQ Target</enumNames>
             <enumNames>IQ Measured</enumNames>
-            <enumNames>LUT 1-D MTPA (SynRM)</enumNames>
             <enumNames>Trajectory 2-D + FW (SynRM)</enumNames>
         </foc_mtpa_mode>
         <foc_fw_current_max>
