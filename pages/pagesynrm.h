@@ -40,15 +40,15 @@ public:
     void reloadParams();
 
 private slots:
-    void loadMtpaFromCsv();
+    void loadTrajFromCsv();
 
 private:
     Ui::PageSynrm *ui;
     VescInterface *mVesc;
 
-    bool computeMtpaTable(const QString &dir, QVector<double> &lutAmps,
-                          double &imax, QString &err);
-    void updateMtpaPlot();
+    bool computeTrajTable(const QString &csv, QVector<double> &lutAmps,
+                          double &imax, double &nmax, QString &err);
+    void updateTrajPlot();
 };
 
 #endif // PAGESYNRM_H

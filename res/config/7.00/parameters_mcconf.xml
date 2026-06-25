@@ -1592,623 +1592,11 @@ p, li { white-space: pre-wrap; }
             <suffix> ERPM</suffix>
             <vTx>9</vTx>
         </foc_synrm_blend>
-        <foc_mtpa_lut__0>
-            <longName>MTPA LUT [0]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 0/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_0</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>0.0000</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__0>
-        <foc_mtpa_lut__1>
-            <longName>MTPA LUT [1]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 1/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_1</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-0.4556</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__1>
-        <foc_mtpa_lut__2>
-            <longName>MTPA LUT [2]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 2/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_2</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-1.4893</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__2>
-        <foc_mtpa_lut__3>
-            <longName>MTPA LUT [3]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 3/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_3</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-2.7829</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__3>
-        <foc_mtpa_lut__4>
-            <longName>MTPA LUT [4]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 4/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_4</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-4.1903</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__4>
-        <foc_mtpa_lut__5>
-            <longName>MTPA LUT [5]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 5/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_5</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-5.7289</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__5>
-        <foc_mtpa_lut__6>
-            <longName>MTPA LUT [6]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 6/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_6</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-7.3337</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__6>
-        <foc_mtpa_lut__7>
-            <longName>MTPA LUT [7]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 7/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_7</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-8.9788</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__7>
-        <foc_mtpa_lut__8>
-            <longName>MTPA LUT [8]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 8/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_8</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-10.7155</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__8>
-        <foc_mtpa_lut__9>
-            <longName>MTPA LUT [9]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 9/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_9</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-12.5108</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__9>
-        <foc_mtpa_lut__10>
-            <longName>MTPA LUT [10]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 10/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_10</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-14.4854</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__10>
-        <foc_mtpa_lut__11>
-            <longName>MTPA LUT [11]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 11/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_11</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-16.4580</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__11>
-        <foc_mtpa_lut__12>
-            <longName>MTPA LUT [12]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 12/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_12</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-18.3457</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__12>
-        <foc_mtpa_lut__13>
-            <longName>MTPA LUT [13]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 13/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_13</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-20.3706</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__13>
-        <foc_mtpa_lut__14>
-            <longName>MTPA LUT [14]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 14/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_14</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-22.1752</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__14>
-        <foc_mtpa_lut__15>
-            <longName>MTPA LUT [15]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 15/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_15</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-23.9951</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__15>
-        <foc_mtpa_lut__16>
-            <longName>MTPA LUT [16]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 16/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_16</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-25.8876</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__16>
-        <foc_mtpa_lut__17>
-            <longName>MTPA LUT [17]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 17/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_17</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-28.7735</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__17>
-        <foc_mtpa_lut__18>
-            <longName>MTPA LUT [18]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 18/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_18</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-31.6676</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__18>
-        <foc_mtpa_lut__19>
-            <longName>MTPA LUT [19]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 19/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_19</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-34.0332</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__19>
-        <foc_mtpa_lut__20>
-            <longName>MTPA LUT [20]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 20/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_20</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-36.5313</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__20>
-        <foc_mtpa_lut__21>
-            <longName>MTPA LUT [21]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 21/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_21</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-39.0086</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__21>
-        <foc_mtpa_lut__22>
-            <longName>MTPA LUT [22]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 22/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_22</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-41.3895</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__22>
-        <foc_mtpa_lut__23>
-            <longName>MTPA LUT [23]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 23/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_23</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-43.7082</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__23>
-        <foc_mtpa_lut__24>
-            <longName>MTPA LUT [24]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 24/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_24</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-45.9976</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__24>
-        <foc_mtpa_lut__25>
-            <longName>MTPA LUT [25]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 25/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_25</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-48.2332</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__25>
-        <foc_mtpa_lut__26>
-            <longName>MTPA LUT [26]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 26/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_26</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-50.6691</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__26>
-        <foc_mtpa_lut__27>
-            <longName>MTPA LUT [27]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 27/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_27</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-53.9961</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__27>
-        <foc_mtpa_lut__28>
-            <longName>MTPA LUT [28]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 28/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_28</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-56.7763</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__28>
-        <foc_mtpa_lut__29>
-            <longName>MTPA LUT [29]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 29/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_29</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-59.3077</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__29>
-        <foc_mtpa_lut__30>
-            <longName>MTPA LUT [30]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 30/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_30</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-61.8870</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__30>
-        <foc_mtpa_lut__31>
-            <longName>MTPA LUT [31]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 31/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_31</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-64.1392</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__31>
-        <foc_mtpa_lut__32>
-            <longName>MTPA LUT [32]</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (A) at |I| = 32/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_32</cDefine>
-            <editorDecimalsDouble>2</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>450</maxDouble>
-            <minDouble>-450</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>0.1</stepDouble>
-            <valDouble>-65.4520</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut__32>
-        <foc_mtpa_lut_imax>
-            <longName>MTPA LUT Imax</longName>
-            <type>1</type>
-            <transmittable>1</transmittable>
-            <description>SynRM MTPA table: current magnitude (A) at the last LUT sample (the table spans |I| = 0..this). Written by the SynRM page MTPA loader.</description>
-            <cDefine>MCCONF_FOC_MTPA_LUT_IMAX</cDefine>
-            <editorDecimalsDouble>1</editorDecimalsDouble>
-            <editorScale>1</editorScale>
-            <editAsPercentage>0</editAsPercentage>
-            <maxDouble>1000</maxDouble>
-            <minDouble>1</minDouble>
-            <showDisplay>0</showDisplay>
-            <stepDouble>1</stepDouble>
-            <valDouble>70</valDouble>
-            <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> A</suffix>
-            <vTx>9</vTx>
-        </foc_mtpa_lut_imax>
         <foc_traj_lut__0>
             <longName>Traj LUT [0]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_0</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2226,7 +1614,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [1]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_1</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2244,7 +1632,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [2]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_2</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2262,7 +1650,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [3]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_3</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2280,7 +1668,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [4]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_4</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2298,7 +1686,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [5]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_5</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2316,7 +1704,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [6]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_6</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2334,7 +1722,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [7]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_7</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2352,7 +1740,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [8]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_8</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2361,7 +1749,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-24.046</valDouble>
+            <valDouble>-5.410</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2370,7 +1758,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [9]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_9</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2379,7 +1767,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-24.046</valDouble>
+            <valDouble>-5.410</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2388,7 +1776,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [10]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_10</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2397,7 +1785,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-24.046</valDouble>
+            <valDouble>-19.674</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2406,7 +1794,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [11]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_11</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2415,7 +1803,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-24.046</valDouble>
+            <valDouble>-19.674</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2424,7 +1812,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [12]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_12</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2433,7 +1821,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-24.046</valDouble>
+            <valDouble>-19.674</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2442,7 +1830,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [13]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_13</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2451,7 +1839,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-24.046</valDouble>
+            <valDouble>-19.674</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2460,7 +1848,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [14]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_14</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2469,7 +1857,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-24.046</valDouble>
+            <valDouble>-19.674</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2478,7 +1866,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [15]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_15</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2487,7 +1875,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-24.046</valDouble>
+            <valDouble>-19.674</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2496,7 +1884,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [16]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_16</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2505,7 +1893,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-48.092</valDouble>
+            <valDouble>-19.674</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2514,7 +1902,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [17]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_17</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2523,7 +1911,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-48.092</valDouble>
+            <valDouble>-19.674</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2532,7 +1920,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [18]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_18</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2541,7 +1929,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-48.092</valDouble>
+            <valDouble>-19.674</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2550,7 +1938,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [19]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_19</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2559,7 +1947,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-48.092</valDouble>
+            <valDouble>-19.674</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2568,7 +1956,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [20]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_20</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2577,7 +1965,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-48.092</valDouble>
+            <valDouble>-39.348</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2586,7 +1974,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [21]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_21</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2595,7 +1983,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-48.092</valDouble>
+            <valDouble>-39.348</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2604,7 +1992,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [22]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_22</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2613,7 +2001,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-48.092</valDouble>
+            <valDouble>-39.348</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2622,7 +2010,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [23]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_23</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2631,7 +2019,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-48.092</valDouble>
+            <valDouble>-39.348</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2640,7 +2028,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [24]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_24</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2649,7 +2037,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-72.138</valDouble>
+            <valDouble>-39.348</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2658,7 +2046,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [25]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_25</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2667,7 +2055,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-72.138</valDouble>
+            <valDouble>-39.348</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2676,7 +2064,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [26]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_26</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2685,7 +2073,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-72.138</valDouble>
+            <valDouble>-39.348</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2694,7 +2082,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [27]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_27</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2703,7 +2091,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-72.138</valDouble>
+            <valDouble>-39.348</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2712,7 +2100,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [28]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_28</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2721,7 +2109,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-72.138</valDouble>
+            <valDouble>-39.348</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2730,7 +2118,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [29]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_29</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2739,7 +2127,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-72.138</valDouble>
+            <valDouble>-39.348</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2748,7 +2136,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [30]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_30</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2757,7 +2145,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-72.138</valDouble>
+            <valDouble>-59.022</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2766,7 +2154,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [31]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_31</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2775,7 +2163,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-72.138</valDouble>
+            <valDouble>-59.022</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2784,7 +2172,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [32]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_32</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2793,7 +2181,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-96.184</valDouble>
+            <valDouble>-59.022</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2802,7 +2190,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [33]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_33</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2811,7 +2199,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-96.184</valDouble>
+            <valDouble>-59.022</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2820,7 +2208,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [34]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_34</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2829,7 +2217,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-96.184</valDouble>
+            <valDouble>-59.022</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2838,7 +2226,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [35]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_35</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2847,7 +2235,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-96.184</valDouble>
+            <valDouble>-59.022</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2856,7 +2244,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [36]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_36</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2865,7 +2253,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-96.184</valDouble>
+            <valDouble>-59.022</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2874,7 +2262,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [37]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_37</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2883,7 +2271,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-96.184</valDouble>
+            <valDouble>-59.022</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2892,7 +2280,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [38]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_38</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2901,7 +2289,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-96.184</valDouble>
+            <valDouble>-59.022</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2910,7 +2298,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [39]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_39</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2919,7 +2307,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-96.184</valDouble>
+            <valDouble>-59.022</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2928,7 +2316,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [40]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_40</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2937,7 +2325,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-120.230</valDouble>
+            <valDouble>-78.696</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2946,7 +2334,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [41]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_41</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2955,7 +2343,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-120.230</valDouble>
+            <valDouble>-78.696</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2964,7 +2352,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [42]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_42</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2973,7 +2361,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-120.230</valDouble>
+            <valDouble>-78.696</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -2982,7 +2370,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [43]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_43</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -2991,7 +2379,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-120.230</valDouble>
+            <valDouble>-78.696</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3000,7 +2388,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [44]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_44</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3009,7 +2397,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-120.230</valDouble>
+            <valDouble>-78.696</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3018,7 +2406,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [45]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_45</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3027,7 +2415,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-120.230</valDouble>
+            <valDouble>-78.696</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3036,7 +2424,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [46]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_46</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3045,7 +2433,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-120.230</valDouble>
+            <valDouble>-78.696</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3054,7 +2442,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [47]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_47</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3063,7 +2451,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-126.786</valDouble>
+            <valDouble>-78.696</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3072,7 +2460,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [48]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_48</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3081,7 +2469,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-144.276</valDouble>
+            <valDouble>-78.696</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3090,7 +2478,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [49]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_49</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3099,7 +2487,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-144.276</valDouble>
+            <valDouble>-78.696</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3108,7 +2496,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [50]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_50</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3117,7 +2505,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-144.276</valDouble>
+            <valDouble>-98.370</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3126,7 +2514,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [51]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_51</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3135,7 +2523,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-144.276</valDouble>
+            <valDouble>-98.370</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3144,7 +2532,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [52]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_52</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3153,7 +2541,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-144.276</valDouble>
+            <valDouble>-98.370</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3162,7 +2550,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [53]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_53</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3171,7 +2559,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-144.276</valDouble>
+            <valDouble>-98.370</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3180,7 +2568,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [54]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_54</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3189,7 +2577,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-144.276</valDouble>
+            <valDouble>-98.370</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3198,7 +2586,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [55]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_55</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3207,7 +2595,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-163.043</valDouble>
+            <valDouble>-98.370</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3216,7 +2604,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [56]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_56</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3225,7 +2613,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-168.322</valDouble>
+            <valDouble>-98.370</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3234,7 +2622,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [57]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_57</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3243,7 +2631,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-168.322</valDouble>
+            <valDouble>-98.370</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3252,7 +2640,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [58]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_58</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3261,7 +2649,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-168.322</valDouble>
+            <valDouble>-98.370</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3270,7 +2658,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [59]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_59</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3279,7 +2667,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-168.322</valDouble>
+            <valDouble>-98.370</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3288,7 +2676,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [60]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_60</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3297,7 +2685,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-168.322</valDouble>
+            <valDouble>-118.044</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3306,7 +2694,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [61]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_61</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3315,7 +2703,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-168.322</valDouble>
+            <valDouble>-118.044</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3324,7 +2712,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [62]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_62</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3333,7 +2721,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-176.982</valDouble>
+            <valDouble>-118.044</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3342,7 +2730,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [63]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_63</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3351,7 +2739,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-199.151</valDouble>
+            <valDouble>-118.044</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3360,7 +2748,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [64]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_64</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3369,7 +2757,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-192.368</valDouble>
+            <valDouble>-118.044</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3378,7 +2766,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [65]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_65</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3387,7 +2775,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-192.368</valDouble>
+            <valDouble>-118.044</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3396,7 +2784,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [66]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_66</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3405,7 +2793,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-192.368</valDouble>
+            <valDouble>-118.044</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3414,7 +2802,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [67]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_67</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3423,7 +2811,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-192.368</valDouble>
+            <valDouble>-118.044</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3432,7 +2820,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [68]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_68</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3441,7 +2829,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-192.368</valDouble>
+            <valDouble>-118.044</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3450,7 +2838,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [69]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_69</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3459,7 +2847,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-192.368</valDouble>
+            <valDouble>-123.359</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3468,7 +2856,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [70]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_70</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3477,7 +2865,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-212.580</valDouble>
+            <valDouble>-137.718</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3486,7 +2874,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [71]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_71</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3495,7 +2883,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-233.871</valDouble>
+            <valDouble>-137.718</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3504,7 +2892,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [72]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_72</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3513,7 +2901,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-216.414</valDouble>
+            <valDouble>-137.718</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3522,7 +2910,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [73]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_73</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3531,7 +2919,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-216.414</valDouble>
+            <valDouble>-137.718</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3540,7 +2928,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [74]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_74</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3549,7 +2937,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-216.414</valDouble>
+            <valDouble>-137.718</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3558,7 +2946,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [75]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_75</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3567,7 +2955,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-216.414</valDouble>
+            <valDouble>-137.718</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3576,7 +2964,7 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [76]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_76</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -3585,7 +2973,7 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-216.414</valDouble>
+            <valDouble>-137.718</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
@@ -3594,8 +2982,602 @@ p, li { white-space: pre-wrap; }
             <longName>Traj LUT [77]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_TRAJ_LUT_77</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-137.718</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__77>
+        <foc_traj_lut__78>
+            <longName>Traj LUT [78]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_78</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-138.223</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__78>
+        <foc_traj_lut__79>
+            <longName>Traj LUT [79]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_79</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-153.379</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__79>
+        <foc_traj_lut__80>
+            <longName>Traj LUT [80]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_80</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-157.392</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__80>
+        <foc_traj_lut__81>
+            <longName>Traj LUT [81]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_81</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-157.392</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__81>
+        <foc_traj_lut__82>
+            <longName>Traj LUT [82]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_82</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-157.392</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__82>
+        <foc_traj_lut__83>
+            <longName>Traj LUT [83]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_83</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-157.392</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__83>
+        <foc_traj_lut__84>
+            <longName>Traj LUT [84]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_84</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-157.392</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__84>
+        <foc_traj_lut__85>
+            <longName>Traj LUT [85]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_85</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-157.392</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__85>
+        <foc_traj_lut__86>
+            <longName>Traj LUT [86]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_86</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-157.392</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__86>
+        <foc_traj_lut__87>
+            <longName>Traj LUT [87]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_87</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-157.392</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__87>
+        <foc_traj_lut__88>
+            <longName>Traj LUT [88]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_88</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-167.096</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__88>
+        <foc_traj_lut__89>
+            <longName>Traj LUT [89]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_89</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-182.900</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__89>
+        <foc_traj_lut__90>
+            <longName>Traj LUT [90]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_90</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-177.066</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__90>
+        <foc_traj_lut__91>
+            <longName>Traj LUT [91]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_91</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-177.066</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__91>
+        <foc_traj_lut__92>
+            <longName>Traj LUT [92]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_92</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-177.066</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__92>
+        <foc_traj_lut__93>
+            <longName>Traj LUT [93]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_93</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-177.066</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__93>
+        <foc_traj_lut__94>
+            <longName>Traj LUT [94]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_94</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-177.066</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__94>
+        <foc_traj_lut__95>
+            <longName>Traj LUT [95]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_95</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-177.066</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__95>
+        <foc_traj_lut__96>
+            <longName>Traj LUT [96]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_96</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-177.066</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__96>
+        <foc_traj_lut__97>
+            <longName>Traj LUT [97]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_97</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-177.066</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__97>
+        <foc_traj_lut__98>
+            <longName>Traj LUT [98]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_98</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-197.523</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__98>
+        <foc_traj_lut__99>
+            <longName>Traj LUT [99]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_99</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-211.916</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__99>
+        <foc_traj_lut__100>
+            <longName>Traj LUT [100]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_100</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-196.740</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__100>
+        <foc_traj_lut__101>
+            <longName>Traj LUT [101]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_101</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-196.740</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__101>
+        <foc_traj_lut__102>
+            <longName>Traj LUT [102]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_102</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-196.740</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__102>
+        <foc_traj_lut__103>
+            <longName>Traj LUT [103]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_103</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-196.740</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__103>
+        <foc_traj_lut__104>
+            <longName>Traj LUT [104]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_104</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-196.740</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__104>
+        <foc_traj_lut__105>
+            <longName>Traj LUT [105]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_105</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-196.740</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__105>
+        <foc_traj_lut__106>
+            <longName>Traj LUT [106]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_106</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-196.740</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__106>
+        <foc_traj_lut__107>
+            <longName>Traj LUT [107]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_107</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-196.740</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__107>
+        <foc_traj_lut__108>
+            <longName>Traj LUT [108]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_108</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-226.484</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__108>
+        <foc_traj_lut__109>
+            <longName>Traj LUT [109]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_109</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-240.177</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__109>
+        <foc_traj_lut__110>
+            <longName>Traj LUT [110]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_110</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
@@ -3607,13 +3589,13 @@ p, li { white-space: pre-wrap; }
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
-        </foc_traj_lut__77>
-        <foc_traj_lut__78>
-            <longName>Traj LUT [78]</longName>
+        </foc_traj_lut__110>
+        <foc_traj_lut__111>
+            <longName>Traj LUT [111]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_TRAJ_LUT_78</cDefine>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_111</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
@@ -3621,17 +3603,143 @@ p, li { white-space: pre-wrap; }
             <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
             <stepDouble>0.1</stepDouble>
-            <valDouble>-250.531</valDouble>
+            <valDouble>-216.414</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
-        </foc_traj_lut__78>
-        <foc_traj_lut__79>
-            <longName>Traj LUT [79]</longName>
+        </foc_traj_lut__111>
+        <foc_traj_lut__112>
+            <longName>Traj LUT [112]</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory id* (A) flat row-major (current*8+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
-            <cDefine>MCCONF_FOC_TRAJ_LUT_79</cDefine>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_112</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-216.414</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__112>
+        <foc_traj_lut__113>
+            <longName>Traj LUT [113]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_113</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-216.414</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__113>
+        <foc_traj_lut__114>
+            <longName>Traj LUT [114]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_114</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-216.414</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__114>
+        <foc_traj_lut__115>
+            <longName>Traj LUT [115]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_115</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-216.414</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__115>
+        <foc_traj_lut__116>
+            <longName>Traj LUT [116]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_116</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-216.414</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__116>
+        <foc_traj_lut__117>
+            <longName>Traj LUT [117]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_117</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-229.295</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__117>
+        <foc_traj_lut__118>
+            <longName>Traj LUT [118]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_118</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
+            <editorScale>1</editorScale>
+            <editAsPercentage>0</editAsPercentage>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
+            <showDisplay>0</showDisplay>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-256.721</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
+        </foc_traj_lut__118>
+        <foc_traj_lut__119>
+            <longName>Traj LUT [119]</longName>
+            <type>1</type>
+            <transmittable>1</transmittable>
+            <description>SynRM 2-D trajectory id* (A) flat row-major (current*10+speed). From LUT.xls; written by the SynRM page loader. Not shown individually.</description>
+            <cDefine>MCCONF_FOC_TRAJ_LUT_119</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
@@ -3643,7 +3751,7 @@ p, li { white-space: pre-wrap; }
             <vTxDoubleScale>1</vTxDoubleScale>
             <suffix> A</suffix>
             <vTx>9</vTx>
-        </foc_traj_lut__79>
+        </foc_traj_lut__119>
         <foc_traj_imax>
             <longName>foc_traj_imax</longName>
             <type>1</type>
@@ -7183,40 +7291,6 @@ p, li { white-space: pre-wrap; }
         <ser>foc_synrm_erpm_01</ser>
         <ser>foc_synrm_erpm_12</ser>
         <ser>foc_synrm_blend</ser>
-        <ser>foc_mtpa_lut__0</ser>
-        <ser>foc_mtpa_lut__1</ser>
-        <ser>foc_mtpa_lut__2</ser>
-        <ser>foc_mtpa_lut__3</ser>
-        <ser>foc_mtpa_lut__4</ser>
-        <ser>foc_mtpa_lut__5</ser>
-        <ser>foc_mtpa_lut__6</ser>
-        <ser>foc_mtpa_lut__7</ser>
-        <ser>foc_mtpa_lut__8</ser>
-        <ser>foc_mtpa_lut__9</ser>
-        <ser>foc_mtpa_lut__10</ser>
-        <ser>foc_mtpa_lut__11</ser>
-        <ser>foc_mtpa_lut__12</ser>
-        <ser>foc_mtpa_lut__13</ser>
-        <ser>foc_mtpa_lut__14</ser>
-        <ser>foc_mtpa_lut__15</ser>
-        <ser>foc_mtpa_lut__16</ser>
-        <ser>foc_mtpa_lut__17</ser>
-        <ser>foc_mtpa_lut__18</ser>
-        <ser>foc_mtpa_lut__19</ser>
-        <ser>foc_mtpa_lut__20</ser>
-        <ser>foc_mtpa_lut__21</ser>
-        <ser>foc_mtpa_lut__22</ser>
-        <ser>foc_mtpa_lut__23</ser>
-        <ser>foc_mtpa_lut__24</ser>
-        <ser>foc_mtpa_lut__25</ser>
-        <ser>foc_mtpa_lut__26</ser>
-        <ser>foc_mtpa_lut__27</ser>
-        <ser>foc_mtpa_lut__28</ser>
-        <ser>foc_mtpa_lut__29</ser>
-        <ser>foc_mtpa_lut__30</ser>
-        <ser>foc_mtpa_lut__31</ser>
-        <ser>foc_mtpa_lut__32</ser>
-        <ser>foc_mtpa_lut_imax</ser>
         <ser>foc_traj_lut__0</ser>
         <ser>foc_traj_lut__1</ser>
         <ser>foc_traj_lut__2</ser>
@@ -7297,6 +7371,46 @@ p, li { white-space: pre-wrap; }
         <ser>foc_traj_lut__77</ser>
         <ser>foc_traj_lut__78</ser>
         <ser>foc_traj_lut__79</ser>
+        <ser>foc_traj_lut__80</ser>
+        <ser>foc_traj_lut__81</ser>
+        <ser>foc_traj_lut__82</ser>
+        <ser>foc_traj_lut__83</ser>
+        <ser>foc_traj_lut__84</ser>
+        <ser>foc_traj_lut__85</ser>
+        <ser>foc_traj_lut__86</ser>
+        <ser>foc_traj_lut__87</ser>
+        <ser>foc_traj_lut__88</ser>
+        <ser>foc_traj_lut__89</ser>
+        <ser>foc_traj_lut__90</ser>
+        <ser>foc_traj_lut__91</ser>
+        <ser>foc_traj_lut__92</ser>
+        <ser>foc_traj_lut__93</ser>
+        <ser>foc_traj_lut__94</ser>
+        <ser>foc_traj_lut__95</ser>
+        <ser>foc_traj_lut__96</ser>
+        <ser>foc_traj_lut__97</ser>
+        <ser>foc_traj_lut__98</ser>
+        <ser>foc_traj_lut__99</ser>
+        <ser>foc_traj_lut__100</ser>
+        <ser>foc_traj_lut__101</ser>
+        <ser>foc_traj_lut__102</ser>
+        <ser>foc_traj_lut__103</ser>
+        <ser>foc_traj_lut__104</ser>
+        <ser>foc_traj_lut__105</ser>
+        <ser>foc_traj_lut__106</ser>
+        <ser>foc_traj_lut__107</ser>
+        <ser>foc_traj_lut__108</ser>
+        <ser>foc_traj_lut__109</ser>
+        <ser>foc_traj_lut__110</ser>
+        <ser>foc_traj_lut__111</ser>
+        <ser>foc_traj_lut__112</ser>
+        <ser>foc_traj_lut__113</ser>
+        <ser>foc_traj_lut__114</ser>
+        <ser>foc_traj_lut__115</ser>
+        <ser>foc_traj_lut__116</ser>
+        <ser>foc_traj_lut__117</ser>
+        <ser>foc_traj_lut__118</ser>
+        <ser>foc_traj_lut__119</ser>
         <ser>foc_traj_imax</ser>
         <ser>foc_traj_nmax</ser>
         <ser>foc_traj_vnorm</ser>

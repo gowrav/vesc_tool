@@ -28,23 +28,30 @@
 #include <QVector>
 #include <QDir>
 #include <QtMath>
+#include <QMap>
 
-// Keep in sync with bldc datatypes.h MTPA_LUT_SIZE.
-#define SYNRM_MTPA_LUT_SIZE 33
+// Keep in sync with bldc datatypes.h: 2-D trajectory grid (current x speed), flat ci*NS+si.
+#define SYNRM_TRAJ_NI 12
+#define SYNRM_TRAJ_NS 10
+#define SYNRM_TRAJ_SIZE (SYNRM_TRAJ_NI * SYNRM_TRAJ_NS)
 
 PageSynrm::PageSynrm(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PageSynrm)
 {
     ui->setupUi(this);
-    connect(ui->loadMtpaButton, &QPushButton::clicked, this, &PageSynrm::loadMtpaFromCsv);
+    connect(ui->loadMtpaButton, &QPushButton::clicked, this, &PageSynrm::loadTrajFromCsv);
 
-    ui->mtpaPlot->addGraph();
-    ui->mtpaPlot->graph(0)->setName("id* (A)");
-    ui->mtpaPlot->graph(0)->setPen(QPen(Utility::getAppQColor("plot_graph1")));
-    ui->mtpaPlot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
-    ui->mtpaPlot->xAxis->setLabel("Current magnitude |I| (A)");
-    ui->mtpaPlot->yAxis->setLabel("MTPA d-current id* (A)");
+    // Three id*(|I|) curves: MTPA (speed 0), mid speed, top speed (shows field weakening).
+    const char *names[3] = {"id* @ 0 rpm (MTPA)", "id* @ mid speed", "id* @ top speed (FW)"};
+    const char *cols[3] = {"plot_graph1", "plot_graph2", "plot_graph3"};
+    for (int g = 0; g < 3; g++) {
+        ui->mtpaPlot->addGraph();
+        ui->mtpaPlot->graph(g)->setName(names[g]);
+        ui->mtpaPlot->graph(g)->setPen(QPen(Utility::getAppQColor(cols[g])));
+    }
+    ui->mtpaPlot->xAxis->setLabel("Current magnitude |I| (A, peak)");
+    ui->mtpaPlot->yAxis->setLabel("d-current id* (A)");
     ui->mtpaPlot->legend->setVisible(true);
 }
 
@@ -72,199 +79,145 @@ void PageSynrm::reloadParams()
     ui->paramTab->clearParams();
     ui->paramTab->addParamSubgroup(mVesc->mcConfig(), "synrm", "general");
 
-    // Redraw the LUT plot whenever the table or imax changes (e.g. after reading the motor config
-    // or loading a CSV). updateOnly so it does not spam.
     connect(mVesc->mcConfig(), &ConfigParams::paramChangedDouble, this,
             [this](QObject *, QString name, double) {
-        if (name.startsWith("foc_mtpa_lut")) {
-            updateMtpaPlot();
+        if (name.startsWith("foc_traj")) {
+            updateTrajPlot();
         }
     });
-    updateMtpaPlot();
+    updateTrajPlot();
 }
 
-// Read foc_mtpa_lut__N + foc_mtpa_lut_imax from the config and draw id* vs |I|.
-void PageSynrm::updateMtpaPlot()
+// Plot id* vs |I| for speed = 0, mid, top — reading the 2-D table from the config.
+void PageSynrm::updateTrajPlot()
 {
     if (!mVesc) {
         return;
     }
     ConfigParams *mc = mVesc->mcConfig();
-    double imax = mc->getParamDouble("foc_mtpa_lut_imax");
+    double imax = mc->getParamDouble("foc_traj_imax");
     if (imax <= 0.0) {
         imax = 1.0;
     }
-    QVector<double> x(SYNRM_MTPA_LUT_SIZE), y(SYNRM_MTPA_LUT_SIZE);
-    for (int i = 0; i < SYNRM_MTPA_LUT_SIZE; i++) {
-        x[i] = i * imax / double(SYNRM_MTPA_LUT_SIZE - 1);
-        y[i] = mc->getParamDouble(QString("foc_mtpa_lut__%1").arg(i));
+    const int sIdx[3] = {0, SYNRM_TRAJ_NS / 2, SYNRM_TRAJ_NS - 1};
+    for (int g = 0; g < 3; g++) {
+        QVector<double> x(SYNRM_TRAJ_NI), y(SYNRM_TRAJ_NI);
+        for (int i = 0; i < SYNRM_TRAJ_NI; i++) {
+            x[i] = i * imax / double(SYNRM_TRAJ_NI - 1);
+            y[i] = mc->getParamDouble(QString("foc_traj_lut__%1").arg(i * SYNRM_TRAJ_NS + sIdx[g]));
+        }
+        ui->mtpaPlot->graph(g)->setData(x, y);
     }
-    ui->mtpaPlot->graph(0)->setData(x, y);
     ui->mtpaPlot->rescaleAxes();
     ui->mtpaPlot->replot();
 }
 
-// --- helpers for the MotorXP MTPA computation (port of docs/synrm/tools/mtpa_from_maps.py) ---
-
-static bool loadCsvRow(const QString &path, QVector<double> &out)
+// Compute the downsampled 2-D trajectory id*(|I|, speed) (amps, VESC sign) from a LUT.xls CSV
+// export with 4 numeric columns: line_current, speed(rpm), id, iq. Current/id are taken as PEAK
+// (per the motor owner) and id is negated to VESC's convention.
+bool PageSynrm::computeTrajTable(const QString &csv, QVector<double> &lutAmps,
+                                 double &imax, double &nmax, QString &err)
 {
-    QFile f(path);
+    QFile f(csv);
     if (!f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        err = "Cannot open " + csv;
         return false;
     }
     QTextStream ts(&f);
-    QString line = ts.readLine();
-    out.clear();
-    const QStringList toks = line.split(',', QString::SkipEmptyParts);
-    for (const QString &tok : toks) {
-        out.append(tok.trimmed().toDouble());
-    }
-    return !out.isEmpty();
-}
-
-static bool loadCsvGrid(const QString &path, QVector<QVector<double>> &out)
-{
-    QFile f(path);
-    if (!f.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        return false;
-    }
-    QTextStream ts(&f);
-    out.clear();
+    // collect (current, speed) -> id; build sorted unique axes
+    QMap<double, QMap<double, double>> grid; // cur -> (spd -> id)
     while (!ts.atEnd()) {
-        QString line = ts.readLine();
-        if (line.trimmed().isEmpty()) {
+        const QStringList t = ts.readLine().split(QRegExp("[,;\\t]"), QString::SkipEmptyParts);
+        if (t.size() < 3) {
             continue;
         }
-        QVector<double> row;
-        const QStringList toks = line.split(',', QString::SkipEmptyParts);
-        for (const QString &tok : toks) {
-            row.append(tok.trimmed().toDouble());
+        bool a, b, c;
+        double cur = t[0].trimmed().toDouble(&a);
+        double spd = t[1].trimmed().toDouble(&b);
+        double id  = t[2].trimmed().toDouble(&c);
+        if (!a || !b || !c) {
+            continue; // header / junk row
         }
-        out.append(row);
+        grid[cur][spd] = id;
     }
-    return !out.isEmpty();
-}
-
-// Compute the id*(|I|) MTPA table (amps) from a MotorXP dq export folder.
-bool PageSynrm::computeMtpaTable(const QString &dir, QVector<double> &lutAmps,
-                                 double &imax, QString &err)
-{
-    QVector<double> Id;
-    QVector<QVector<double>> psid, psiq;
-    if (!loadCsvRow(dir + "/Id.csv", Id)) { err = "Cannot read Id.csv"; return false; }
-    if (!loadCsvGrid(dir + "/Fluxlinkage_d.csv", psid)) { err = "Cannot read Fluxlinkage_d.csv"; return false; }
-    if (!loadCsvGrid(dir + "/Fluxlinkage_q.csv", psiq)) { err = "Cannot read Fluxlinkage_q.csv"; return false; }
-
-    const int N = Id.size();
-    if (N < 3 || psid.size() != N || psiq.size() != N ||
-            psid[0].size() != N || psiq[0].size() != N) {
-        err = QString("Map dimension mismatch (axis %1, maps %2x%3).")
-                .arg(N).arg(psid.size()).arg(psid.isEmpty() ? 0 : psid[0].size());
+    if (grid.size() < 2) {
+        err = "CSV needs >=2 current levels (cols: current, speed, id, iq).";
         return false;
     }
-    const double imin = Id.first();
-    const double istep = (Id.last() - Id.first()) / double(N - 1);
-    if (istep <= 0.0) { err = "Bad Id axis."; return false; }
-
-    // Orientation: does psiq vary across rows or columns? (psiq ~ proportional to iq.)
-    const int c = N / 2;
-    const double rowVarQ = qAbs(psiq[0][c] - psiq[N - 1][c]);
-    const double colVarQ = qAbs(psiq[c][0] - psiq[c][N - 1]);
-    const bool rowIsIq = rowVarQ > colVarQ;
-
-    auto flux = [&](const QVector<QVector<double>> &m, double idA, double iqA) -> double {
-        double fi = ((rowIsIq ? iqA : idA) - imin) / istep; // row coord
-        double fj = ((rowIsIq ? idA : iqA) - imin) / istep; // col coord
-        int i0 = qBound(0, int(qFloor(fi)), N - 2); double ti = fi - i0;
-        int j0 = qBound(0, int(qFloor(fj)), N - 2); double tj = fj - j0;
-        return (m[i0][j0] * (1 - tj) + m[i0][j0 + 1] * tj) * (1 - ti) +
-               (m[i0 + 1][j0] * (1 - tj) + m[i0 + 1][j0 + 1] * tj) * ti;
-    };
-    // Pole pairs is only a constant torque scale; it does not change the optimal angle.
-    auto torque = [&](double idA, double iqA) -> double {
-        return flux(psid, idA, iqA) * iqA - flux(psiq, idA, iqA) * idA;
-    };
-
-    const double axisMax = Id.last();
-
-    // MTPA locus: for each |I|, fine-search the angle maximising torque (motoring).
-    QVector<double> locI, locId;
-    for (int Im = 1; Im <= int(axisMax); Im++) {
-        double bestT = -1e18, bestB = 0.0;
-        for (int k = 0; k <= 3600; k++) {
-            double b = qDegreesToRadians(k / 10.0);
-            double idv = Im * qCos(b), iqv = Im * qSin(b);
-            if (qAbs(idv) > axisMax || qAbs(iqv) > axisMax) {
-                continue;
-            }
-            double T = torque(idv, iqv);
-            if (T > bestT) { bestT = T; bestB = b; }
-        }
-        locI.append(Im);
-        locId.append(Im * qCos(bestB));
+    QVector<double> cur = grid.keys().toVector();
+    QVector<double> spd = grid.first().keys().toVector();
+    if (spd.size() < 2) {
+        err = "CSV needs >=2 speed levels per current.";
+        return false;
     }
-    if (locI.isEmpty()) { err = "MTPA search produced no points."; return false; }
+    imax = cur.last();
+    nmax = spd.last();
 
-    // Resample id*(|I|) onto a uniform axis 0..imax. Span the full characterized current range,
-    // capped at the controller's hardware limit (450 A). Stored as float amps (no scale/overflow).
-    imax = qMin(450.0, axisMax);
-    lutAmps.resize(SYNRM_MTPA_LUT_SIZE);
-    for (int j = 0; j < SYNRM_MTPA_LUT_SIZE; j++) {
-        double Ireq = j * imax / double(SYNRM_MTPA_LUT_SIZE - 1);
-        double idStar;
-        if (Ireq <= locI.first()) {
-            idStar = 0.0;
-        } else if (Ireq >= locI.last()) {
-            idStar = locId.last();
-        } else {
-            int i1 = 0;
-            while (i1 < locI.size() && locI[i1] < Ireq) { i1++; }
-            double t = (Ireq - locI[i1 - 1]) / (locI[i1] - locI[i1 - 1]);
-            idStar = locId[i1 - 1] + t * (locId[i1] - locId[i1 - 1]);
+    auto sample = [&](double Ipk, double rpm) -> double {
+        // bilinear over the (cur, spd) full grid; clamp at edges
+        int ci = 0; while (ci < cur.size() - 2 && cur[ci + 1] < Ipk) { ci++; }
+        int si = 0; while (si < spd.size() - 2 && spd[si + 1] < rpm) { si++; }
+        double tc = (Ipk - cur[ci]) / (cur[ci + 1] - cur[ci]);
+        double tspd = (rpm - spd[si]) / (spd[si + 1] - spd[si]);
+        tc = qBound(0.0, tc, 1.0);
+        tspd = qBound(0.0, tspd, 1.0);
+        double g00 = grid[cur[ci]].value(spd[si]);
+        double g01 = grid[cur[ci]].value(spd[si + 1]);
+        double g10 = grid[cur[ci + 1]].value(spd[si]);
+        double g11 = grid[cur[ci + 1]].value(spd[si + 1]);
+        double a0 = g00 * (1 - tspd) + g01 * tspd;
+        double a1 = g10 * (1 - tspd) + g11 * tspd;
+        return a0 * (1 - tc) + a1 * tc;
+    };
+
+    lutAmps.resize(SYNRM_TRAJ_SIZE);
+    for (int i = 0; i < SYNRM_TRAJ_NI; i++) {
+        double Ipk = i * imax / double(SYNRM_TRAJ_NI - 1);
+        for (int s = 0; s < SYNRM_TRAJ_NS; s++) {
+            double rpm = s * nmax / double(SYNRM_TRAJ_NS - 1);
+            lutAmps[i * SYNRM_TRAJ_NS + s] = -sample(Ipk, rpm); // VESC sign (id < 0)
         }
-        lutAmps[j] = idStar;
     }
     return true;
 }
 
-void PageSynrm::loadMtpaFromCsv()
+void PageSynrm::loadTrajFromCsv()
 {
     if (!mVesc) {
         return;
     }
-
-    QString dir = QFileDialog::getExistingDirectory(this,
-            tr("Select MotorXP dq-parameter export folder"),
-            QDir::homePath());
-    if (dir.isEmpty()) {
+    QString csv = QFileDialog::getOpenFileName(this,
+            tr("Select LUT.xls export CSV (columns: current, speed, id, iq)"),
+            QDir::homePath(), tr("CSV files (*.csv);;All files (*)"));
+    if (csv.isEmpty()) {
         return;
     }
 
     QVector<double> lut;
-    double imax = 81.0;
+    double imax = 282.0, nmax = 7500.0;
     QString err;
-    if (!computeMtpaTable(dir, lut, imax, err)) {
-        QMessageBox::warning(this, tr("MTPA Load Failed"),
-                tr("Could not compute the MTPA table:\n%1").arg(err));
+    if (!computeTrajTable(csv, lut, imax, nmax, err)) {
+        QMessageBox::warning(this, tr("Trajectory Load Failed"),
+                tr("Could not build the 2-D trajectory table:\n%1").arg(err));
         return;
     }
 
-    // Write the computed table into the (hidden) mcconf array fields. The user then
-    // Writes Motor Configuration to upload it.
     ConfigParams *mc = mVesc->mcConfig();
-    for (int i = 0; i < lut.size() && i < SYNRM_MTPA_LUT_SIZE; i++) {
-        mc->updateParamDouble(QString("foc_mtpa_lut__%1").arg(i), lut[i], this);
+    for (int i = 0; i < lut.size() && i < SYNRM_TRAJ_SIZE; i++) {
+        mc->updateParamDouble(QString("foc_traj_lut__%1").arg(i), lut[i], this);
     }
-    mc->updateParamDouble("foc_mtpa_lut_imax", imax, this);
-    updateMtpaPlot();
+    mc->updateParamDouble("foc_traj_imax", imax, this);
+    mc->updateParamDouble("foc_traj_nmax", nmax, this);
+    updateTrajPlot();
 
     double idMax = lut.isEmpty() ? 0.0 : lut.last();
-    ui->mtpaInfoLabel->setText(tr("MTPA loaded: %1 pts, |I| 0..%2 A, id* 0..%3 A. Now Write Motor Configuration ▶")
-            .arg(SYNRM_MTPA_LUT_SIZE).arg(imax, 0, 'f', 0).arg(idMax, 0, 'f', 1));
+    ui->mtpaInfoLabel->setText(tr("2-D trajectory loaded: %1×%2 grid, |I| 0..%3 A, speed 0..%4 rpm, id* to %5 A. Now Write Motor Configuration ▶")
+            .arg(SYNRM_TRAJ_NI).arg(SYNRM_TRAJ_NS).arg(imax, 0, 'f', 0).arg(nmax, 0, 'f', 0).arg(idMax, 0, 'f', 1));
 
-    QMessageBox::information(this, tr("MTPA Table Loaded"),
-            tr("Computed the MTPA id*(|I|) table from the MotorXP maps and wrote it into the "
-               "configuration:\n\n  • %1 points, current magnitude |I| = 0 .. %2 A\n  • id* range 0 .. %3 A\n\n"
-               "Now click \"Write Motor Configuration\" (bottom toolbar) to upload it to the motor.")
-            .arg(SYNRM_MTPA_LUT_SIZE).arg(imax, 0, 'f', 0).arg(idMax, 0, 'f', 1));
+    QMessageBox::information(this, tr("Trajectory Table Loaded"),
+            tr("Built the 2-D MTPA + field-weakening trajectory from the CSV and wrote it into the "
+               "configuration:\n\n  • grid %1×%2 (current × speed)\n  • current 0 .. %3 A (peak)\n"
+               "  • speed 0 .. %4 rpm\n\nSet foc_traj_vnorm to the bus voltage the table was generated for, "
+               "then click \"Write Motor Configuration\" to upload it.")
+            .arg(SYNRM_TRAJ_NI).arg(SYNRM_TRAJ_NS).arg(imax, 0, 'f', 0).arg(nmax, 0, 'f', 0));
 }

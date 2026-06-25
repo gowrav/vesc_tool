@@ -20,7 +20,7 @@
    <item>
     <widget class="QGroupBox" name="mtpaGroup">
      <property name="title">
-      <string>MTPA Lookup Table (id* vs |I|, from MotorXP FEA)</string>
+      <string>2-D Trajectory LUT (id*/iq* vs current &amp; speed, from LUT.xls)</string>
      </property>
      <layout class="QVBoxLayout" name="mtpaGroupLayout">
       <item>
@@ -32,7 +32,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>&lt;b&gt;To prepare and write the LUT for a motor:&lt;/b&gt;&lt;ol&gt;&lt;li&gt;In MotorXP, export the &lt;b&gt;dq-model parameters&lt;/b&gt; — this produces a folder ending in &lt;i&gt;_DQmodel_parameters&lt;/i&gt; containing &lt;tt&gt;Id.csv&lt;/tt&gt;, &lt;tt&gt;Iq.csv&lt;/tt&gt;, &lt;tt&gt;Fluxlinkage_d.csv&lt;/tt&gt;, &lt;tt&gt;Fluxlinkage_q.csv&lt;/tt&gt; (and Ld/Lq/Ldq).&lt;/li&gt;&lt;li&gt;Click &lt;b&gt;Load MTPA Table&lt;/b&gt; below and select that folder. The optimal id*(|I|) MTPA curve is computed here.&lt;/li&gt;&lt;li&gt;Click &lt;b&gt;Write Motor Configuration&lt;/b&gt; (bottom toolbar) to upload it to the motor.&lt;/li&gt;&lt;/ol&gt;Stored as float amps (full ±450 A range). Requires Motor Type = SynRM and MTPA = IQ Target.</string>
+         <string>&lt;b&gt;To load a motor's 2-D trajectory (MTPA + field weakening):&lt;/b&gt;&lt;ol&gt;&lt;li&gt;Export &lt;b&gt;LUT.xls&lt;/b&gt; to CSV with 4 columns: &lt;tt&gt;current, speed(rpm), id, iq&lt;/tt&gt;.&lt;/li&gt;&lt;li&gt;Click &lt;b&gt;Load 2-D Trajectory&lt;/b&gt; below and pick that CSV. It is downsampled to the on-board grid and plotted.&lt;/li&gt;&lt;li&gt;Set &lt;b&gt;foc_traj_vnorm&lt;/b&gt; to the bus voltage the table was made for, then &lt;b&gt;Write Motor Configuration&lt;/b&gt;.&lt;/li&gt;&lt;/ol&gt;Current/id are taken as PEAK amps; id is negated to VESC sign. Needs Motor Type = SynRM, MTPA = Trajectory 2-D + FW.</string>
         </property>
        </widget>
       </item>
@@ -41,7 +41,7 @@
         <item>
          <widget class="QPushButton" name="loadMtpaButton">
           <property name="text">
-           <string>Load MTPA Table from MotorXP CSV folder…</string>
+           <string>Load 2-D Trajectory from LUT.xls CSV…</string>
           </property>
           <property name="toolTip">
            <string>Select a MotorXP _DQmodel_parameters folder (Id.csv, Iq.csv, Fluxlinkage_d.csv, Fluxlinkage_q.csv). The MTPA id*(|I|) locus is computed here and written into the SynRM MTPA lookup table. Then Write Motor Configuration to upload it.</string>
@@ -51,7 +51,7 @@
         <item>
          <widget class="QLabel" name="mtpaInfoLabel">
           <property name="text">
-           <string>Current LUT: default (9 kW motor) — load a folder to replace it.</string>
+           <string>Current LUT: baked default (connected motor) — load a CSV to replace it.</string>
           </property>
          </widget>
         </item>
