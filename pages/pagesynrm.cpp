@@ -31,8 +31,8 @@
 #include <QMap>
 
 // Keep in sync with bldc datatypes.h: 2-D trajectory grid (current x speed), flat ci*NS+si.
-#define SYNRM_TRAJ_NI 12
-#define SYNRM_TRAJ_NS 10
+#define SYNRM_TRAJ_NI 8
+#define SYNRM_TRAJ_NS 7
 #define SYNRM_TRAJ_SIZE (SYNRM_TRAJ_NI * SYNRM_TRAJ_NS)
 
 PageSynrm::PageSynrm(QWidget *parent) :
