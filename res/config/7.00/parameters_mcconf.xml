@@ -6540,20 +6540,11 @@ p, li { white-space: pre-wrap; }
             <subgroup>
                 <subgroupName>General</subgroupName>
                 <subgroupParams>
-                    <param>::sep::Low-speed band — sensor used from standstill</param>
+                    <param>::sep::Position source (all speeds)</param>
                     <param>foc_synrm_src_0</param>
-                    <param>::sep::↳ Changeover Low→Mid — speed &amp; overlap (overlap applies at both changeovers)</param>
-                    <param>foc_synrm_erpm_01</param>
-                    <param>foc_synrm_blend</param>
-                    <param>::sep::Mid-speed band — sensor after the Low→Mid changeover</param>
-                    <param>foc_synrm_src_1</param>
-                    <param>::sep::↳ Changeover Mid→High — speed</param>
-                    <param>foc_synrm_erpm_12</param>
-                    <param>::sep::High-speed band — sensor at top speed</param>
-                    <param>foc_synrm_src_2</param>
                     <param>::sep::Trim — commutation angle offset (centers fwd/rev breakaway)</param>
                     <param>foc_synrm_phase_offset</param>
-                    <param>::sep::Encoder→Hall learning (Sensor Mode = Encoder): learn the hall table from the encoder up to this ERPM, then hand off to halls. 0 = pure encoder, no hall learning.</param>
+                    <param>::sep::Encoder→Hall learning (Sensor Mode = Encoder): learn the hall table from the encoder up to this ERPM, then hand to halls. 0 = pure encoder.</param>
                     <param>foc_synrm_hybrid_erpm</param>
                 </subgroupParams>
             </subgroup>

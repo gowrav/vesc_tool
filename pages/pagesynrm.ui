@@ -32,7 +32,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>&lt;b&gt;To load a motor's 2-D trajectory (MTPA + field weakening):&lt;/b&gt;&lt;ol&gt;&lt;li&gt;Export &lt;b&gt;LUT.xls&lt;/b&gt; to CSV with 4 columns: &lt;tt&gt;current, speed(rpm), id, iq&lt;/tt&gt;.&lt;/li&gt;&lt;li&gt;Click &lt;b&gt;Load 2-D Trajectory&lt;/b&gt; below and pick that CSV. It is downsampled to the on-board grid and plotted.&lt;/li&gt;&lt;li&gt;Set &lt;b&gt;foc_traj_vnorm&lt;/b&gt; to the bus voltage the table was made for, then &lt;b&gt;Write Motor Configuration&lt;/b&gt;.&lt;/li&gt;&lt;/ol&gt;Current/id are taken as PEAK amps; id is negated to VESC sign. Needs Motor Type = SynRM, MTPA = Trajectory 2-D + FW.</string>
+         <string>&lt;b&gt;2-D trajectory (MTPA + field weakening):&lt;/b&gt; export LUT.xls to CSV (cols: current, speed, id, iq) → &lt;b&gt;Load&lt;/b&gt; below → set &lt;b&gt;foc_traj_vnorm&lt;/b&gt; to the table's bus voltage → Write Motor Config. Current/id taken as PEAK; needs MTPA = Trajectory 2-D + FW.</string>
         </property>
        </widget>
       </item>
@@ -81,7 +81,7 @@
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>220</height>
+          <height>150</height>
          </size>
         </property>
        </widget>
