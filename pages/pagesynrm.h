@@ -46,8 +46,9 @@ private:
     Ui::PageSynrm *ui;
     VescInterface *mVesc;
 
-    bool computeMtpaTable(const QString &dir, QVector<int> &lutMilliAmp,
+    bool computeMtpaTable(const QString &dir, QVector<double> &lutAmps,
                           double &imax, QString &err);
+    void updateMtpaPlot();
 };
 
 #endif // PAGESYNRM_H

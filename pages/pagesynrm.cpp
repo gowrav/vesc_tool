@@ -19,6 +19,7 @@
 
 #include "pagesynrm.h"
 #include "ui_pagesynrm.h"
+#include "utility.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -37,6 +38,14 @@ PageSynrm::PageSynrm(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->loadMtpaButton, &QPushButton::clicked, this, &PageSynrm::loadMtpaFromCsv);
+
+    ui->mtpaPlot->addGraph();
+    ui->mtpaPlot->graph(0)->setName("id* (A)");
+    ui->mtpaPlot->graph(0)->setPen(QPen(Utility::getAppQColor("plot_graph1")));
+    ui->mtpaPlot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
+    ui->mtpaPlot->xAxis->setLabel("Current magnitude |I| (A)");
+    ui->mtpaPlot->yAxis->setLabel("MTPA d-current id* (A)");
+    ui->mtpaPlot->legend->setVisible(true);
 }
 
 PageSynrm::~PageSynrm()
@@ -62,6 +71,37 @@ void PageSynrm::reloadParams()
 {
     ui->paramTab->clearParams();
     ui->paramTab->addParamSubgroup(mVesc->mcConfig(), "synrm", "general");
+
+    // Redraw the LUT plot whenever the table or imax changes (e.g. after reading the motor config
+    // or loading a CSV). updateOnly so it does not spam.
+    connect(mVesc->mcConfig(), &ConfigParams::paramChangedDouble, this,
+            [this](QObject *, QString name, double) {
+        if (name.startsWith("foc_mtpa_lut")) {
+            updateMtpaPlot();
+        }
+    });
+    updateMtpaPlot();
+}
+
+// Read foc_mtpa_lut__N + foc_mtpa_lut_imax from the config and draw id* vs |I|.
+void PageSynrm::updateMtpaPlot()
+{
+    if (!mVesc) {
+        return;
+    }
+    ConfigParams *mc = mVesc->mcConfig();
+    double imax = mc->getParamDouble("foc_mtpa_lut_imax");
+    if (imax <= 0.0) {
+        imax = 1.0;
+    }
+    QVector<double> x(SYNRM_MTPA_LUT_SIZE), y(SYNRM_MTPA_LUT_SIZE);
+    for (int i = 0; i < SYNRM_MTPA_LUT_SIZE; i++) {
+        x[i] = i * imax / double(SYNRM_MTPA_LUT_SIZE - 1);
+        y[i] = mc->getParamDouble(QString("foc_mtpa_lut__%1").arg(i));
+    }
+    ui->mtpaPlot->graph(0)->setData(x, y);
+    ui->mtpaPlot->rescaleAxes();
+    ui->mtpaPlot->replot();
 }
 
 // --- helpers for the MotorXP MTPA computation (port of docs/synrm/tools/mtpa_from_maps.py) ---
@@ -105,8 +145,8 @@ static bool loadCsvGrid(const QString &path, QVector<QVector<double>> &out)
     return !out.isEmpty();
 }
 
-// Compute the id*(|I|) MTPA table (milliamps) from a MotorXP dq export folder.
-bool PageSynrm::computeMtpaTable(const QString &dir, QVector<int> &lutMilliAmp,
+// Compute the id*(|I|) MTPA table (amps) from a MotorXP dq export folder.
+bool PageSynrm::computeMtpaTable(const QString &dir, QVector<double> &lutAmps,
                                  double &imax, QString &err)
 {
     QVector<double> Id;
@@ -165,9 +205,10 @@ bool PageSynrm::computeMtpaTable(const QString &dir, QVector<int> &lutMilliAmp,
     }
     if (locI.isEmpty()) { err = "MTPA search produced no points."; return false; }
 
-    // Resample id*(|I|) onto a uniform axis 0..imax (imax = 70 A or the map range, whichever is smaller).
-    imax = qMin(70.0, axisMax);
-    lutMilliAmp.resize(SYNRM_MTPA_LUT_SIZE);
+    // Resample id*(|I|) onto a uniform axis 0..imax. Span the full characterized current range,
+    // capped at the controller's hardware limit (450 A). Stored as float amps (no scale/overflow).
+    imax = qMin(450.0, axisMax);
+    lutAmps.resize(SYNRM_MTPA_LUT_SIZE);
     for (int j = 0; j < SYNRM_MTPA_LUT_SIZE; j++) {
         double Ireq = j * imax / double(SYNRM_MTPA_LUT_SIZE - 1);
         double idStar;
@@ -181,7 +222,7 @@ bool PageSynrm::computeMtpaTable(const QString &dir, QVector<int> &lutMilliAmp,
             double t = (Ireq - locI[i1 - 1]) / (locI[i1] - locI[i1 - 1]);
             idStar = locId[i1 - 1] + t * (locId[i1] - locId[i1 - 1]);
         }
-        lutMilliAmp[j] = int(qRound(idStar * 100.0)); // centiamps (0.01 A) to fit int16
+        lutAmps[j] = idStar;
     }
     return true;
 }
@@ -199,8 +240,8 @@ void PageSynrm::loadMtpaFromCsv()
         return;
     }
 
-    QVector<int> lut;
-    double imax = 70.0;
+    QVector<double> lut;
+    double imax = 81.0;
     QString err;
     if (!computeMtpaTable(dir, lut, imax, err)) {
         QMessageBox::warning(this, tr("MTPA Load Failed"),
@@ -212,19 +253,18 @@ void PageSynrm::loadMtpaFromCsv()
     // Writes Motor Configuration to upload it.
     ConfigParams *mc = mVesc->mcConfig();
     for (int i = 0; i < lut.size() && i < SYNRM_MTPA_LUT_SIZE; i++) {
-        mc->updateParamInt(QString("foc_mtpa_lut__%1").arg(i), lut[i], this);
+        mc->updateParamDouble(QString("foc_mtpa_lut__%1").arg(i), lut[i], this);
     }
     mc->updateParamDouble("foc_mtpa_lut_imax", imax, this);
+    updateMtpaPlot();
 
-    int idxRated = int((54.0 / imax) * (SYNRM_MTPA_LUT_SIZE - 1));
-    idxRated = qBound(0, idxRated, lut.size() - 1);
-    double idAtRated = lut.isEmpty() ? 0.0 : lut[idxRated] / 100.0; // centiamps -> A
-    ui->mtpaInfoLabel->setText(tr("MTPA loaded: %1 pts, |I| 0..%2 A (id* ~ %3 A @ ~54 A)")
-            .arg(SYNRM_MTPA_LUT_SIZE).arg(imax, 0, 'f', 0).arg(idAtRated, 0, 'f', 1));
+    double idMax = lut.isEmpty() ? 0.0 : lut.last();
+    ui->mtpaInfoLabel->setText(tr("MTPA loaded: %1 pts, |I| 0..%2 A, id* 0..%3 A. Now Write Motor Configuration ▶")
+            .arg(SYNRM_MTPA_LUT_SIZE).arg(imax, 0, 'f', 0).arg(idMax, 0, 'f', 1));
 
     QMessageBox::information(this, tr("MTPA Table Loaded"),
             tr("Computed the MTPA id*(|I|) table from the MotorXP maps and wrote it into the "
-               "configuration (%1 points, |I| 0..%2 A).\n\n"
-               "Now click \"Write Motor Configuration\" to upload it to the motor.")
-            .arg(SYNRM_MTPA_LUT_SIZE).arg(imax, 0, 'f', 0));
+               "configuration:\n\n  • %1 points, current magnitude |I| = 0 .. %2 A\n  • id* range 0 .. %3 A\n\n"
+               "Now click \"Write Motor Configuration\" (bottom toolbar) to upload it to the motor.")
+            .arg(SYNRM_MTPA_LUT_SIZE).arg(imax, 0, 'f', 0).arg(idMax, 0, 'f', 1));
 }

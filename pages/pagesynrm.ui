@@ -18,38 +18,76 @@
     <widget class="ParamTable" name="paramTab"/>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="mtpaLayout">
-     <item>
-      <widget class="QPushButton" name="loadMtpaButton">
-       <property name="text">
-        <string>Load MTPA Table from MotorXP CSVs…</string>
-       </property>
-       <property name="toolTip">
-        <string>Select a MotorXP dq-parameter export folder (Id.csv, Iq.csv, Fluxlinkage_d.csv, Fluxlinkage_q.csv). The MTPA id*(|I|) locus is computed here and written into the SynRM MTPA lookup table. Then Write Motor Configuration to upload it.</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="mtpaInfoLabel">
-       <property name="text">
-        <string>MTPA LUT ready (edit/replace via the button)</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="mtpaSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
+    <widget class="QGroupBox" name="mtpaGroup">
+     <property name="title">
+      <string>MTPA Lookup Table (id* vs |I|, from MotorXP FEA)</string>
+     </property>
+     <layout class="QVBoxLayout" name="mtpaGroupLayout">
+      <item>
+       <widget class="QLabel" name="mtpaHelpLabel">
+        <property name="textFormat">
+         <enum>Qt::RichText</enum>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>&lt;b&gt;To prepare and write the LUT for a motor:&lt;/b&gt;&lt;ol&gt;&lt;li&gt;In MotorXP, export the &lt;b&gt;dq-model parameters&lt;/b&gt; — this produces a folder ending in &lt;i&gt;_DQmodel_parameters&lt;/i&gt; containing &lt;tt&gt;Id.csv&lt;/tt&gt;, &lt;tt&gt;Iq.csv&lt;/tt&gt;, &lt;tt&gt;Fluxlinkage_d.csv&lt;/tt&gt;, &lt;tt&gt;Fluxlinkage_q.csv&lt;/tt&gt; (and Ld/Lq/Ldq).&lt;/li&gt;&lt;li&gt;Click &lt;b&gt;Load MTPA Table&lt;/b&gt; below and select that folder. The optimal id*(|I|) MTPA curve is computed here.&lt;/li&gt;&lt;li&gt;Click &lt;b&gt;Write Motor Configuration&lt;/b&gt; (bottom toolbar) to upload it to the motor.&lt;/li&gt;&lt;/ol&gt;Stored as float amps (full ±450 A range). Requires Motor Type = SynRM and MTPA = IQ Target.</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="mtpaLayout">
+        <item>
+         <widget class="QPushButton" name="loadMtpaButton">
+          <property name="text">
+           <string>Load MTPA Table from MotorXP CSV folder…</string>
+          </property>
+          <property name="toolTip">
+           <string>Select a MotorXP _DQmodel_parameters folder (Id.csv, Iq.csv, Fluxlinkage_d.csv, Fluxlinkage_q.csv). The MTPA id*(|I|) locus is computed here and written into the SynRM MTPA lookup table. Then Write Motor Configuration to upload it.</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="mtpaInfoLabel">
+          <property name="text">
+           <string>Current LUT: default (9 kW motor) — load a folder to replace it.</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="mtpaSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QCustomPlot" name="mtpaPlot" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>220</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -58,6 +96,12 @@
    <class>ParamTable</class>
    <extends>QTableWidget</extends>
    <header>widgets/paramtable.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>widgets/qcustomplot.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

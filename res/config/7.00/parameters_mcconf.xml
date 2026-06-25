@@ -1594,531 +1594,597 @@ p, li { white-space: pre-wrap; }
         </foc_synrm_blend>
         <foc_mtpa_lut__0>
             <longName>MTPA LUT [0]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 0/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 0/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_0</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>0</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>0.0000</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__0>
         <foc_mtpa_lut__1>
             <longName>MTPA LUT [1]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 1/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 1/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_1</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-33</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-0.4556</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__1>
         <foc_mtpa_lut__2>
             <longName>MTPA LUT [2]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 2/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 2/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_2</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-116</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-1.4893</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__2>
         <foc_mtpa_lut__3>
             <longName>MTPA LUT [3]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 3/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 3/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_3</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-224</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-2.7829</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__3>
         <foc_mtpa_lut__4>
             <longName>MTPA LUT [4]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 4/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 4/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_4</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-342</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-4.1903</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__4>
         <foc_mtpa_lut__5>
             <longName>MTPA LUT [5]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 5/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 5/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_5</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-468</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-5.7289</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__5>
         <foc_mtpa_lut__6>
             <longName>MTPA LUT [6]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 6/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 6/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_6</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-602</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-7.3337</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__6>
         <foc_mtpa_lut__7>
             <longName>MTPA LUT [7]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 7/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 7/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_7</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-741</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-8.9788</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__7>
         <foc_mtpa_lut__8>
             <longName>MTPA LUT [8]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 8/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 8/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_8</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-884</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-10.7155</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__8>
         <foc_mtpa_lut__9>
             <longName>MTPA LUT [9]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 9/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 9/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_9</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-1032</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-12.5108</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__9>
         <foc_mtpa_lut__10>
             <longName>MTPA LUT [10]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 10/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 10/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_10</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-1186</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-14.4854</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__10>
         <foc_mtpa_lut__11>
             <longName>MTPA LUT [11]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 11/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 11/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_11</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-1344</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-16.4580</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__11>
         <foc_mtpa_lut__12>
             <longName>MTPA LUT [12]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 12/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 12/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_12</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-1525</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-18.3457</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__12>
         <foc_mtpa_lut__13>
             <longName>MTPA LUT [13]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 13/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 13/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_13</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-1689</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-20.3706</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__13>
         <foc_mtpa_lut__14>
             <longName>MTPA LUT [14]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 14/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 14/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_14</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-1857</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-22.1752</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__14>
         <foc_mtpa_lut__15>
             <longName>MTPA LUT [15]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 15/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 15/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_15</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-2031</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-23.9951</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__15>
         <foc_mtpa_lut__16>
             <longName>MTPA LUT [16]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 16/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 16/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_16</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-2184</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-25.8876</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__16>
         <foc_mtpa_lut__17>
             <longName>MTPA LUT [17]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 17/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 17/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_17</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-2344</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-28.7735</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__17>
         <foc_mtpa_lut__18>
             <longName>MTPA LUT [18]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 18/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 18/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_18</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-2500</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-31.6676</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__18>
         <foc_mtpa_lut__19>
             <longName>MTPA LUT [19]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 19/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 19/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_19</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-2683</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-34.0332</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__19>
         <foc_mtpa_lut__20>
             <longName>MTPA LUT [20]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 20/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 20/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_20</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-2986</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-36.5313</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__20>
         <foc_mtpa_lut__21>
             <longName>MTPA LUT [21]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 21/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 21/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_21</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-3201</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-39.0086</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__21>
         <foc_mtpa_lut__22>
             <longName>MTPA LUT [22]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 22/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 22/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_22</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-3406</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-41.3895</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__22>
         <foc_mtpa_lut__23>
             <longName>MTPA LUT [23]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 23/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 23/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_23</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-3622</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-43.7082</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__23>
         <foc_mtpa_lut__24>
             <longName>MTPA LUT [24]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 24/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 24/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_24</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-3838</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-45.9976</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__24>
         <foc_mtpa_lut__25>
             <longName>MTPA LUT [25]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 25/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 25/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_25</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-4046</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-48.2332</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__25>
         <foc_mtpa_lut__26>
             <longName>MTPA LUT [26]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 26/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 26/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_26</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-4248</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-50.6691</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__26>
         <foc_mtpa_lut__27>
             <longName>MTPA LUT [27]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 27/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 27/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_27</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-4449</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-53.9961</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__27>
         <foc_mtpa_lut__28>
             <longName>MTPA LUT [28]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 28/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 28/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_28</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-4643</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-56.7763</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__28>
         <foc_mtpa_lut__29>
             <longName>MTPA LUT [29]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 29/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 29/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_29</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-4837</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-59.3077</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__29>
         <foc_mtpa_lut__30>
             <longName>MTPA LUT [30]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 30/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 30/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_30</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-5048</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-61.8870</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__30>
         <foc_mtpa_lut__31>
             <longName>MTPA LUT [31]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 31/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 31/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_31</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-5333</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-64.1392</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__31>
         <foc_mtpa_lut__32>
             <longName>MTPA LUT [32]</longName>
-            <type>2</type>
+            <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM MTPA table: id* (milliamps) at |I| = 32/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
+            <description>SynRM MTPA table: id* (A) at |I| = 32/32 * imax. Generated from MotorXP FEA dq maps; written by the SynRM page MTPA loader. Not shown individually.</description>
             <cDefine>MCCONF_FOC_MTPA_LUT_32</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxInt>32767</maxInt>
-            <minInt>-32768</minInt>
+            <maxDouble>450</maxDouble>
+            <minDouble>-450</minDouble>
             <showDisplay>0</showDisplay>
-            <stepInt>1</stepInt>
-            <valInt>-5598</valInt>
-            <suffix> cA</suffix>
-            <vTx>4</vTx>
+            <stepDouble>0.1</stepDouble>
+            <valDouble>-65.4520</valDouble>
+            <vTxDoubleScale>1</vTxDoubleScale>
+            <suffix> A</suffix>
+            <vTx>9</vTx>
         </foc_mtpa_lut__32>
         <foc_mtpa_lut_imax>
             <longName>MTPA LUT Imax</longName>
