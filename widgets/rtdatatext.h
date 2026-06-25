@@ -29,6 +29,7 @@ class RtDataText : public QWidget
 public:
     explicit RtDataText(QWidget *parent = 0);
     void setValues(const MC_VALUES &values);
+    void setMotorPoles(int poles);
 
 
     QSize sizeHint() const;
@@ -42,6 +43,7 @@ protected:
 
 private:
     MC_VALUES mValues;
+    int mMotorPoles;
     int mBoxH;
     int mBoxW;
     int mTxtOfs;

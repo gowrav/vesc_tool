@@ -310,6 +310,9 @@ void PageRtData::timerSlot()
 void PageRtData::valuesReceived(MC_VALUES values, unsigned int mask)
 {
     (void)mask;
+    if (mVesc) {
+        ui->rtText->setMotorPoles(mVesc->mcConfig()->getParamInt("si_motor_poles"));
+    }
     ui->rtText->setValues(values);
 
     const int maxS = 500;

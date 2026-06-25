@@ -29,6 +29,7 @@ RtDataText::RtDataText(QWidget *parent) : QWidget(parent)
     mBoxH = 10;
     mBoxW = 10;
     mTxtOfs = 2;
+    mMotorPoles = 0;
 
     mValues.amp_hours = 0;
     mValues.amp_hours_charged = 0;
@@ -54,6 +55,11 @@ void RtDataText::setValues(const MC_VALUES &values)
     mValues = values;
     mValues.fault_str.remove(0, 11);
     update();
+}
+
+void RtDataText::setMotorPoles(int poles)
+{
+    mMotorPoles = poles;
 }
 
 QSize RtDataText::sizeHint() const
@@ -105,14 +111,15 @@ void RtDataText::paintEvent(QPaintEvent *event)
     const double vidw = event->rect().width();
 
     // Left info box
-    str = QString::asprintf("Power   : %.1f W\n"
-                "Duty    : %.2f %%\n"
-                "ERPM    : %.1f\n"
-                "I Batt  : %.2f A\n"
-                "I Motor : %.2f A\n",
+    const double polePairs = mMotorPoles >= 2 ? (mMotorPoles / 2.0) : 1.0;
+    str = QString::asprintf("Power     : %.1f W\n"
+                "Duty      : %.2f %%\n"
+                "ERPM / RPM: %.0f / %.0f\n"
+                "I Batt    : %.2f A\n"
+                "I Motor   : %.2f A\n",
                 mValues.v_in * mValues.current_in,
                 mValues.duty_now * 100.0,
-                mValues.rpm,
+                mValues.rpm, mValues.rpm / polePairs,
                 mValues.current_in,
                 mValues.current_motor);
 
