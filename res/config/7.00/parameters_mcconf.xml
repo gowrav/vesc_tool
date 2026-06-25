@@ -6553,6 +6553,8 @@ p, li { white-space: pre-wrap; }
                     <param>foc_synrm_src_2</param>
                     <param>::sep::Trim — commutation angle offset (centers fwd/rev breakaway)</param>
                     <param>foc_synrm_phase_offset</param>
+                    <param>::sep::Encoder→Hall learning (Sensor Mode = Encoder): learn the hall table from the encoder up to this ERPM, then hand off to halls. 0 = pure encoder, no hall learning.</param>
+                    <param>foc_synrm_hybrid_erpm</param>
                 </subgroupParams>
             </subgroup>
         </group>
