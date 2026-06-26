@@ -111,7 +111,7 @@ private:
 
     // base-speed (section 4) controls
     QComboBox *mBsType;
-    QDoubleSpinBox *mBsVbus, *mBsDuty, *mBsFlux;
+    QDoubleSpinBox *mBsVbus, *mBsDuty, *mBsFlux, *mBsCurrent;
     QCheckBox *mBsOverride;
     QLabel *mBsResult;
     double mBaseSpeedRpm, mTrajLiveVin;
