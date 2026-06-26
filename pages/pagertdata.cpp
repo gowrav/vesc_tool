@@ -545,6 +545,9 @@ void PageRtData::setupTrajTab()
     lay->addWidget(mTrajMap, 1, 0);
     lay->addWidget(bsBox, 1, 1);
     ui->tabWidget->addTab(tab, "Trajectory");
+
+    // Refresh from the live config whenever the user switches to this tab.
+    connect(ui->tabWidget, &QTabWidget::currentChanged, this, [this](int){ updateTrajTable(); });
 }
 
 // Base speed: where the MTPA voltage demand hits the bus limit (the FW knee).
@@ -556,7 +559,15 @@ void PageRtData::computeBaseSpeed()
         return;
     }
     bool ov = mBsOverride->isChecked();
-    double pp = mTrajPolePairs > 0.0 ? mTrajPolePairs : 1.0;
+    ConfigParams *mc = mVesc ? mVesc->mcConfig() : nullptr;
+
+    // Pole pairs, Ld/Lq and saliency always come live from the config (not overridable here).
+    int poles = mc ? mc->getParamInt("si_motor_poles") : 0;
+    double pp = poles >= 2 ? poles / 2.0 : (mTrajPolePairs > 0.0 ? mTrajPolePairs : 1.0);
+    double ldlqdiff = mc ? mc->getParamDouble("foc_motor_ld_lq_diff") : mTrajLdLqDiff;
+    double Lavg = mc ? mc->getParamDouble("foc_motor_l") : 0.0;
+    double Ld = Lavg - ldlqdiff / 2.0;
+    double Lq = Lavg + ldlqdiff / 2.0;
 
     double Vbus, duty, lambda, Is;
     int type;
@@ -567,22 +578,18 @@ void PageRtData::computeBaseSpeed()
         Is = mBsCurrent->value();
         type = mBsType->currentIndex();
     } else {
-        // Inputs from FOC params / Motor Settings + live bus; mirror them into the locked fields.
+        // Inputs read LIVE from FOC params / Motor Settings + live bus; mirror into the locked fields.
         Vbus = mTrajLiveVin > 1.0 ? mTrajLiveVin : mBsVbus->value();
-        duty = mVesc ? mVesc->mcConfig()->getParamDouble("l_max_duty") : 0.95;
-        lambda = mTrajLambda;
-        Is = mTrajImotMax > 1.0 ? mTrajImotMax : (mTrajImax > 1.0 ? mTrajImax : 100.0);
-        type = (mVesc && mVesc->mcConfig()->getParamEnum("motor_type") == 3) ? 1 : 0;
+        duty = mc ? mc->getParamDouble("l_max_duty") : 0.95;
+        lambda = mc ? mc->getParamDouble("foc_motor_flux_linkage") : mTrajLambda;
+        Is = mc ? mc->getParamDouble("l_current_max") : (mTrajImax > 1.0 ? mTrajImax : 100.0);
+        type = (mc && mc->getParamEnum("motor_type") == 3) ? 1 : 0;
         mBsVbus->blockSignals(true); mBsVbus->setValue(Vbus); mBsVbus->blockSignals(false);
         mBsDuty->blockSignals(true); mBsDuty->setValue(duty * 100.0); mBsDuty->blockSignals(false);
         mBsFlux->blockSignals(true); mBsFlux->setValue(lambda * 1000.0); mBsFlux->blockSignals(false);
         mBsCurrent->blockSignals(true); mBsCurrent->setValue(Is); mBsCurrent->blockSignals(false);
         mBsType->blockSignals(true); mBsType->setCurrentIndex(type); mBsType->blockSignals(false);
     }
-
-    double Lavg = mVesc ? mVesc->mcConfig()->getParamDouble("foc_motor_l") : 0.0;
-    double Ld = Lavg - mTrajLdLqDiff / 2.0;
-    double Lq = Lavg + mTrajLdLqDiff / 2.0;
 
     double Vmax = (1.0 / sqrt(3.0)) * duty * Vbus;
     double psi, idS = 0.0, iqS = 0.0;
@@ -601,7 +608,7 @@ void PageRtData::computeBaseSpeed()
     // Peak torque at MTPA (speed 0) for current Iₛ. PMSM: id=0, iq=Iₛ.
     double id0 = (type == 0) ? 0.0 : idS;
     double iq0 = (type == 0) ? Is : iqS;
-    double Tmax = 1.5 * pp * iq0 * (lambda - mTrajLdLqDiff * id0);
+    double Tmax = 1.5 * pp * iq0 * (lambda - ldlqdiff * id0);
 
     // Envelope: constant torque up to base speed, then constant power (T = Tmax·base/speed).
     // Knee sits exactly on the base-speed line.
