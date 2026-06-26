@@ -589,6 +589,15 @@ void PageRtData::computeBaseSpeed()
     }
     mBsResult->setText(res);
 
+    // Make sure the speed axis covers the table, the base speed AND the live point,
+    // so the base-speed line never falls off the right edge.
+    double xmax = qMax(qMax(mTrajNmax, rpm), mTrajLiveRpm) * 1.06;
+    if (xmax < 1.0) {
+        xmax = 1000.0;
+    }
+    mTrajTn->xAxis->setRange(0, xmax);
+    mTrajMap->xAxis->setRange(0, xmax);
+
     // vertical base-speed line on T-N and map
     double tnTop = mTrajTn->yAxis->range().upper;
     mTrajTn->graph(2)->setData(QVector<double>() << rpm << rpm,
@@ -718,6 +727,17 @@ void PageRtData::updateTrajLive()
     // current-speed map
     mTrajMap->graph(0)->setData(QVector<double>() << mTrajLiveRpm,
                                 QVector<double>() << mTrajLiveImag);
+
+    // grow the speed axis if the live point runs past the right edge
+    if (mTrajLiveRpm * 1.06 > mTrajTn->xAxis->range().upper) {
+        double xmax = mTrajLiveRpm * 1.06;
+        mTrajTn->xAxis->setRange(0, xmax);
+        mTrajMap->xAxis->setRange(0, xmax);
+    }
+    // grow the torque axis if the live torque exceeds it
+    if (fabs(mTrajLiveTorque) > mTrajTn->yAxis->range().upper) {
+        mTrajTn->yAxis->setRange(0, fabs(mTrajLiveTorque) * 1.1);
+    }
     mTrajMap->replotWhenVisible();
 
     // when not overriding, keep base speed tracking the live bus voltage
