@@ -31,6 +31,10 @@ class PageRtData;
 
 class QCustomPlot;
 class QCPColorMap;
+class QDoubleSpinBox;
+class QComboBox;
+class QCheckBox;
+class QLabel;
 
 class PageRtData : public QWidget
 {
@@ -105,10 +109,19 @@ private:
     // live operating point
     double mTrajLiveId, mTrajLiveIq, mTrajLiveRpm, mTrajLiveTorque, mTrajLiveImag;
 
+    // base-speed (section 4) controls
+    QComboBox *mBsType;
+    QDoubleSpinBox *mBsVbus, *mBsDuty, *mBsFlux, *mBsManual;
+    QCheckBox *mBsAuto;
+    QLabel *mBsResult;
+    double mBaseSpeedRpm;
+    bool mBsVbusInit;
+
     void setupTrajTab();
     void updateTrajTable();                       // rebuild static curves + color map from config
     double trajLookupId(double imag, double rpm); // bilinear over foc_traj_lut (mirrors firmware)
     void updateTrajLive();                        // push the live point to the 3 plots
+    void computeBaseSpeed();                       // section 4: auto/manual base speed + plot lines
 
     void appendDoubleAndTrunc(QVector<double> *vec, double num, int maxSize);
     void updateZoom();
