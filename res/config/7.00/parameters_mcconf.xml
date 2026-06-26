@@ -1512,19 +1512,17 @@ p, li { white-space: pre-wrap; }
             <enumNames>Encoder</enumNames>
             <enumNames>Observer</enumNames>
         </foc_synrm_src_0>
-        <foc_synrm_src_1>
-            <longName>SynRM Source — Mid Band</longName>
+        <foc_synrm_cc_mode>
+            <longName>SynRM Current-Loop Strategy</longName>
             <type>4</type>
             <transmittable>1</transmittable>
-            <description>SynRM v2 position pipeline (motor type SynRM only). Position source between the 0→1 and 1→2 transition ERPMs.</description>
-            <cDefine>MCCONF_FOC_SYNRM_SRC_1</cDefine>
-            <valInt>2</valInt>
-            <enumNames>None</enumNames>
-            <enumNames>HFI</enumNames>
-            <enumNames>Hall</enumNames>
-            <enumNames>Encoder</enumNames>
-            <enumNames>Observer</enumNames>
-        </foc_synrm_src_1>
+            <description>Current-loop saturation / field-weakening strategy (motor type SynRM only). Stock = VESC d-priority voltage clamp. Anti-windup = synmoc angle-preserving saturation + back-calculation anti-windup (validated). VCT = anti-windup plus voltage-constraint-tracking field weakening (drives id negative as the stator voltage hits the limit; uses VCT kv / gain below).</description>
+            <cDefine>MCCONF_FOC_SYNRM_CC_MODE</cDefine>
+            <valInt>1</valInt>
+            <enumNames>Stock (d-priority)</enumNames>
+            <enumNames>Anti-windup (back-calc)</enumNames>
+            <enumNames>VCT (field weakening)</enumNames>
+        </foc_synrm_cc_mode>
         <foc_synrm_src_2>
             <longName>SynRM Source — High Band</longName>
             <type>4</type>
@@ -1538,42 +1536,42 @@ p, li { white-space: pre-wrap; }
             <enumNames>Encoder</enumNames>
             <enumNames>Observer</enumNames>
         </foc_synrm_src_2>
-        <foc_synrm_erpm_01>
-            <longName>SynRM Transition ERPM 0→1</longName>
+        <foc_synrm_vct_kv>
+            <longName>VCT — Voltage Threshold (kv)</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM v2 pipeline: ERPM at which the position source switches from the low band to the mid band (blended over ±blend half-width).</description>
-            <cDefine>MCCONF_FOC_SYNRM_ERPM_01</cDefine>
-            <editorDecimalsDouble>0</editorDecimalsDouble>
+            <description>VCT field weakening (SynRM, Current-Loop Strategy = VCT). Field weakening starts when the stator voltage magnitude rises above kv · Vmax. Typical 0.90–0.95.</description>
+            <cDefine>MCCONF_FOC_SYNRM_VCT_KV</cDefine>
+            <editorDecimalsDouble>3</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxDouble>100000</maxDouble>
-            <minDouble>0</minDouble>
+            <maxDouble>1.0</maxDouble>
+            <minDouble>0.5</minDouble>
             <showDisplay>0</showDisplay>
-            <stepDouble>100</stepDouble>
-            <valDouble>2000</valDouble>
+            <stepDouble>0.01</stepDouble>
+            <valDouble>0.92</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> ERPM</suffix>
+            <suffix></suffix>
             <vTx>9</vTx>
-        </foc_synrm_erpm_01>
-        <foc_synrm_erpm_12>
-            <longName>SynRM Transition ERPM 1→2</longName>
+        </foc_synrm_vct_kv>
+        <foc_synrm_vct_gain>
+            <longName>VCT — Field-Weakening Gain</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM v2 pipeline: ERPM at which the position source switches from the mid band to the high band (blended over ±blend half-width).</description>
-            <cDefine>MCCONF_FOC_SYNRM_ERPM_12</cDefine>
-            <editorDecimalsDouble>0</editorDecimalsDouble>
+            <description>VCT field weakening (SynRM, Current-Loop Strategy = VCT). Accumulation gain for the field-weakening id (amps per volt-second of voltage overshoot). Higher = faster/stronger weakening; too high oscillates.</description>
+            <cDefine>MCCONF_FOC_SYNRM_VCT_GAIN</cDefine>
+            <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
             <editAsPercentage>0</editAsPercentage>
-            <maxDouble>100000</maxDouble>
+            <maxDouble>100</maxDouble>
             <minDouble>0</minDouble>
             <showDisplay>0</showDisplay>
-            <stepDouble>100</stepDouble>
-            <valDouble>20000</valDouble>
+            <stepDouble>0.5</stepDouble>
+            <valDouble>2.0</valDouble>
             <vTxDoubleScale>1</vTxDoubleScale>
-            <suffix> ERPM</suffix>
+            <suffix></suffix>
             <vTx>9</vTx>
-        </foc_synrm_erpm_12>
+        </foc_synrm_vct_gain>
         <foc_synrm_blend>
             <longName>SynRM Transition Blend</longName>
             <type>1</type>
@@ -6133,10 +6131,10 @@ p, li { white-space: pre-wrap; }
         <ser>foc_synrm_phase_offset</ser>
         <ser>foc_synrm_hybrid_erpm</ser>
         <ser>foc_synrm_src_0</ser>
-        <ser>foc_synrm_src_1</ser>
+        <ser>foc_synrm_cc_mode</ser>
         <ser>foc_synrm_src_2</ser>
-        <ser>foc_synrm_erpm_01</ser>
-        <ser>foc_synrm_erpm_12</ser>
+        <ser>foc_synrm_vct_kv</ser>
+        <ser>foc_synrm_vct_gain</ser>
         <ser>foc_synrm_blend</ser>
         <ser>foc_traj_lut__0</ser>
         <ser>foc_traj_lut__1</ser>
@@ -6546,6 +6544,10 @@ p, li { white-space: pre-wrap; }
                     <param>foc_synrm_phase_offset</param>
                     <param>::sep::Encoder→Hall learning (Sensor Mode = Encoder): learn the hall table from the encoder up to this ERPM, then hand to halls. 0 = pure encoder.</param>
                     <param>foc_synrm_hybrid_erpm</param>
+                    <param>::sep::Current-loop strategy: Stock = VESC d-priority. Anti-windup = synmoc back-calc (validated). VCT = anti-windup + voltage-constraint field weakening.</param>
+                    <param>foc_synrm_cc_mode</param>
+                    <param>foc_synrm_vct_kv</param>
+                    <param>foc_synrm_vct_gain</param>
                 </subgroupParams>
             </subgroup>
         </group>
