@@ -214,14 +214,16 @@ void PageRtData::setVesc(VescInterface *vesc)
                 this, SLOT(valuesReceived(MC_VALUES,uint)));
         connect(mVesc->commands(), SIGNAL(rotorPosReceived(double)),
                 this, SLOT(rotorPosReceived(double)));
-        // Rebuild the trajectory map whenever the table / motor params change (incl. config read).
+        // Rebuild on individual param edits...
         connect(mVesc->mcConfig(), &ConfigParams::paramChangedDouble, this,
                 [this](QObject *, QString name, double) {
             if (name.startsWith("foc_traj") || name.startsWith("foc_motor") ||
-                    name == "si_motor_poles" || name == "l_current_max") {
+                    name == "si_motor_poles" || name == "l_current_max" || name == "l_max_duty") {
                 updateTrajTable();
             }
         });
+        // ...and on a bulk config read (Read Motor Configuration emits updated()).
+        connect(mVesc->mcConfig(), &ConfigParams::updated, this, [this]() { updateTrajTable(); });
         updateTrajTable();
     }
 }
@@ -634,11 +636,12 @@ void PageRtData::computeBaseSpeed()
             .arg(rpm, 0, 'f', 0).arg(rpm * pp, 0, 'f', 0)
             .arg(Vmax, 0, 'f', 1).arg(psi * 1000.0, 0, 'f', 2).arg(Tmax, 0, 'f', 1);
     if (type == 1) {
-        res += tr("<br>MTPA @ %1 A:&nbsp; id* = %2,&nbsp; iq* = %3 A")
+        res += tr("<br>MTPA @ %1 A:&nbsp; id* = %2,&nbsp; iq* = %3 A"
+                  "<br><i>PMa-SynRM: |ψ| & base speed depend on Iₛ (the L<sub>q</sub>·iq term)</i>")
                 .arg(Is, 0, 'f', 0).arg(idS, 0, 'f', 1).arg(iqS, 0, 'f', 1);
     }
     if (!ov && mTrajLiveVin <= 1.0) {
-        res += tr("<br><i>(not connected — using defaults)</i>");
+        res += tr("<br><i>(bus = %1 V assumed until RT data streams)</i>").arg(Vbus, 0, 'f', 0);
     }
     mBsResult->setText(res);
 
