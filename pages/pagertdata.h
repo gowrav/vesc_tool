@@ -29,6 +29,9 @@ namespace Ui {
 class PageRtData;
 }
 
+class QCustomPlot;
+class QCPColorMap;
+
 class PageRtData : public QWidget
 {
     Q_OBJECT
@@ -86,6 +89,26 @@ private:
 
     bool mUpdateValPlot;
     bool mUpdatePosPlot;
+
+    // --- SynRM trajectory "operating point" tab ---
+    QCustomPlot *mTrajDq;       // dq current plane (id vs iq)
+    QCustomPlot *mTrajTn;       // torque vs speed
+    QCustomPlot *mTrajMap;      // |I| vs speed, id* color map
+    QCPColorMap *mTrajColorMap;
+    QVector<double> mTrajIdTrail, mTrajIqTrail;
+    bool mUpdateTrajPlot;
+    // cached config (refreshed in updateTrajTable)
+    QVector<double> mTrajLut;
+    double mTrajImax, mTrajNmax, mTrajVnorm, mTrajImotMax;
+    double mTrajLambda, mTrajLdLqDiff, mTrajPolePairs;
+    bool mTrajHasTable;
+    // live operating point
+    double mTrajLiveId, mTrajLiveIq, mTrajLiveRpm, mTrajLiveTorque, mTrajLiveImag;
+
+    void setupTrajTab();
+    void updateTrajTable();                       // rebuild static curves + color map from config
+    double trajLookupId(double imag, double rpm); // bilinear over foc_traj_lut (mirrors firmware)
+    void updateTrajLive();                        // push the live point to the 3 plots
 
     void appendDoubleAndTrunc(QVector<double> *vec, double num, int maxSize);
     void updateZoom();

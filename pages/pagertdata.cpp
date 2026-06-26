@@ -21,6 +21,8 @@
 #include "ui_pagertdata.h"
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QHBoxLayout>
+#include <cmath>
 #include "utility.h"
 
 #include <QXmlStreamWriter>
@@ -171,6 +173,14 @@ PageRtData::PageRtData(QWidget *parent) :
     ui->posPlot->xAxis->setLabel("Sample");
     ui->posPlot->yAxis->setLabel("Degrees");
 
+    mTrajColorMap = nullptr;
+    mUpdateTrajPlot = false;
+    mTrajHasTable = false;
+    mTrajImax = mTrajNmax = mTrajVnorm = mTrajImotMax = 0.0;
+    mTrajLambda = mTrajLdLqDiff = 0.0; mTrajPolePairs = 1.0;
+    mTrajLiveId = mTrajLiveIq = mTrajLiveRpm = mTrajLiveTorque = mTrajLiveImag = 0.0;
+    setupTrajTab();
+
     connect(mTimer, SIGNAL(timeout()),
             this, SLOT(timerSlot()));
 }
@@ -194,6 +204,15 @@ void PageRtData::setVesc(VescInterface *vesc)
                 this, SLOT(valuesReceived(MC_VALUES,uint)));
         connect(mVesc->commands(), SIGNAL(rotorPosReceived(double)),
                 this, SLOT(rotorPosReceived(double)));
+        // Rebuild the trajectory map whenever the table / motor params change (incl. config read).
+        connect(mVesc->mcConfig(), &ConfigParams::paramChangedDouble, this,
+                [this](QObject *, QString name, double) {
+            if (name.startsWith("foc_traj") || name.startsWith("foc_motor") ||
+                    name == "si_motor_poles" || name == "l_current_max") {
+                updateTrajTable();
+            }
+        });
+        updateTrajTable();
     }
 }
 
@@ -305,6 +324,11 @@ void PageRtData::timerSlot()
 
         mUpdatePosPlot = false;
     }
+
+    if (mUpdateTrajPlot) {
+        updateTrajLive();
+        mUpdateTrajPlot = false;
+    }
 }
 
 void PageRtData::valuesReceived(MC_VALUES values, unsigned int mask)
@@ -345,12 +369,223 @@ void PageRtData::valuesReceived(MC_VALUES values, unsigned int mask)
     mLastUpdateTime = tNow;
 
     mUpdateValPlot = true;
+
+    // --- live operating point for the trajectory tab ---
+    double pp = mTrajPolePairs > 0.0 ? mTrajPolePairs : 1.0;
+    mTrajLiveId = values.id;
+    mTrajLiveIq = values.iq;
+    mTrajLiveImag = sqrt(values.id * values.id + values.iq * values.iq);
+    // electrical -> mechanical rpm, then Vnorm-normalise so the point lines up with the
+    // table the same way the firmware does its lookup (rpm *= vnorm / vbus).
+    double rpm = fabs(values.rpm) / pp;
+    if (mTrajVnorm > 0.0 && values.v_in > 1.0) {
+        rpm *= mTrajVnorm / values.v_in;
+    }
+    mTrajLiveRpm = rpm;
+    // T = 1.5 * p * iq * (lambda - ld_lq_diff * id)   (id is VESC-negative; reluctance term adds)
+    mTrajLiveTorque = 1.5 * pp * values.iq * (mTrajLambda - mTrajLdLqDiff * values.id);
+
+    appendDoubleAndTrunc(&mTrajIdTrail, values.id, 300);
+    appendDoubleAndTrunc(&mTrajIqTrail, values.iq, 300);
+    mUpdateTrajPlot = true;
 }
 
 void PageRtData::rotorPosReceived(double pos)
 {
     appendDoubleAndTrunc(&mPositionVec, pos, 1500);
     mUpdatePosPlot = true;
+}
+
+// Keep in sync with bldc datatypes.h MTPA_TRAJ_NI / MTPA_TRAJ_NS.
+#define RT_TRAJ_NI 8
+#define RT_TRAJ_NS 7
+
+void PageRtData::setupTrajTab()
+{
+    mTrajDq = new QCustomPlot();
+    mTrajTn = new QCustomPlot();
+    mTrajMap = new QCustomPlot();
+    QCustomPlot *plots[3] = {mTrajDq, mTrajTn, mTrajMap};
+    for (int i = 0; i < 3; i++) {
+        Utility::setPlotColors(plots[i]);
+        plots[i]->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+        plots[i]->legend->setVisible(true);
+        plots[i]->legend->setBrush(QBrush(QColor(0, 0, 0, 100)));
+    }
+
+    QColor cLive = Utility::getAppQColor("plot_graph2");
+    QColor cCurve = Utility::getAppQColor("plot_graph1");
+    QColor cAux = Utility::getAppQColor("plot_graph3");
+
+    // --- dq current plane: circle (0), locus (1), trail (2), live point (3) ---
+    mTrajDq->addGraph();
+    mTrajDq->graph(0)->setPen(QPen(cAux, 1, Qt::DashLine));
+    mTrajDq->graph(0)->setName("Current limit");
+    mTrajDq->addGraph();
+    mTrajDq->graph(1)->setPen(QPen(cCurve, 2));
+    mTrajDq->graph(1)->setName("Table locus @ speed");
+    mTrajDq->addGraph();
+    mTrajDq->graph(2)->setPen(QPen(QColor(cLive.red(), cLive.green(), cLive.blue(), 110), 1));
+    mTrajDq->graph(2)->setName("Recent");
+    mTrajDq->addGraph();
+    mTrajDq->graph(3)->setLineStyle(QCPGraph::lsNone);
+    mTrajDq->graph(3)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, cLive, 12));
+    mTrajDq->graph(3)->setName("Now");
+    mTrajDq->xAxis->setLabel("id (A)   ← field weakening");
+    mTrajDq->yAxis->setLabel("iq (A)  (torque)");
+
+    // --- torque vs speed: envelope (0), live point (1) ---
+    mTrajTn->addGraph();
+    mTrajTn->graph(0)->setPen(QPen(cCurve, 2));
+    mTrajTn->graph(0)->setName("Max-torque envelope");
+    mTrajTn->addGraph();
+    mTrajTn->graph(1)->setLineStyle(QCPGraph::lsNone);
+    mTrajTn->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, cLive, 12));
+    mTrajTn->graph(1)->setName("Now");
+    mTrajTn->xAxis->setLabel("speed (rpm, mech)");
+    mTrajTn->yAxis->setLabel("torque (Nm)");
+
+    // --- |I| vs speed, id* color map + live point (graph 0) ---
+    mTrajColorMap = new QCPColorMap(mTrajMap->xAxis, mTrajMap->yAxis);
+    QCPColorScale *scale = new QCPColorScale(mTrajMap);
+    mTrajMap->plotLayout()->addElement(0, 1, scale);
+    scale->setType(QCPAxis::atRight);
+    mTrajColorMap->setColorScale(scale);
+    mTrajColorMap->setGradient(QCPColorGradient::gpJet);
+    mTrajColorMap->setInterpolate(true);
+    scale->axis()->setLabel("id* (A)");
+    mTrajMap->addGraph();
+    mTrajMap->graph(0)->setLineStyle(QCPGraph::lsNone);
+    mTrajMap->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCrossCircle, Qt::white, 13));
+    mTrajMap->graph(0)->setName("Now");
+    mTrajMap->xAxis->setLabel("speed (rpm, mech)");
+    mTrajMap->yAxis->setLabel("|I| (A)");
+
+    QWidget *tab = new QWidget();
+    QHBoxLayout *lay = new QHBoxLayout(tab);
+    lay->setContentsMargins(2, 2, 2, 2);
+    lay->addWidget(mTrajDq);
+    lay->addWidget(mTrajTn);
+    lay->addWidget(mTrajMap);
+    ui->tabWidget->addTab(tab, "Trajectory");
+}
+
+// Bilinear lookup of id* (VESC-negative amps) over the loaded 2-D table; mirrors the firmware.
+double PageRtData::trajLookupId(double imag, double rpm)
+{
+    const int NI = RT_TRAJ_NI, NS = RT_TRAJ_NS;
+    if (mTrajLut.size() < NI * NS || mTrajImax <= 0.0 || mTrajNmax <= 0.0) {
+        return 0.0;
+    }
+    double fi = imag / mTrajImax * (NI - 1);
+    double fs = rpm / mTrajNmax * (NS - 1);
+    fi = qBound(0.0, fi, double(NI - 1));
+    fs = qBound(0.0, fs, double(NS - 1));
+    int i0 = int(fi), s0 = int(fs);
+    int i1 = qMin(i0 + 1, NI - 1), s1 = qMin(s0 + 1, NS - 1);
+    double ti = fi - i0, ts = fs - s0;
+    double a = mTrajLut[i0 * NS + s0] * (1 - ts) + mTrajLut[i0 * NS + s1] * ts;
+    double b = mTrajLut[i1 * NS + s0] * (1 - ts) + mTrajLut[i1 * NS + s1] * ts;
+    return a * (1 - ti) + b * ti;
+}
+
+void PageRtData::updateTrajTable()
+{
+    if (!mVesc) {
+        return;
+    }
+    const int NI = RT_TRAJ_NI, NS = RT_TRAJ_NS;
+    ConfigParams *mc = mVesc->mcConfig();
+    mTrajImax = mc->getParamDouble("foc_traj_imax");
+    mTrajNmax = mc->getParamDouble("foc_traj_nmax");
+    mTrajVnorm = mc->getParamDouble("foc_traj_vnorm");
+    mTrajLambda = mc->getParamDouble("foc_motor_flux_linkage");
+    mTrajLdLqDiff = mc->getParamDouble("foc_motor_ld_lq_diff");
+    int poles = mc->getParamInt("si_motor_poles");
+    mTrajPolePairs = poles >= 2 ? poles / 2.0 : 1.0;
+    mTrajImotMax = mc->getParamDouble("l_current_max");
+    mTrajLut.resize(NI * NS);
+    for (int i = 0; i < NI * NS; i++) {
+        mTrajLut[i] = mc->getParamDouble(QString("foc_traj_lut__%1").arg(i));
+    }
+    mTrajHasTable = (mTrajImax > 0.0 && mTrajNmax > 0.0);
+    if (!mTrajHasTable) {
+        return;
+    }
+
+    // dq: current-limit circle (radius = motor current max, fall back to table imax)
+    double R = mTrajImotMax > 1.0 ? mTrajImotMax : mTrajImax;
+    QVector<double> cx, cy;
+    for (int k = 0; k <= 120; k++) {
+        double a = 2.0 * M_PI * k / 120.0;
+        cx.append(R * cos(a));
+        cy.append(R * sin(a));
+    }
+    mTrajDq->graph(0)->setData(cx, cy);
+    mTrajDq->xAxis->setRange(-R * 1.1, R * 1.1);
+    mTrajDq->yAxis->setRange(-R * 1.1, R * 1.1);
+
+    // T-N envelope at max current
+    QVector<double> ex, ey;
+    const int NSP = 60;
+    for (int s = 0; s <= NSP; s++) {
+        double rpm = mTrajNmax * s / double(NSP);
+        double idStar = trajLookupId(mTrajImax, rpm);
+        double iqStar = sqrt(qMax(0.0, mTrajImax * mTrajImax - idStar * idStar));
+        ex.append(rpm);
+        ey.append(1.5 * mTrajPolePairs * iqStar * (mTrajLambda - mTrajLdLqDiff * idStar));
+    }
+    mTrajTn->graph(0)->setData(ex, ey);
+    mTrajTn->rescaleAxes();
+
+    // map: id* color over (speed, |I|)
+    mTrajColorMap->data()->setSize(NS, NI);
+    mTrajColorMap->data()->setRange(QCPRange(0, mTrajNmax), QCPRange(0, mTrajImax));
+    for (int i = 0; i < NI; i++) {
+        for (int s = 0; s < NS; s++) {
+            mTrajColorMap->data()->setCell(s, i, mTrajLut[i * NS + s]);
+        }
+    }
+    mTrajColorMap->rescaleDataRange(true);
+    mTrajMap->xAxis->setRange(0, mTrajNmax);
+    mTrajMap->yAxis->setRange(0, mTrajImax);
+
+    mTrajDq->replotWhenVisible();
+    mTrajTn->replotWhenVisible();
+    mTrajMap->replotWhenVisible();
+}
+
+void PageRtData::updateTrajLive()
+{
+    QVector<double> px, py;
+
+    // dq plane: live point + trail + table locus at the current speed
+    px = QVector<double>() << mTrajLiveId;
+    py = QVector<double>() << mTrajLiveIq;
+    mTrajDq->graph(3)->setData(px, py);
+    mTrajDq->graph(2)->setData(mTrajIdTrail, mTrajIqTrail);
+    if (mTrajHasTable) {
+        QVector<double> lx, ly;
+        for (int k = 0; k <= 40; k++) {
+            double I = mTrajImax * k / 40.0;
+            double idS = trajLookupId(I, mTrajLiveRpm);
+            double iqS = sqrt(qMax(0.0, I * I - idS * idS));
+            lx.append(idS);
+            ly.append(iqS);
+        }
+        mTrajDq->graph(1)->setData(lx, ly);
+    }
+    mTrajDq->replotWhenVisible();
+
+    // torque-speed
+    mTrajTn->graph(1)->setData(QVector<double>() << mTrajLiveRpm,
+                               QVector<double>() << mTrajLiveTorque);
+    mTrajTn->replotWhenVisible();
+
+    // current-speed map
+    mTrajMap->graph(0)->setData(QVector<double>() << mTrajLiveRpm,
+                                QVector<double>() << mTrajLiveImag);
+    mTrajMap->replotWhenVisible();
 }
 
 void PageRtData::appendDoubleAndTrunc(QVector<double> *vec, double num, int maxSize)
