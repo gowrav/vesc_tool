@@ -29,6 +29,7 @@
 #include <QCheckBox>
 #include <QDoubleSpinBox>
 #include <QLabel>
+#include <QFrame>
 #include <cmath>
 #include "utility.h"
 
@@ -187,7 +188,7 @@ PageRtData::PageRtData(QWidget *parent) :
     mTrajLambda = mTrajLdLqDiff = 0.0; mTrajPolePairs = 1.0;
     mTrajLiveId = mTrajLiveIq = mTrajLiveRpm = mTrajLiveTorque = mTrajLiveImag = 0.0;
     mBaseSpeedRpm = 0.0;
-    mBsVbusInit = false;
+    mTrajLiveVin = 0.0;
     setupTrajTab();
 
     connect(mTimer, SIGNAL(timeout()),
@@ -398,11 +399,7 @@ void PageRtData::valuesReceived(MC_VALUES values, unsigned int mask)
     appendDoubleAndTrunc(&mTrajIqTrail, values.iq, 300);
     mUpdateTrajPlot = true;
 
-    // seed the base-speed Vbus from the live bus the first time we see it
-    if (!mBsVbusInit && values.v_in > 1.0 && mBsVbus) {
-        mBsVbusInit = true;
-        mBsVbus->setValue(values.v_in); // triggers computeBaseSpeed via valueChanged
-    }
+    mTrajLiveVin = values.v_in; // base-speed panel tracks the live bus when not overriding
 }
 
 void PageRtData::rotorPosReceived(double pos)
@@ -482,40 +479,45 @@ void PageRtData::setupTrajTab()
     mTrajMap->xAxis->setLabel("speed (rpm, mech)");
     mTrajMap->yAxis->setLabel("|I| (A)");
 
-    // --- section 4: base-speed panel (auto-calc or manual) ---
+    // --- section 4: base-speed panel ---
+    // Locked by default: inputs come live from the FOC params / Motor Settings tables
+    // (+ live bus). Tick "Override" to unlock the fields and try your own values. The
+    // computed result is always shown (read-only) below.
     QGroupBox *bsBox = new QGroupBox(tr("Base speed (MTPA → field-weakening knee)"));
     QFormLayout *bsForm = new QFormLayout(bsBox);
-    mBsAuto = new QCheckBox(tr("Auto-calculate from the values below"));
-    mBsAuto->setChecked(true);
+    mBsOverride = new QCheckBox(tr("Override (edit values; otherwise from config + live bus)"));
+    mBsOverride->setChecked(false);
     mBsType = new QComboBox();
     mBsType->addItem(tr("PMSM (ψ ≈ flux linkage)"));
     mBsType->addItem(tr("SynRM / PMa-SynRM (salient ψ at MTPA)"));
     mBsVbus = new QDoubleSpinBox(); mBsVbus->setRange(1, 1000); mBsVbus->setSuffix(" V"); mBsVbus->setValue(50);
     mBsDuty = new QDoubleSpinBox(); mBsDuty->setRange(1, 100); mBsDuty->setSuffix(" %"); mBsDuty->setValue(95);
     mBsFlux = new QDoubleSpinBox(); mBsFlux->setRange(0, 100000); mBsFlux->setDecimals(3); mBsFlux->setSuffix(" mWb"); mBsFlux->setValue(20);
-    mBsManual = new QDoubleSpinBox(); mBsManual->setRange(0, 200000); mBsManual->setSuffix(" rpm"); mBsManual->setDecimals(0);
-    mBsManual->setReadOnly(true);
     mBsResult = new QLabel("—");
-    mBsResult->setStyleSheet("font-weight:bold;");
-    bsForm->addRow(mBsAuto);
+    mBsResult->setTextFormat(Qt::RichText);
+    mBsResult->setWordWrap(true);
+    bsForm->addRow(mBsOverride);
     bsForm->addRow(tr("Motor type"), mBsType);
     bsForm->addRow(tr("Bus voltage"), mBsVbus);
     bsForm->addRow(tr("Max duty"), mBsDuty);
     bsForm->addRow(tr("Flux linkage λ"), mBsFlux);
-    bsForm->addRow(tr("Base speed"), mBsManual);
+    QFrame *bsLine = new QFrame(); bsLine->setFrameShape(QFrame::HLine);
+    bsForm->addRow(bsLine);
+    bsForm->addRow(new QLabel(tr("<b>Computed:</b>")));
     bsForm->addRow(mBsResult);
 
-    auto recompute = [this]() { computeBaseSpeed(); };
-    connect(mBsAuto, &QCheckBox::toggled, this, [this](bool on) {
-        mBsManual->setReadOnly(on); computeBaseSpeed();
+    // inputs are only editable in override mode
+    mBsType->setEnabled(false); mBsVbus->setEnabled(false);
+    mBsDuty->setEnabled(false); mBsFlux->setEnabled(false);
+    connect(mBsOverride, &QCheckBox::toggled, this, [this](bool on) {
+        mBsType->setEnabled(on); mBsVbus->setEnabled(on);
+        mBsDuty->setEnabled(on); mBsFlux->setEnabled(on);
+        computeBaseSpeed();
     });
-    connect(mBsType, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [recompute](int){ recompute(); });
-    connect(mBsVbus, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [recompute](double){ recompute(); });
-    connect(mBsDuty, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [recompute](double){ recompute(); });
-    connect(mBsFlux, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [recompute](double){ recompute(); });
-    connect(mBsManual, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [this](double){
-        if (!mBsAuto->isChecked()) computeBaseSpeed();
-    });
+    connect(mBsType, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int){ if (mBsOverride->isChecked()) computeBaseSpeed(); });
+    connect(mBsVbus, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [this](double){ if (mBsOverride->isChecked()) computeBaseSpeed(); });
+    connect(mBsDuty, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [this](double){ if (mBsOverride->isChecked()) computeBaseSpeed(); });
+    connect(mBsFlux, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [this](double){ if (mBsOverride->isChecked()) computeBaseSpeed(); });
 
     QWidget *tab = new QWidget();
     QGridLayout *lay = new QGridLayout(tab);
@@ -532,41 +534,62 @@ void PageRtData::setupTrajTab()
 // PMSM: |ψ| ≈ λ.  SynRM: |ψ| = √((λ+Ld·id)² + (Lq·iq)²) at the MTPA point for I = current limit.
 void PageRtData::computeBaseSpeed()
 {
-    if (!mBsAuto || !mTrajTn || !mTrajMap) {
+    if (!mBsOverride || !mTrajTn || !mTrajMap) {
         return;
     }
+    bool ov = mBsOverride->isChecked();
     double pp = mTrajPolePairs > 0.0 ? mTrajPolePairs : 1.0;
-    double rpm;
-    if (mBsAuto->isChecked()) {
-        double Vmax = (1.0 / sqrt(3.0)) * (mBsDuty->value() / 100.0) * mBsVbus->value();
-        double lambda = mBsFlux->value() / 1000.0; // mWb -> Wb
-        double psi;
-        if (mBsType->currentIndex() == 0) {
-            psi = lambda; // PMSM
-        } else {
-            double I = mTrajImotMax > 1.0 ? mTrajImotMax : mTrajImax;
-            double Lavg = mVesc ? mVesc->mcConfig()->getParamDouble("foc_motor_l") : 0.0;
-            double Ld = Lavg - mTrajLdLqDiff / 2.0;
-            double Lq = Lavg + mTrajLdLqDiff / 2.0;
-            double idS = mTrajHasTable ? trajLookupId(I, 0.0) : 0.0;
-            double iqS = sqrt(qMax(0.0, I * I - idS * idS));
-            double psd = lambda + Ld * idS;
-            double psq = Lq * iqS;
-            psi = sqrt(psd * psd + psq * psq);
-        }
-        double wbaseElec = psi > 1e-9 ? Vmax / psi : 0.0;
-        rpm = wbaseElec * 60.0 / (2.0 * M_PI * pp);
-        mBsManual->blockSignals(true);
-        mBsManual->setValue(rpm);
-        mBsManual->blockSignals(false);
-    } else {
-        rpm = mBsManual->value();
-    }
-    mBaseSpeedRpm = rpm;
-    mBsResult->setText(tr("≈ %1 rpm mech  (%2 ERPM)")
-                       .arg(rpm, 0, 'f', 0).arg(rpm * pp, 0, 'f', 0));
 
-    // vertical line on T-N and map at the base speed
+    double Vbus, duty, lambda;
+    int type;
+    if (ov) {
+        Vbus = mBsVbus->value();
+        duty = mBsDuty->value() / 100.0;
+        lambda = mBsFlux->value() / 1000.0;
+        type = mBsType->currentIndex();
+    } else {
+        // Inputs from FOC params / Motor Settings + live bus; mirror them into the locked fields.
+        Vbus = mTrajLiveVin > 1.0 ? mTrajLiveVin : mBsVbus->value();
+        duty = mVesc ? mVesc->mcConfig()->getParamDouble("l_max_duty") : 0.95;
+        lambda = mTrajLambda;
+        type = (mVesc && mVesc->mcConfig()->getParamEnum("motor_type") == 3) ? 1 : 0;
+        mBsVbus->blockSignals(true); mBsVbus->setValue(Vbus); mBsVbus->blockSignals(false);
+        mBsDuty->blockSignals(true); mBsDuty->setValue(duty * 100.0); mBsDuty->blockSignals(false);
+        mBsFlux->blockSignals(true); mBsFlux->setValue(lambda * 1000.0); mBsFlux->blockSignals(false);
+        mBsType->blockSignals(true); mBsType->setCurrentIndex(type); mBsType->blockSignals(false);
+    }
+
+    double Vmax = (1.0 / sqrt(3.0)) * duty * Vbus;
+    double psi, idS = 0.0, iqS = 0.0, I = mTrajImotMax > 1.0 ? mTrajImotMax : mTrajImax;
+    if (type == 0) {
+        psi = lambda; // PMSM
+    } else {
+        double Lavg = mVesc ? mVesc->mcConfig()->getParamDouble("foc_motor_l") : 0.0;
+        double Ld = Lavg - mTrajLdLqDiff / 2.0;
+        double Lq = Lavg + mTrajLdLqDiff / 2.0;
+        idS = mTrajHasTable ? trajLookupId(I, 0.0) : 0.0;
+        iqS = sqrt(qMax(0.0, I * I - idS * idS));
+        double psd = lambda + Ld * idS, psq = Lq * iqS;
+        psi = sqrt(psd * psd + psq * psq);
+    }
+    double wbaseElec = psi > 1e-9 ? Vmax / psi : 0.0;
+    double rpm = wbaseElec * 60.0 / (2.0 * M_PI * pp);
+    mBaseSpeedRpm = rpm;
+
+    QString res = tr("<b>Base speed: %1 rpm</b>&nbsp; (%2 ERPM)<br>"
+                     "V<sub>max</sub> = %3 V&nbsp;&nbsp; |ψ| = %4 mWb")
+            .arg(rpm, 0, 'f', 0).arg(rpm * pp, 0, 'f', 0)
+            .arg(Vmax, 0, 'f', 1).arg(psi * 1000.0, 0, 'f', 2);
+    if (type == 1) {
+        res += tr("<br>MTPA @ %1 A:&nbsp; id* = %2,&nbsp; iq* = %3 A")
+                .arg(I, 0, 'f', 0).arg(idS, 0, 'f', 1).arg(iqS, 0, 'f', 1);
+    }
+    if (!ov && mTrajLiveVin <= 1.0) {
+        res += tr("<br><i>(not connected — using defaults)</i>");
+    }
+    mBsResult->setText(res);
+
+    // vertical base-speed line on T-N and map
     double tnTop = mTrajTn->yAxis->range().upper;
     mTrajTn->graph(2)->setData(QVector<double>() << rpm << rpm,
                                QVector<double>() << 0.0 << tnTop);
@@ -616,20 +639,6 @@ void PageRtData::updateTrajTable()
         mTrajLut[i] = mc->getParamDouble(QString("foc_traj_lut__%1").arg(i));
     }
     mTrajHasTable = (mTrajImax > 0.0 && mTrajNmax > 0.0);
-
-    // prefill base-speed inputs from config (flux in mWb, motor type)
-    if (mBsFlux) {
-        mBsFlux->blockSignals(true);
-        mBsFlux->setValue(mTrajLambda * 1000.0);
-        mBsFlux->blockSignals(false);
-    }
-    if (mBsType) {
-        bool isSynrm = mVesc && mVesc->mcConfig()->getParamEnum("motor_type") == 3; // MOTOR_TYPE_SYNRM
-        mBsType->blockSignals(true);
-        mBsType->setCurrentIndex(isSynrm ? 1 : 0);
-        mBsType->blockSignals(false);
-    }
-
     if (!mTrajHasTable) {
         computeBaseSpeed();
         return;
@@ -710,6 +719,11 @@ void PageRtData::updateTrajLive()
     mTrajMap->graph(0)->setData(QVector<double>() << mTrajLiveRpm,
                                 QVector<double>() << mTrajLiveImag);
     mTrajMap->replotWhenVisible();
+
+    // when not overriding, keep base speed tracking the live bus voltage
+    if (mBsOverride && !mBsOverride->isChecked()) {
+        computeBaseSpeed();
+    }
 }
 
 void PageRtData::appendDoubleAndTrunc(QVector<double> *vec, double num, int maxSize)

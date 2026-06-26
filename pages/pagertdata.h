@@ -111,11 +111,10 @@ private:
 
     // base-speed (section 4) controls
     QComboBox *mBsType;
-    QDoubleSpinBox *mBsVbus, *mBsDuty, *mBsFlux, *mBsManual;
-    QCheckBox *mBsAuto;
+    QDoubleSpinBox *mBsVbus, *mBsDuty, *mBsFlux;
+    QCheckBox *mBsOverride;
     QLabel *mBsResult;
-    double mBaseSpeedRpm;
-    bool mBsVbusInit;
+    double mBaseSpeedRpm, mTrajLiveVin;
 
     void setupTrajTab();
     void updateTrajTable();                       // rebuild static curves + color map from config
