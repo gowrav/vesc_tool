@@ -99,6 +99,8 @@ private:
     QCustomPlot *mTrajTn;       // torque vs speed
     QCustomPlot *mTrajMap;      // |I| vs speed, id* color map
     QCPColorMap *mTrajColorMap;
+    QWidget *mTrajTab;          // the tab page (to skip work when not visible)
+    double mTrajLastVbus;       // last bus voltage base-speed was computed at (throttle)
     QVector<double> mTrajIdTrail, mTrajIqTrail;
     bool mUpdateTrajPlot;
     // cached config (refreshed in updateTrajTable)

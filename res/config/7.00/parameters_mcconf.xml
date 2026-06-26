@@ -1513,29 +1513,25 @@ p, li { white-space: pre-wrap; }
             <enumNames>Observer</enumNames>
         </foc_synrm_src_0>
         <foc_synrm_cc_mode>
-            <longName>SynRM Current-Loop Strategy</longName>
+            <longName>SynRM Anti-Windup Strategy</longName>
             <type>4</type>
             <transmittable>1</transmittable>
-            <description>Current-loop saturation / field-weakening strategy (motor type SynRM only). Stock = VESC d-priority voltage clamp. Anti-windup = synmoc angle-preserving saturation + back-calculation anti-windup (validated). VCT = anti-windup plus voltage-constraint-tracking field weakening (drives id negative as the stator voltage hits the limit; uses VCT kv / gain below).</description>
+            <description>Current-loop saturation / anti-windup strategy (motor type SynRM only). Stock = VESC d-priority voltage clamp + integrator clamp. Anti-windup = synmoc angle-preserving saturation + back-calculation anti-windup (validated). Field weakening (VCT) is a separate on/off below and works with either strategy.</description>
             <cDefine>MCCONF_FOC_SYNRM_CC_MODE</cDefine>
             <valInt>1</valInt>
             <enumNames>Stock (d-priority)</enumNames>
             <enumNames>Anti-windup (back-calc)</enumNames>
-            <enumNames>VCT (field weakening)</enumNames>
         </foc_synrm_cc_mode>
-        <foc_synrm_src_2>
-            <longName>SynRM Source — High Band</longName>
+        <foc_synrm_vct_en>
+            <longName>SynRM Field Weakening (VCT)</longName>
             <type>4</type>
             <transmittable>1</transmittable>
-            <description>SynRM v2 position pipeline (motor type SynRM only). Position source above the 1→2 transition ERPM.</description>
-            <cDefine>MCCONF_FOC_SYNRM_SRC_2</cDefine>
-            <valInt>2</valInt>
-            <enumNames>None</enumNames>
-            <enumNames>HFI</enumNames>
-            <enumNames>Hall</enumNames>
-            <enumNames>Encoder</enumNames>
-            <enumNames>Observer</enumNames>
-        </foc_synrm_src_2>
+            <description>Voltage-constraint-tracking field weakening (motor type SynRM only). When On, drives id negative as the stator voltage approaches the limit (kv / gain below) to extend speed. Works on top of either anti-windup strategy. Off = rely on the MTPA reluctance current alone.</description>
+            <cDefine>MCCONF_FOC_SYNRM_VCT_EN</cDefine>
+            <valInt>0</valInt>
+            <enumNames>Off</enumNames>
+            <enumNames>On</enumNames>
+        </foc_synrm_vct_en>
         <foc_synrm_vct_kv>
             <longName>VCT — Voltage Threshold (kv)</longName>
             <type>1</type>
@@ -6132,7 +6128,7 @@ p, li { white-space: pre-wrap; }
         <ser>foc_synrm_hybrid_erpm</ser>
         <ser>foc_synrm_src_0</ser>
         <ser>foc_synrm_cc_mode</ser>
-        <ser>foc_synrm_src_2</ser>
+        <ser>foc_synrm_vct_en</ser>
         <ser>foc_synrm_vct_kv</ser>
         <ser>foc_synrm_vct_gain</ser>
         <ser>foc_synrm_blend</ser>
@@ -6546,6 +6542,7 @@ p, li { white-space: pre-wrap; }
                     <param>foc_synrm_hybrid_erpm</param>
                     <param>::sep::Current-loop strategy: Stock = VESC d-priority. Anti-windup = synmoc back-calc (validated). VCT = anti-windup + voltage-constraint field weakening.</param>
                     <param>foc_synrm_cc_mode</param>
+                    <param>foc_synrm_vct_en</param>
                     <param>foc_synrm_vct_kv</param>
                     <param>foc_synrm_vct_gain</param>
                 </subgroupParams>

@@ -189,6 +189,8 @@ PageRtData::PageRtData(QWidget *parent) :
     mTrajLiveId = mTrajLiveIq = mTrajLiveRpm = mTrajLiveTorque = mTrajLiveImag = 0.0;
     mBaseSpeedRpm = 0.0;
     mTrajLiveVin = 0.0;
+    mTrajTab = nullptr;
+    mTrajLastVbus = -1.0;
     setupTrajTab();
 
     connect(mTimer, SIGNAL(timeout()),
@@ -338,7 +340,11 @@ void PageRtData::timerSlot()
     }
 
     if (mUpdateTrajPlot) {
-        updateTrajLive();
+        // Only do the (heavy) trajectory work when that tab is actually showing, so realtime
+        // streaming isn't stalled by replotting/recompute while you're on another tab.
+        if (mTrajTab && ui->tabWidget->currentWidget() == mTrajTab) {
+            updateTrajLive();
+        }
         mUpdateTrajPlot = false;
     }
 }
@@ -540,6 +546,7 @@ void PageRtData::setupTrajTab()
     connect(mBsCurrent, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [this](double){ if (mBsOverride->isChecked()) computeBaseSpeed(); });
 
     QWidget *tab = new QWidget();
+    mTrajTab = tab;
     QGridLayout *lay = new QGridLayout(tab);
     lay->setContentsMargins(2, 2, 2, 2);
     lay->addWidget(mTrajDq, 0, 0);
@@ -817,8 +824,11 @@ void PageRtData::updateTrajLive()
     }
     mTrajMap->replotWhenVisible();
 
-    // when not overriding, keep base speed tracking the live bus voltage
-    if (mBsOverride && !mBsOverride->isChecked()) {
+    // when not overriding, keep base speed tracking the live bus — but only recompute (it rebuilds
+    // the envelope + ellipses) when the bus actually moved, not every frame.
+    if (mBsOverride && !mBsOverride->isChecked() &&
+            fabs(mTrajLiveVin - mTrajLastVbus) > 0.5) {
+        mTrajLastVbus = mTrajLiveVin;
         computeBaseSpeed();
     }
 }
