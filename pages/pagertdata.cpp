@@ -443,13 +443,28 @@ void PageRtData::setupTrajTab()
     mTrajDq->graph(3)->setLineStyle(QCPGraph::lsNone);
     mTrajDq->graph(3)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, cLive, 12));
     mTrajDq->graph(3)->setName("Now");
+    // 4: max-power / control trajectory (id*,iq* at Iₛ swept over speed)
+    mTrajDq->addGraph();
+    mTrajDq->graph(4)->setPen(QPen(QColor("#e377c2"), 2));
+    mTrajDq->graph(4)->setName("Max-power trajectory");
+    // 5..8: voltage-limit ellipses at increasing speed
+    for (int e = 0; e < 4; e++) {
+        mTrajDq->addGraph();
+        QColor ec = cCurve; ec.setAlpha(170 - e * 32);
+        mTrajDq->graph(5 + e)->setPen(QPen(ec, 1, Qt::DotLine));
+        if (e == 0) {
+            mTrajDq->graph(5 + e)->setName("Voltage-limit ellipse");
+        } else {
+            mTrajDq->graph(5 + e)->removeFromLegend();
+        }
+    }
     mTrajDq->xAxis->setLabel("id (A)   ← field weakening");
     mTrajDq->yAxis->setLabel("iq (A)  (torque)");
 
     // --- torque vs speed: envelope (0), live point (1) ---
     mTrajTn->addGraph();
     mTrajTn->graph(0)->setPen(QPen(cCurve, 2));
-    mTrajTn->graph(0)->setName("Max-torque envelope");
+    mTrajTn->graph(0)->setName("Envelope (const-T → const-P)");
     mTrajTn->addGraph();
     mTrajTn->graph(1)->setLineStyle(QCPGraph::lsNone);
     mTrajTn->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, cLive, 12));
@@ -583,29 +598,34 @@ void PageRtData::computeBaseSpeed()
     double rpm = wbaseElec * 60.0 / (2.0 * M_PI * pp);
     mBaseSpeedRpm = rpm;
 
-    // Rebuild the max-torque envelope for the effective lambda & Iₛ, so it tracks override edits.
-    if (mTrajHasTable) {
-        QVector<double> ex, ey;
-        const int NSP = 60;
-        double tmax = 0.0;
-        for (int s = 0; s <= NSP; s++) {
-            double r = mTrajNmax * s / double(NSP);
-            double idr = trajLookupId(Is, r);
-            double iqr = sqrt(qMax(0.0, Is * Is - idr * idr));
-            double T = 1.5 * pp * iqr * (lambda - mTrajLdLqDiff * idr);
-            ex.append(r); ey.append(T);
-            if (fabs(T) > tmax) tmax = fabs(T);
-        }
-        mTrajTn->graph(0)->setData(ex, ey);
-        if (tmax > 0.0) {
-            mTrajTn->yAxis->setRange(0, tmax * 1.1);
-        }
+    // Peak torque at MTPA (speed 0) for current Iₛ. PMSM: id=0, iq=Iₛ.
+    double id0 = (type == 0) ? 0.0 : idS;
+    double iq0 = (type == 0) ? Is : iqS;
+    double Tmax = 1.5 * pp * iq0 * (lambda - mTrajLdLqDiff * id0);
+
+    // Envelope: constant torque up to base speed, then constant power (T = Tmax·base/speed).
+    // Knee sits exactly on the base-speed line.
+    QVector<double> ex, ey;
+    double rpmMax = qMax(qMax(mTrajNmax, rpm * 2.5), mTrajLiveRpm);
+    if (rpmMax < 1.0) {
+        rpmMax = 3000.0;
+    }
+    const int NSP = 200;
+    for (int s = 0; s <= NSP; s++) {
+        double r = rpmMax * s / double(NSP);
+        double T = (rpm < 1.0 || r <= rpm) ? Tmax : Tmax * rpm / r;
+        ex.append(r);
+        ey.append(T);
+    }
+    mTrajTn->graph(0)->setData(ex, ey);
+    if (Tmax > 0.0) {
+        mTrajTn->yAxis->setRange(0, Tmax * 1.15);
     }
 
     QString res = tr("<b>Base speed: %1 rpm</b>&nbsp; (%2 ERPM)<br>"
-                     "V<sub>max</sub> = %3 V&nbsp;&nbsp; |ψ| = %4 mWb")
+                     "V<sub>max</sub> = %3 V&nbsp;&nbsp; |ψ| = %4 mWb&nbsp;&nbsp; T<sub>peak</sub> = %5 Nm")
             .arg(rpm, 0, 'f', 0).arg(rpm * pp, 0, 'f', 0)
-            .arg(Vmax, 0, 'f', 1).arg(psi * 1000.0, 0, 'f', 2);
+            .arg(Vmax, 0, 'f', 1).arg(psi * 1000.0, 0, 'f', 2).arg(Tmax, 0, 'f', 1);
     if (type == 1) {
         res += tr("<br>MTPA @ %1 A:&nbsp; id* = %2,&nbsp; iq* = %3 A")
                 .arg(Is, 0, 'f', 0).arg(idS, 0, 'f', 1).arg(iqS, 0, 'f', 1);
@@ -631,6 +651,40 @@ void PageRtData::computeBaseSpeed()
     double mapTop = mTrajImax > 0.0 ? mTrajImax : mTrajMap->yAxis->range().upper;
     mTrajMap->graph(1)->setData(QVector<double>() << rpm << rpm,
                                 QVector<double>() << 0.0 << mapTop);
+
+    // dq plane: max-power trajectory (id*,iq* at Iₛ over speed) + voltage-limit ellipses
+    if (mTrajDq->graphCount() >= 9) {
+        QVector<double> tx, ty;
+        const int NSP2 = 80;
+        double rmax = qMax(mTrajNmax, rpm * 4.0);
+        for (int s = 0; s <= NSP2; s++) {
+            double r = rmax * s / double(NSP2);
+            double idr = mTrajHasTable ? trajLookupId(Is, r) : 0.0;
+            double iqr = sqrt(qMax(0.0, Is * Is - idr * idr));
+            tx.append(idr); ty.append(iqr);
+        }
+        mTrajDq->graph(4)->setData(tx, ty);
+
+        // ellipse: (Ld·id+λ)² + (Lq·iq)² = (Vmax/ω_elec)²  → centre (-λ/Ld, 0)
+        double idC = Ld > 1e-9 ? -lambda / Ld : 0.0;
+        double mult[4] = {1.0, 1.6, 2.6, 4.2};
+        for (int e = 0; e < 4; e++) {
+            double r = rpm * mult[e];
+            double wElec = r * 2.0 * M_PI * pp / 60.0;
+            double VoW = wElec > 1e-6 ? Vmax / wElec : 0.0;
+            double aId = Ld > 1e-9 ? VoW / Ld : 0.0;
+            double aIq = Lq > 1e-9 ? VoW / Lq : 0.0;
+            QVector<double> ux, uy;
+            for (int k = 0; k <= 60; k++) {
+                double th = 2.0 * M_PI * k / 60.0;
+                ux.append(idC + aId * cos(th));
+                uy.append(aIq * sin(th));
+            }
+            mTrajDq->graph(5 + e)->setData(ux, uy);
+        }
+        mTrajDq->replotWhenVisible();
+    }
+
     mTrajTn->replotWhenVisible();
     mTrajMap->replotWhenVisible();
 }
