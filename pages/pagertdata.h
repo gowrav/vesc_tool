@@ -35,6 +35,7 @@ class QDoubleSpinBox;
 class QComboBox;
 class QCheckBox;
 class QLabel;
+class QPushButton;
 
 class PageRtData : public QWidget
 {
@@ -118,11 +119,30 @@ private:
     QLabel *mBsResult;
     double mBaseSpeedRpm, mTrajLiveVin;
 
+    // saturated torque map T(id,iq) from MotorXP FEA flux CSVs (display-only, tool-side).
+    // Stores the per-pole-pair torque coefficient (ψd·iq − ψq·id) on a square id/iq grid;
+    // actual Nm = 1.5 · pole_pairs · coeff. Replaces the linear (unsaturated) torque formula.
+    QVector<QVector<double>> mTorqueCoeff; // [id index][iq index]
+    QVector<QVector<double>> mPsiGrid;     // |ψ| = √(ψd²+ψq²) at each node, for base speed
+    double mTqMin, mTqMax;                 // shared id & iq axis range (A)
+    int mTqN;                              // grid size
+    bool mHasTorqueLut;
+    bool mTqOutOfRange;                    // live point fell outside the map (torque clamped)
+    QPushButton *mTqLoadBtn;
+    QLabel *mTqInfo;
+
     void setupTrajTab();
     void updateTrajTable();                       // rebuild static curves + color map from config
     double trajLookupId(double imag, double rpm); // bilinear over foc_traj_lut (mirrors firmware)
     void updateTrajLive();                        // push the live point to the 3 plots
     void computeBaseSpeed();                       // section 4: auto/manual base speed + plot lines
+    void loadTorqueMapFromCsv();                   // load MotorXP Fluxlinkage_d/q.csv -> torque grid
+    bool buildTorqueGrid(const QString &dir, QString &err);
+    double lookupTorque(double id, double iq);     // saturated torque in Nm (bilinear, clamp outside)
+    double psiPeakLookup(double id, double iq);    // peak flux |ψ| (Wb) from FEA maps, 0 if none
+    void mtpaFEA(double Is, double &id, double &iq); // FEA-MTPA point (peak A) at current Is
+    void saveTorqueLut();                          // persist the grid to QSettings
+    void restoreTorqueLut();                        // reload the grid from QSettings on startup
 
     void appendDoubleAndTrunc(QVector<double> *vec, double num, int maxSize);
     void updateZoom();

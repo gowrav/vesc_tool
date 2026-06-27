@@ -369,6 +369,15 @@ private:
     ConfigParams *mAppConfig;
     ConfigParams *mInfoConfig;
     ConfigParams *mFwConfig;
+
+    // SynRM saturated torque map (shared via QSettings with PageRtData) — for the torque_nm
+    // column in the RT log. Stores the peak-current torque coefficient on an RMS id/iq grid.
+    QVector<QVector<double>> mRtTqGrid;
+    double mRtTqMin, mRtTqMax;
+    int mRtTqN;
+    bool mRtTqLoaded;
+    void rtLogReloadTorque();                       // restore the map from QSettings (call at log start)
+    double rtLogTorque(double idPk, double iqPk, double pp); // saturated Nm (RMS-aware), 0 if no map
     QVector<ConfigParams*> mCustomConfigs;
     bool mCustomConfigsLoaded;
     bool mCustomConfigRxDone;

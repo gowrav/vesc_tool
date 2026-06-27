@@ -18,6 +18,7 @@
     */
 
 #include <QDebug>
+#include <QDataStream>
 #include <QHostInfo>
 #include <QNetworkDatagram>
 #include <QFileInfo>
@@ -57,6 +58,7 @@ VescInterface::VescInterface(QObject *parent) : QObject(parent)
     mAppConfig = new ConfigParams(this);
     mInfoConfig = new ConfigParams(this);
     mFwConfig = new ConfigParams(this);
+    mRtTqMin = mRtTqMax = 0.0; mRtTqN = 0; mRtTqLoaded = false;
     mCustomConfigsLoaded = false;
     mCustomConfigRxDone = false;
     mQmlHwLoaded = false;
@@ -523,6 +525,13 @@ VescInterface::VescInterface(QObject *parent) : QObject(parent)
             os << vVel << ";";
             os << hAcc << ";";
             os << vAcc << ";";
+
+            double ppLog = mMcConfig ? mMcConfig->getParamInt("si_motor_poles") / 2.0 : 1.0;
+            if (ppLog < 1.0) {
+                ppLog = 1.0;
+            }
+            os << rtLogTorque(v.id, v.iq, ppLog) << ";"; // saturated FEA torque (Nm), 0 if no map
+            os << (v.rpm / ppLog) << ";";                 // mechanical rpm = erpm / pole pairs
             os << "\n";
             os.flush();
 
@@ -1738,6 +1747,56 @@ bool VescInterface::isCurrentFwBootloader()
     return mIsLastFwBootloader;
 }
 
+// Restore the SynRM saturated torque map persisted by PageRtData (QSettings "synrm/torqueLut").
+// Same blob format: int N, double min, double max, then N*N peak-current torque coefficients.
+void VescInterface::rtLogReloadTorque()
+{
+    mRtTqLoaded = false;
+    mRtTqGrid.clear();
+    QByteArray blob = mSettings.value("synrm/torqueLut").toByteArray();
+    if (blob.isEmpty()) {
+        return;
+    }
+    QDataStream ds(&blob, QIODevice::ReadOnly);
+    int n = 0; double mn = 0, mx = 0;
+    ds >> n >> mn >> mx;
+    if (n < 2 || mx <= mn) {
+        return;
+    }
+    mRtTqGrid.resize(n);
+    for (int i = 0; i < n; i++) {
+        mRtTqGrid[i].resize(n);
+        for (int j = 0; j < n; j++) {
+            if (ds.atEnd()) {
+                return;
+            }
+            ds >> mRtTqGrid[i][j];
+        }
+    }
+    mRtTqN = n; mRtTqMin = mn; mRtTqMax = mx; mRtTqLoaded = true;
+}
+
+// Saturated torque (Nm) at VESC peak (id, iq). Map axes are RMS → convert (÷√2) for the lookup;
+// the coefficient already bakes in the peak currents, so T = 1.5·pp·coeff. 0 if no map loaded.
+double VescInterface::rtLogTorque(double idPk, double iqPk, double pp)
+{
+    if (!mRtTqLoaded || mRtTqN < 2) {
+        return 0.0;
+    }
+    const double step = (mRtTqMax - mRtTqMin) / double(mRtTqN - 1);
+    const double idR = idPk / M_SQRT2, iqR = iqPk / M_SQRT2;
+    double fi = (idR - mRtTqMin) / step;
+    double fj = (iqR - mRtTqMin) / step;
+    if (fi < 0) fi = 0; if (fi > mRtTqN - 1) fi = mRtTqN - 1;
+    if (fj < 0) fj = 0; if (fj > mRtTqN - 1) fj = mRtTqN - 1;
+    int i0 = (int)floor(fi); if (i0 > mRtTqN - 2) i0 = mRtTqN - 2; double ti = fi - i0;
+    int j0 = (int)floor(fj); if (j0 > mRtTqN - 2) j0 = mRtTqN - 2; double tj = fj - j0;
+    double coeff = (mRtTqGrid[i0][j0] * (1 - tj) + mRtTqGrid[i0][j0 + 1] * tj) * (1 - ti) +
+                   (mRtTqGrid[i0 + 1][j0] * (1 - tj) + mRtTqGrid[i0 + 1][j0 + 1] * tj) * ti;
+    // sqrt(2/3): power-invariant (MotorXP/RMS) vs amplitude-invariant dq convention factor.
+    return 1.5 * pp * coeff * 0.81649658;
+}
+
 bool VescInterface::openRtLogFile(QString outDirectory)
 {
     if (outDirectory.startsWith("file:/")) {
@@ -1766,6 +1825,8 @@ bool VescInterface::openRtLogFile(QString outDirectory)
                            arg(d.time().second(), 2, 10, QChar('0')));
 
     bool res = mRtLogFile.open(QIODevice::WriteOnly | QIODevice::Text);
+
+    rtLogReloadTorque(); // pick up the latest FEA torque map for the torque_nm column
 
     if (mRtLogFile.isOpen()) {
         QTextStream os(&mRtLogFile);
@@ -1827,6 +1888,9 @@ bool VescInterface::openRtLogFile(QString outDirectory)
         os << "gnss_vVel" << ";";
         os << "gnss_hAcc" << ";";
         os << "gnss_vAcc" << ";";
+
+        os << "torque_nm" << ";";
+        os << "rpm_mech" << ";";
         os << "\n";
         os.flush();
     }

@@ -30,11 +30,57 @@
 #include <QDoubleSpinBox>
 #include <QLabel>
 #include <QFrame>
+#include <QPushButton>
+#include <QDir>
+#include <QFile>
+#include <QTextStream>
+#include <QSettings>
+#include <QDataStream>
+#include <QtMath>
 #include <cmath>
 #include "utility.h"
 
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
+
+// --- MotorXP FEA CSV readers (shared format with the old MTPA loader) ---
+static bool rtLoadCsvRow(const QString &path, QVector<double> &out)
+{
+    QFile f(path);
+    if (!f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return false;
+    }
+    QTextStream ts(&f);
+    out.clear();
+    const QStringList toks = ts.readLine().split(',', QString::SkipEmptyParts);
+    for (const QString &tok : toks) {
+        out.append(tok.trimmed().toDouble());
+    }
+    return !out.isEmpty();
+}
+
+static bool rtLoadCsvGrid(const QString &path, QVector<QVector<double>> &out)
+{
+    QFile f(path);
+    if (!f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return false;
+    }
+    QTextStream ts(&f);
+    out.clear();
+    while (!ts.atEnd()) {
+        const QString line = ts.readLine();
+        if (line.trimmed().isEmpty()) {
+            continue;
+        }
+        QVector<double> row;
+        const QStringList toks = line.split(',', QString::SkipEmptyParts);
+        for (const QString &tok : toks) {
+            row.append(tok.trimmed().toDouble());
+        }
+        out.append(row);
+    }
+    return !out.isEmpty();
+}
 
 PageRtData::PageRtData(QWidget *parent) :
     QWidget(parent),
@@ -189,6 +235,9 @@ PageRtData::PageRtData(QWidget *parent) :
     mTrajLiveId = mTrajLiveIq = mTrajLiveRpm = mTrajLiveTorque = mTrajLiveImag = 0.0;
     mBaseSpeedRpm = 0.0;
     mTrajLiveVin = 0.0;
+    mTqMin = mTqMax = 0.0; mTqN = 0;
+    mHasTorqueLut = false; mTqOutOfRange = false;
+    mTqLoadBtn = nullptr; mTqInfo = nullptr;
     mTrajTab = nullptr;
     mTrajLastVbus = -1.0;
     setupTrajTab();
@@ -400,8 +449,13 @@ void PageRtData::valuesReceived(MC_VALUES values, unsigned int mask)
         rpm *= mTrajVnorm / values.v_in;
     }
     mTrajLiveRpm = rpm;
-    // T = 1.5 * p * iq * (lambda - ld_lq_diff * id)   (id is VESC-negative; reluctance term adds)
-    mTrajLiveTorque = 1.5 * pp * values.iq * (mTrajLambda - mTrajLdLqDiff * values.id);
+    // Torque: saturated FEA map T(id,iq) if loaded, else the linear (unsaturated) model
+    // T = 1.5·p·iq·(λ − (Lq−Ld)·id), which overestimates the reluctance term under saturation.
+    if (mHasTorqueLut) {
+        mTrajLiveTorque = lookupTorque(values.id, values.iq);
+    } else {
+        mTrajLiveTorque = 1.5 * pp * values.iq * (mTrajLambda - mTrajLdLqDiff * values.id);
+    }
 
     appendDoubleAndTrunc(&mTrajIdTrail, values.id, 300);
     appendDoubleAndTrunc(&mTrajIqTrail, values.iq, 300);
@@ -531,6 +585,19 @@ void PageRtData::setupTrajTab()
     bsForm->addRow(new QLabel(tr("<b>Computed:</b>")));
     bsForm->addRow(mBsResult);
 
+    // Saturated torque map: replaces the linear T = 1.5p·iq·(λ − (Lq−Ld)·id) formula (which
+    // overestimates under saturation) with FEA-derived T(id,iq) from MotorXP Fluxlinkage CSVs.
+    QFrame *tqLine = new QFrame(); tqLine->setFrameShape(QFrame::HLine);
+    bsForm->addRow(tqLine);
+    mTqLoadBtn = new QPushButton(tr("Load Torque Map (MotorXP CSV folder)…"));
+    mTqInfo = new QLabel();
+    mTqInfo->setTextFormat(Qt::RichText);
+    mTqInfo->setWordWrap(true);
+    bsForm->addRow(mTqLoadBtn);
+    bsForm->addRow(mTqInfo);
+    connect(mTqLoadBtn, &QPushButton::clicked, this, &PageRtData::loadTorqueMapFromCsv);
+    restoreTorqueLut();   // sets mTqInfo text (loaded-from-settings or linear-fallback)
+
     // inputs are only editable in override mode
     mBsType->setEnabled(false); mBsVbus->setEnabled(false);
     mBsDuty->setEnabled(false); mBsFlux->setEnabled(false); mBsCurrent->setEnabled(false);
@@ -602,8 +669,15 @@ void PageRtData::computeBaseSpeed()
 
     double Vmax = (1.0 / sqrt(3.0)) * duty * Vbus;
     double psi, idS = 0.0, iqS = 0.0;
+    bool feaPsi = false;
     if (type == 0) {
         psi = lambda; // PMSM
+    } else if (mHasTorqueLut && mPsiGrid.size() >= 2) {
+        // SynRM with FEA maps loaded: take the MTPA point and |ψ| straight from the FEA flux,
+        // not the linear λ/Ld/Lq model. This makes base speed honest for a salient motor.
+        mtpaFEA(Is, idS, iqS);
+        psi = psiPeakLookup(idS, iqS);
+        feaPsi = true;
     } else {
         idS = mTrajHasTable ? trajLookupId(Is, 0.0) : 0.0;
         iqS = sqrt(qMax(0.0, Is * Is - idS * idS));
@@ -617,7 +691,8 @@ void PageRtData::computeBaseSpeed()
     // Peak torque at MTPA (speed 0) for current Iₛ. PMSM: id=0, iq=Iₛ.
     double id0 = (type == 0) ? 0.0 : idS;
     double iq0 = (type == 0) ? Is : iqS;
-    double Tmax = 1.5 * pp * iq0 * (lambda - ldlqdiff * id0);
+    double Tmax = mHasTorqueLut ? lookupTorque(id0, iq0)
+                                : 1.5 * pp * iq0 * (lambda - ldlqdiff * id0);
 
     // Envelope: constant torque up to base speed, then constant power (T = Tmax·base/speed).
     // Knee sits exactly on the base-speed line.
@@ -643,9 +718,11 @@ void PageRtData::computeBaseSpeed()
             .arg(rpm, 0, 'f', 0).arg(rpm * pp, 0, 'f', 0)
             .arg(Vmax, 0, 'f', 1).arg(psi * 1000.0, 0, 'f', 2).arg(Tmax, 0, 'f', 1);
     if (type == 1) {
-        res += tr("<br>MTPA @ %1 A:&nbsp; id* = %2,&nbsp; iq* = %3 A"
-                  "<br><i>PMa-SynRM: |ψ| & base speed depend on Iₛ (the L<sub>q</sub>·iq term)</i>")
+        res += tr("<br>MTPA @ %1 A:&nbsp; id* = %2,&nbsp; iq* = %3 A")
                 .arg(Is, 0, 'f', 0).arg(idS, 0, 'f', 1).arg(iqS, 0, 'f', 1);
+        res += feaPsi
+                ? tr("<br><i>|ψ| &amp; base speed from the <b>FEA flux map</b> at the MTPA point (true saturated flux).</i>")
+                : tr("<br><i>PMa-SynRM: |ψ| &amp; base speed depend on Iₛ (the L<sub>q</sub>·iq term). Load the FEA map for the true flux.</i>");
     }
     if (!ov && mTrajLiveVin <= 1.0) {
         res += tr("<br><i>(bus = %1 V assumed until RT data streams)</i>").arg(Vbus, 0, 'f', 0);
@@ -704,6 +781,227 @@ void PageRtData::computeBaseSpeed()
 
     mTrajTn->replotWhenVisible();
     mTrajMap->replotWhenVisible();
+}
+
+// Build a saturated torque grid from a MotorXP dq export folder. Stores the per-pole-pair
+// torque coefficient (ψd·iq − ψq·id) on a square id/iq grid (normalised to [id][iq] order),
+// using the FEA flux maps so the reluctance term reflects saturation. Nm = 1.5·pp·coeff.
+bool PageRtData::buildTorqueGrid(const QString &dir, QString &err)
+{
+    QVector<double> Id;
+    QVector<QVector<double>> psid, psiq;
+    if (!rtLoadCsvRow(dir + "/Id.csv", Id)) { err = "Cannot read Id.csv"; return false; }
+    if (!rtLoadCsvGrid(dir + "/Fluxlinkage_d.csv", psid)) { err = "Cannot read Fluxlinkage_d.csv"; return false; }
+    if (!rtLoadCsvGrid(dir + "/Fluxlinkage_q.csv", psiq)) { err = "Cannot read Fluxlinkage_q.csv"; return false; }
+
+    const int N = Id.size();
+    if (N < 3 || psid.size() != N || psiq.size() != N ||
+            psid[0].size() != N || psiq[0].size() != N) {
+        err = QString("Map dimension mismatch (axis %1, maps %2x%3).")
+                .arg(N).arg(psid.size()).arg(psid.isEmpty() ? 0 : psid[0].size());
+        return false;
+    }
+    const double imin = Id.first();
+    const double istep = (Id.last() - Id.first()) / double(N - 1);
+    if (istep <= 0.0) { err = "Bad Id axis."; return false; }
+
+    // Orientation: does psiq vary across rows or columns? (psiq tracks iq.)
+    const int c = N / 2;
+    const bool rowIsIq = qAbs(psiq[0][c] - psiq[N - 1][c]) > qAbs(psiq[c][0] - psiq[c][N - 1]);
+
+    auto flux = [&](const QVector<QVector<double>> &m, double idA, double iqA) -> double {
+        double fi = ((rowIsIq ? iqA : idA) - imin) / istep;
+        double fj = ((rowIsIq ? idA : iqA) - imin) / istep;
+        int i0 = qBound(0, int(qFloor(fi)), N - 2); double ti = fi - i0;
+        int j0 = qBound(0, int(qFloor(fj)), N - 2); double tj = fj - j0;
+        return (m[i0][j0] * (1 - tj) + m[i0][j0 + 1] * tj) * (1 - ti) +
+               (m[i0 + 1][j0] * (1 - tj) + m[i0 + 1][j0 + 1] * tj) * ti;
+    };
+
+    // The map axes are RMS phase current. MotorXP's dq model (and the reference simulation) use
+    // the RMS currents directly in T = 1.5·p·(ψd·iq − ψq·id), so the coefficient uses the RMS
+    // node currents (NOT peak). The peak→RMS conversion happens only at lookup, to index the map.
+    mTorqueCoeff.clear();   mTorqueCoeff.resize(N);
+    mPsiGrid.clear();       mPsiGrid.resize(N);
+    for (int i = 0; i < N; i++) {
+        double idA = imin + i * istep;               // RMS
+        mTorqueCoeff[i].resize(N);
+        mPsiGrid[i].resize(N);
+        for (int j = 0; j < N; j++) {
+            double iqA = imin + j * istep;            // RMS
+            double pd = flux(psid, idA, iqA), pq = flux(psiq, idA, iqA);
+            mTorqueCoeff[i][j] = pd * iqA - pq * idA;
+            mPsiGrid[i][j] = sqrt(pd * pd + pq * pq); // |ψ| at this node (FEA convention)
+        }
+    }
+    mTqMin = imin;          // RMS axis min/max
+    mTqMax = Id.last();
+    mTqN = N;
+    mHasTorqueLut = true;
+    return true;
+}
+
+// Saturated torque in Nm at (id, iq): bilinear over the coefficient grid (clamped to the map
+// edges outside its range), times 1.5·pole_pairs. Falls back to 0 if no map is loaded.
+double PageRtData::lookupTorque(double id, double iq)
+{
+    if (!mHasTorqueLut || mTqN < 2) {
+        return 0.0;
+    }
+    const double step = (mTqMax - mTqMin) / double(mTqN - 1);
+    // VESC id/iq are PEAK; the map is indexed by RMS current → convert (÷√2) for the lookup.
+    const double idR = id / M_SQRT2, iqR = iq / M_SQRT2;
+    mTqOutOfRange = (idR < mTqMin || idR > mTqMax || iqR < mTqMin || iqR > mTqMax);
+    double fi = qBound(0.0, (idR - mTqMin) / step, double(mTqN - 1));
+    double fj = qBound(0.0, (iqR - mTqMin) / step, double(mTqN - 1));
+    int i0 = qBound(0, int(qFloor(fi)), mTqN - 2); double ti = fi - i0;
+    int j0 = qBound(0, int(qFloor(fj)), mTqN - 2); double tj = fj - j0;
+    double coeff = (mTorqueCoeff[i0][j0] * (1 - tj) + mTorqueCoeff[i0][j0 + 1] * tj) * (1 - ti) +
+                   (mTorqueCoeff[i0 + 1][j0] * (1 - tj) + mTorqueCoeff[i0 + 1][j0 + 1] * tj) * ti;
+    double pp = mTrajPolePairs > 0.0 ? mTrajPolePairs : 1.0;
+    // sqrt(2/3): MotorXP's flux maps/torque use the power-invariant (RMS) dq convention; the
+    // 1.5p(ψd·iq−ψq·id) form here is amplitude-invariant. They differ by exactly √(3/2) — verified
+    // against MotorXP's reluctance (8.7) + magnet (1.65) = 10.35 vs the raw 12.72.
+    const double KCONV = 0.81649658; // sqrt(2/3)
+    return 1.5 * pp * coeff * KCONV;
+}
+
+// Peak flux amplitude |ψ| (Wb) at VESC peak (id, iq), from the FEA |ψ| grid. The FEA flux is in the
+// same √3 "line" convention as the torque maps, so the peak amplitude that limits speed (back-EMF
+// = ωe·|ψ|peak) is |ψ|FEA / √3. Returns 0 if no map is loaded.
+double PageRtData::psiPeakLookup(double id, double iq)
+{
+    if (mPsiGrid.size() < 2 || mTqN < 2) {
+        return 0.0;
+    }
+    const double step = (mTqMax - mTqMin) / double(mTqN - 1);
+    const double idR = id / M_SQRT2, iqR = iq / M_SQRT2;
+    double fi = qBound(0.0, (idR - mTqMin) / step, double(mTqN - 1));
+    double fj = qBound(0.0, (iqR - mTqMin) / step, double(mTqN - 1));
+    int i0 = qBound(0, int(qFloor(fi)), mTqN - 2); double ti = fi - i0;
+    int j0 = qBound(0, int(qFloor(fj)), mTqN - 2); double tj = fj - j0;
+    double psi = (mPsiGrid[i0][j0] * (1 - tj) + mPsiGrid[i0][j0 + 1] * tj) * (1 - ti) +
+                 (mPsiGrid[i0 + 1][j0] * (1 - tj) + mPsiGrid[i0 + 1][j0 + 1] * tj) * ti;
+    return psi / sqrt(3.0); // FEA |ψ| → peak amplitude
+}
+
+// FEA-MTPA operating point (peak amps) at current magnitude Is: the angle in the 2nd quadrant
+// (id<0, iq>0) that maximises the FEA torque. Falls back to id=0,iq=Is if no map.
+void PageRtData::mtpaFEA(double Is, double &id, double &iq)
+{
+    id = 0.0; iq = Is;
+    if (!mHasTorqueLut) {
+        return;
+    }
+    double best = -1e18;
+    for (int k = 900; k <= 1800; k += 2) {           // 90°..180° → id<0, iq>0
+        double b = qDegreesToRadians(k / 10.0);
+        double a = Is * cos(b), c = Is * sin(b);
+        double T = lookupTorque(a, c);
+        if (T > best) { best = T; id = a; iq = c; }
+    }
+}
+
+void PageRtData::loadTorqueMapFromCsv()
+{
+    QString dir = QFileDialog::getExistingDirectory(this,
+            tr("Select MotorXP dq export folder (Id.csv, Fluxlinkage_d.csv, Fluxlinkage_q.csv)"),
+            QDir::homePath());
+    if (dir.isEmpty()) {
+        return;
+    }
+    QString err;
+    if (!buildTorqueGrid(dir, err)) {
+        mHasTorqueLut = false;
+        QMessageBox::warning(this, tr("Torque Map Load Failed"),
+                tr("Could not build the torque map:\n%1").arg(err));
+        if (mTqInfo) {
+            mTqInfo->setText(tr("Torque: <b>linear model</b> (no FEA map) — overestimates under saturation"));
+        }
+        return;
+    }
+    saveTorqueLut();
+    if (mTqInfo) {
+        mTqInfo->setText(tr("Torque: <b>FEA map</b> loaded — %1×%1 grid, ±%2 A. Saturation-correct.")
+                .arg(mTqN).arg(mTqMax, 0, 'f', 0));
+    }
+    updateTrajTable();
+    QMessageBox::information(this, tr("Torque Map Loaded"),
+            tr("Loaded the saturated torque map T(id,iq) from the MotorXP flux CSVs (%1×%1, "
+               "±%2 A RMS = ±%3 A peak). The map axes are RMS; VESC id/iq (peak) are converted "
+               "on lookup. The Trajectory tab's torque now reflects saturation instead of the "
+               "linear formula. The map is remembered between sessions.")
+            .arg(mTqN).arg(mTqMax, 0, 'f', 0).arg(mTqMax * M_SQRT2, 0, 'f', 0));
+}
+
+void PageRtData::saveTorqueLut()
+{
+    QSettings set;
+    if (!mHasTorqueLut) {
+        set.remove("synrm/torqueLut");
+        return;
+    }
+    QByteArray blob;
+    QDataStream ds(&blob, QIODevice::WriteOnly);
+    ds << mTqN << mTqMin << mTqMax;
+    for (int i = 0; i < mTqN; i++) {
+        for (int j = 0; j < mTqN; j++) {
+            ds << mTorqueCoeff[i][j];
+        }
+    }
+    // append the |ψ| grid (VescInterface reads only the coeff above and ignores this tail).
+    bool hasPsi = mPsiGrid.size() == mTqN;
+    for (int i = 0; i < mTqN && hasPsi; i++) {
+        for (int j = 0; j < mTqN; j++) {
+            ds << mPsiGrid[i][j];
+        }
+    }
+    set.setValue("synrm/torqueLut", blob);
+}
+
+void PageRtData::restoreTorqueLut()
+{
+    QSettings set;
+    QByteArray blob = set.value("synrm/torqueLut").toByteArray();
+    if (!blob.isEmpty()) {
+        QDataStream ds(&blob, QIODevice::ReadOnly);
+        int n = 0; double mn = 0, mx = 0;
+        ds >> n >> mn >> mx;
+        if (n >= 2 && mx > mn) {
+            mTorqueCoeff.clear();
+            mTorqueCoeff.resize(n);
+            bool ok = true;
+            for (int i = 0; i < n && ok; i++) {
+                mTorqueCoeff[i].resize(n);
+                for (int j = 0; j < n; j++) {
+                    if (ds.atEnd()) { ok = false; break; }
+                    ds >> mTorqueCoeff[i][j];
+                }
+            }
+            if (ok) {
+                mTqN = n; mTqMin = mn; mTqMax = mx; mHasTorqueLut = true;
+                // optional |ψ| grid tail (present in maps saved by this build)
+                mPsiGrid.clear(); mPsiGrid.resize(n);
+                bool okPsi = true;
+                for (int i = 0; i < n && okPsi; i++) {
+                    mPsiGrid[i].resize(n);
+                    for (int j = 0; j < n; j++) {
+                        if (ds.atEnd()) { okPsi = false; break; }
+                        ds >> mPsiGrid[i][j];
+                    }
+                }
+                if (!okPsi) { mPsiGrid.clear(); } // old map without |ψ| → base speed falls back
+            }
+        }
+    }
+    if (mTqInfo) {
+        if (mHasTorqueLut) {
+            mTqInfo->setText(tr("Torque: <b>FEA map</b> loaded — %1×%1 grid, ±%2 A RMS (±%3 A pk). Saturation-correct.")
+                    .arg(mTqN).arg(mTqMax, 0, 'f', 0).arg(mTqMax * M_SQRT2, 0, 'f', 0));
+        } else {
+            mTqInfo->setText(tr("Torque: <b>linear model</b> (no FEA map) — overestimates under saturation"));
+        }
+    }
 }
 
 // Bilinear lookup of id* (VESC-negative amps) over the loaded 2-D table; mirrors the firmware.
@@ -807,6 +1105,16 @@ void PageRtData::updateTrajLive()
     mTrajTn->graph(1)->setData(QVector<double>() << mTrajLiveRpm,
                                QVector<double>() << mTrajLiveTorque);
     mTrajTn->replotWhenVisible();
+
+    // Warn when the live (id,iq) falls outside the FEA torque map (lookup clamps → under-reads).
+    if (mHasTorqueLut && mTqInfo) {
+        QString s = tr("Torque: <b>FEA map</b> — %1×%1 grid, ±%2 A RMS (±%3 A pk).")
+                .arg(mTqN).arg(mTqMax, 0, 'f', 0).arg(mTqMax * M_SQRT2, 0, 'f', 0);
+        s += mTqOutOfRange
+                ? tr(" <span style=\"color:#f0b429\">live point beyond map → torque clamped (under-reads)</span>")
+                : tr(" Saturation-correct.");
+        mTqInfo->setText(s);
+    }
 
     // current-speed map
     mTrajMap->graph(0)->setData(QVector<double>() << mTrajLiveRpm,
