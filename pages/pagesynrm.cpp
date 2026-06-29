@@ -35,6 +35,10 @@
 #define SYNRM_TRAJ_NS 7
 #define SYNRM_TRAJ_SIZE (SYNRM_TRAJ_NI * SYNRM_TRAJ_NS)
 
+// datatypes.h MTPA_MODE: OFF=0, IQ_TARGET=1, IQ_MEASURED=2, TRAJ_2D=3. The Trajectory LUT tab is
+// only meaningful (and only used by the firmware) in this mode.
+#define SYNRM_MTPA_MODE_TRAJ_2D 3
+
 PageSynrm::PageSynrm(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PageSynrm)
@@ -70,6 +74,25 @@ void PageSynrm::setVesc(VescInterface *vesc)
     mVesc = vesc;
 
     if (mVesc) {
+        // Connect to the config ONCE here (not in reloadParams, which is called repeatedly on every
+        // config read and would stack duplicate connections).
+        connect(mVesc->mcConfig(), &ConfigParams::paramChangedDouble, this,
+                [this](QObject *, QString name, double) {
+            if (name.startsWith("foc_traj")) {
+                updateTrajPlot();
+            }
+        });
+        // The Trajectory LUT tab is only usable when MTPA Mode = Trajectory 2-D + FW. Track that mode
+        // (changed on the FOC page) and whole-config reads so the tab enables/disables itself.
+        connect(mVesc->mcConfig(), &ConfigParams::paramChangedEnum, this,
+                [this](QObject *, QString name, int) {
+            if (name == "foc_mtpa_mode") {
+                updateTrajTabState();
+            }
+        });
+        connect(mVesc->mcConfig(), &ConfigParams::updated, this, [this]() {
+            updateTrajTabState();
+        });
         reloadParams();
     }
 }
@@ -78,14 +101,28 @@ void PageSynrm::reloadParams()
 {
     ui->paramTab->clearParams();
     ui->paramTab->addParamSubgroup(mVesc->mcConfig(), "synrm", "general");
-
-    connect(mVesc->mcConfig(), &ConfigParams::paramChangedDouble, this,
-            [this](QObject *, QString name, double) {
-        if (name.startsWith("foc_traj")) {
-            updateTrajPlot();
-        }
-    });
     updateTrajPlot();
+    updateTrajTabState();
+}
+
+// Enable the Trajectory LUT tab only in MTPA_MODE_TRAJ_2D (the only mode the firmware reads the LUT
+// in). Outside it, grey the tab out with a hint and keep the Parameters tab in front.
+void PageSynrm::updateTrajTabState()
+{
+    if (!mVesc) {
+        return;
+    }
+    const bool isTraj = mVesc->mcConfig()->getParamEnum("foc_mtpa_mode") == SYNRM_MTPA_MODE_TRAJ_2D;
+    const int idx = ui->synrmTabs->indexOf(ui->tabTraj);
+    if (idx < 0) {
+        return;
+    }
+    ui->synrmTabs->setTabEnabled(idx, isTraj);
+    ui->synrmTabs->setTabToolTip(idx, isTraj ? QString() :
+            tr("Set FOC → General → MTPA Mode = \"Trajectory 2-D + FW\" to use the trajectory LUT."));
+    if (!isTraj && ui->synrmTabs->currentIndex() == idx) {
+        ui->synrmTabs->setCurrentIndex(ui->synrmTabs->indexOf(ui->tabParams));
+    }
 }
 
 // Plot id* vs |I| for speed = 0, mid, top — reading the 2-D table from the config.

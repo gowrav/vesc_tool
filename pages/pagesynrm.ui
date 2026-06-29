@@ -15,78 +15,99 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="ParamTable" name="paramTab"/>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="mtpaGroup">
-     <property name="title">
-      <string>2-D Trajectory LUT (id*/iq* vs current &amp; speed, from LUT.xls)</string>
+    <widget class="QTabWidget" name="synrmTabs">
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <layout class="QVBoxLayout" name="mtpaGroupLayout">
-      <item>
-       <widget class="QLabel" name="mtpaHelpLabel">
-        <property name="textFormat">
-         <enum>Qt::RichText</enum>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>&lt;b&gt;2-D trajectory (MTPA + field weakening):&lt;/b&gt; export LUT.xls to CSV (cols: current, speed, id, iq) → &lt;b&gt;Load&lt;/b&gt; below → set &lt;b&gt;foc_traj_vnorm&lt;/b&gt; to the table's bus voltage → Write Motor Config. Current/id taken as PEAK; needs MTPA = Trajectory 2-D + FW.</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="mtpaLayout">
-        <item>
-         <widget class="QPushButton" name="loadMtpaButton">
-          <property name="text">
-           <string>Load 2-D Trajectory from LUT.xls CSV…</string>
-          </property>
-          <property name="toolTip">
-           <string>Select a MotorXP _DQmodel_parameters folder (Id.csv, Iq.csv, Fluxlinkage_d.csv, Fluxlinkage_q.csv). The MTPA id*(|I|) locus is computed here and written into the SynRM MTPA lookup table. Then Write Motor Configuration to upload it.</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="mtpaInfoLabel">
-          <property name="text">
-           <string>Current LUT: baked default (connected motor) — load a CSV to replace it.</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="mtpaSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QCustomPlot" name="mtpaPlot" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>150</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <widget class="QWidget" name="tabParams">
+      <attribute name="title">
+       <string>Parameters</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="tabParamsLayout">
+       <item>
+        <widget class="ParamTable" name="paramTab"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabTraj">
+      <attribute name="title">
+       <string>Trajectory LUT</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="tabTrajLayout">
+       <item>
+        <widget class="QGroupBox" name="mtpaGroup">
+         <property name="title">
+          <string>2-D Trajectory LUT (id*/iq* vs current &amp; speed, from LUT.xls)</string>
+         </property>
+         <layout class="QVBoxLayout" name="mtpaGroupLayout">
+          <item>
+           <widget class="QLabel" name="mtpaHelpLabel">
+            <property name="textFormat">
+             <enum>Qt::RichText</enum>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+            <property name="text">
+             <string>&lt;b&gt;2-D trajectory (MTPA + field weakening):&lt;/b&gt; export LUT.xls to CSV (cols: current, speed, id, iq) → &lt;b&gt;Load&lt;/b&gt; below → set &lt;b&gt;foc_traj_vnorm&lt;/b&gt; (on the Parameters tab) to the table's bus voltage → Write Motor Config. Current/id taken as PEAK; needs MTPA = Trajectory 2-D + FW.</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="mtpaLayout">
+            <item>
+             <widget class="QPushButton" name="loadMtpaButton">
+              <property name="text">
+               <string>Load 2-D Trajectory from LUT.xls CSV…</string>
+              </property>
+              <property name="toolTip">
+               <string>Select a LUT.xls export CSV (columns: current, speed, id, iq). The 2-D id*(|I|, speed) trajectory is computed here and written into the SynRM trajectory table. Then Write Motor Configuration to upload it.</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="mtpaInfoLabel">
+              <property name="text">
+               <string>Current LUT: baked default (connected motor) — load a CSV to replace it.</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="mtpaSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QCustomPlot" name="mtpaPlot" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>200</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>

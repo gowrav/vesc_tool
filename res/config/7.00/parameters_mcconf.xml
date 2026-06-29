@@ -2595,7 +2595,7 @@ p, li { white-space: pre-wrap; }
             <vTx>9</vTx>
         </foc_traj_lut__55>
         <foc_traj_imax>
-            <longName>foc_traj_imax</longName>
+            <longName>Trajectory — Current Axis Max</longName>
             <type>1</type>
             <transmittable>1</transmittable>
             <description>SynRM 2-D trajectory axis maximum.</description>
@@ -2613,7 +2613,7 @@ p, li { white-space: pre-wrap; }
             <vTx>9</vTx>
         </foc_traj_imax>
         <foc_traj_nmax>
-            <longName>foc_traj_nmax</longName>
+            <longName>Trajectory — Speed Axis Max</longName>
             <type>1</type>
             <transmittable>1</transmittable>
             <description>SynRM 2-D trajectory axis maximum.</description>
@@ -2631,10 +2631,10 @@ p, li { white-space: pre-wrap; }
             <vTx>9</vTx>
         </foc_traj_nmax>
         <foc_traj_vnorm>
-            <longName>foc_traj_vnorm</longName>
+            <longName>Trajectory — Bus Voltage (Vnorm)</longName>
             <type>1</type>
             <transmittable>1</transmittable>
-            <description>SynRM 2-D trajectory: bus voltage the LUT was generated for (V). Field weakening is speed-normalized by vnorm/vbus so it engages correctly at any battery voltage.</description>
+            <description>SynRM 2-D trajectory: bus voltage the LUT was generated for (V). Field weakening is speed-normalized by vnorm/vbus, so it engages at the correct speed for any battery voltage. Tuning tip: raise Vnorm ABOVE the real bus voltage to make field weakening engage EARLIER (at a lower speed) on a lower bus.</description>
             <cDefine>MCCONF_FOC_TRAJ_VNORM</cDefine>
             <editorDecimalsDouble>2</editorDecimalsDouble>
             <editorScale>1</editorScale>
@@ -6536,15 +6536,19 @@ p, li { white-space: pre-wrap; }
                 <subgroupParams>
                     <param>::sep::Position source (all speeds)</param>
                     <param>foc_synrm_src_0</param>
-                    <param>::sep::Trim — commutation angle offset (centers fwd/rev breakaway)</param>
+                    <param>::sep::Commutation angle trim (fwd/rev)</param>
                     <param>foc_synrm_phase_offset</param>
-                    <param>::sep::Encoder→Hall learning (Sensor Mode = Encoder): learn the hall table from the encoder up to this ERPM, then hand to halls. 0 = pure encoder.</param>
+                    <param>::sep::Encoder→Hall learning (0 = pure encoder)</param>
                     <param>foc_synrm_hybrid_erpm</param>
-                    <param>::sep::Current-loop strategy: Stock = VESC d-priority. Anti-windup = synmoc back-calc (validated). VCT = anti-windup + voltage-constraint field weakening.</param>
+                    <param>::sep::Current-loop strategy &amp; field weakening</param>
                     <param>foc_synrm_cc_mode</param>
                     <param>foc_synrm_vct_en</param>
                     <param>foc_synrm_vct_kv</param>
                     <param>foc_synrm_vct_gain</param>
+                    <param>::sep::Trajectory LUT (needs MTPA = Trajectory 2-D)</param>
+                    <param>foc_traj_vnorm</param>
+                    <param>foc_traj_imax</param>
+                    <param>foc_traj_nmax</param>
                 </subgroupParams>
             </subgroup>
         </group>

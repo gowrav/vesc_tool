@@ -49,6 +49,7 @@ private:
     bool computeTrajTable(const QString &csv, QVector<double> &lutAmps,
                           double &imax, double &nmax, QString &err);
     void updateTrajPlot();
+    void updateTrajTabState();
 };
 
 #endif // PAGESYNRM_H
