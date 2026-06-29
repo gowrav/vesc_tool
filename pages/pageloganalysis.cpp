@@ -68,6 +68,25 @@ PageLogAnalysis::PageLogAnalysis(QWidget *parent) :
             this, [this](int idx) {
         ui->mapStack->setCurrentIndex(idx);
         if (idx == 1) {
+            // If the time plot has nothing selected, auto-plot id + iq so it isn't blank next to
+            // the trajectory. Only when empty — never clobber an existing selection.
+            bool anyChecked = false;
+            for (int r = 0; r < ui->dataTable->rowCount() && !anyChecked; r++) {
+                QTableWidgetItem *y1 = ui->dataTable->item(r, dataTableColY1);
+                QTableWidgetItem *y2 = ui->dataTable->item(r, dataTableColY2);
+                anyChecked = (y1 && y1->checkState() == Qt::Checked) ||
+                             (y2 && y2->checkState() == Qt::Checked);
+            }
+            if (!anyChecked) {
+                for (int ind : {mInd_id, mInd_iq}) {
+                    if (ind >= 0 && ind < ui->dataTable->rowCount()) {
+                        QTableWidgetItem *y1 = ui->dataTable->item(ind, dataTableColY1);
+                        if (y1) {
+                            y1->setCheckState(Qt::Checked);
+                        }
+                    }
+                }
+            }
             updateTrajPlots();
         }
     });
@@ -393,6 +412,14 @@ void PageLogAnalysis::setVesc(VescInterface *vesc)
     mVesc = vesc;
 
     if (mVesc) {
+        // Redraw the trajectory overlays whenever the motor config is (re)read: that is when the
+        // correct pole count (→ mech rpm, fixing the speed multiplier), the trajectory LUT, the
+        // inductances and the current limit become available. The bus voltage already comes from
+        // the log's v_in values, so the overlays update without needing the log reloaded.
+        connect(mVesc->mcConfig(), &ConfigParams::updated, this, [this]() {
+            updateTrajPlots();
+        });
+
         auto updatePlots = [this]() {
             if (mLogRtFieldUpdatePending) {
                 return;
@@ -1060,21 +1087,39 @@ void PageLogAnalysis::setupTrajPlots()
         p->legend->setBrush(QBrush(QColor(0, 0, 0, 100)));
     }
     QColor cLive = Utility::getAppQColor("plot_graph2"); // moving point + trail
-    QColor cAux  = Utility::getAppQColor("plot_graph1"); // current limit / empirical
+    QColor cAux  = Utility::getAppQColor("plot_graph1"); // current limit / locus / empirical
     QColor cEnv  = Utility::getAppQColor("plot_graph3"); // ideal envelope / base speed
     QColor cTrail(cLive.red(), cLive.green(), cLive.blue(), 110);
 
-    // dq plane: current-limit circle (0) [static], trail (1), current point (2)
+    // dq plane (ported from the realtime Trajectory tab): current-limit circle (0), max-power
+    // trajectory (1), voltage-limit ellipses (2..5) [all static]; table locus @ speed (6),
+    // trail (7), now (8) [driven by the scrubber].
     ui->trajDq->addGraph();
     ui->trajDq->graph(0)->setPen(QPen(cAux, 1, Qt::DashLine));
     ui->trajDq->graph(0)->setName(tr("Current limit"));
     ui->trajDq->addGraph();
-    ui->trajDq->graph(1)->setPen(QPen(cTrail, 1));
-    ui->trajDq->graph(1)->setName(tr("Recent"));
+    ui->trajDq->graph(1)->setPen(QPen(QColor("#e377c2"), 2));
+    ui->trajDq->graph(1)->setName(tr("Max-power trajectory"));
+    for (int e = 0; e < 4; e++) {
+        ui->trajDq->addGraph();
+        QColor ec = cEnv; ec.setAlpha(170 - e * 32);
+        ui->trajDq->graph(2 + e)->setPen(QPen(ec, 1, Qt::DotLine));
+        if (e == 0) {
+            ui->trajDq->graph(2 + e)->setName(tr("Voltage-limit ellipse"));
+        } else {
+            ui->trajDq->graph(2 + e)->removeFromLegend();
+        }
+    }
     ui->trajDq->addGraph();
-    ui->trajDq->graph(2)->setLineStyle(QCPGraph::lsNone);
-    ui->trajDq->graph(2)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, cLive, 12));
-    ui->trajDq->graph(2)->setName(tr("Now"));
+    ui->trajDq->graph(6)->setPen(QPen(cAux, 2));
+    ui->trajDq->graph(6)->setName(tr("Table locus @ speed"));
+    ui->trajDq->addGraph();
+    ui->trajDq->graph(7)->setPen(QPen(cTrail, 1));
+    ui->trajDq->graph(7)->setName(tr("Recent"));
+    ui->trajDq->addGraph();
+    ui->trajDq->graph(8)->setLineStyle(QCPGraph::lsNone);
+    ui->trajDq->graph(8)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, cLive, 12));
+    ui->trajDq->graph(8)->setName(tr("Now"));
     ui->trajDq->xAxis->setLabel(tr("id (A)   ← field weakening"));
     ui->trajDq->yAxis->setLabel(tr("iq (A)  (torque)"));
 
@@ -1108,6 +1153,23 @@ double PageLogAnalysis::trajTorque(double id, double iq)
     return T;
 }
 
+// 2-D trajectory LUT id*(|I|, mech rpm) bilinear (ported from PageRtData::trajLookupId).
+double PageLogAnalysis::trajLookupId(double imag, double rpm)
+{
+    const int NI = 8, NS = 7; // keep in sync with bldc MTPA_TRAJ_NI / MTPA_TRAJ_NS
+    if (mTrajLut.size() < NI * NS || mTrajImax <= 0.0 || mTrajNmax <= 0.0) {
+        return 0.0;
+    }
+    double fi = qBound(0.0, imag / mTrajImax * (NI - 1), double(NI - 1));
+    double fs = qBound(0.0, rpm / mTrajNmax * (NS - 1), double(NS - 1));
+    int i0 = int(fi), s0 = int(fs);
+    int i1 = qMin(i0 + 1, NI - 1), s1 = qMin(s0 + 1, NS - 1);
+    double ti = fi - i0, ts = fs - s0;
+    double a = mTrajLut[i0 * NS + s0] * (1 - ts) + mTrajLut[i0 * NS + s1] * ts;
+    double b = mTrajLut[i1 * NS + s0] * (1 - ts) + mTrajLut[i1 * NS + s1] * ts;
+    return a * (1 - ti) + b * ti;
+}
+
 // Static overlays + fixed axis ranges (recomputed on log/selection change, NOT while scrubbing).
 // The moving point + trail are drawn by updateTrajCursor() as the scrubber advances.
 void PageLogAnalysis::updateTrajPlots()
@@ -1117,8 +1179,8 @@ void PageLogAnalysis::updateTrajPlots()
     }
     // Backwards compatible: logs without the FOC dq columns just show an empty trajectory.
     if (mInd_id < 0 || mInd_iq < 0 || mInd_erpm < 0) {
-        for (int g = 0; g < 3; g++) ui->trajDq->graph(g)->data()->clear();
-        for (int g = 0; g < 5; g++) ui->trajTn->graph(g)->data()->clear();
+        for (int g = 0; g < ui->trajDq->graphCount(); g++) ui->trajDq->graph(g)->data()->clear();
+        for (int g = 0; g < ui->trajTn->graphCount(); g++) ui->trajTn->graph(g)->data()->clear();
         ui->trajDq->replotWhenVisible();
         ui->trajTn->replotWhenVisible();
         return;
@@ -1128,9 +1190,12 @@ void PageLogAnalysis::updateTrajPlots()
         return;
     }
 
-    // Cache the torque model so scrubbing is cheap.
+    // Cache the config (torque model + the trajectory LUT/inductances for the dq overlays) so the
+    // scrubber is cheap. All optional → empty overlays + linear torque when nothing is loaded.
     mTrajPp = 1.0; mTrajLambda = 0.0; mTrajLdlq = 0.0; mTrajHaveCfg = false;
-    double imax = 0.0;
+    mTrajHasTable = false; mTrajImax = 0.0; mTrajNmax = 0.0;
+    mTrajLd = 0.0; mTrajLq = 0.0; mTrajIs = 0.0; mTrajVmax = 0.0; mTrajBaseRpm = 0.0;
+    double imax = 0.0, duty = 0.85;
     if (mVesc) {
         ConfigParams *mc = mVesc->mcConfig();
         int poles = mc->getParamInt("si_motor_poles");
@@ -1139,16 +1204,31 @@ void PageLogAnalysis::updateTrajPlots()
         }
         mTrajLambda = mc->getParamDouble("foc_motor_flux_linkage");
         mTrajLdlq = mc->getParamDouble("foc_motor_ld_lq_diff");
+        double Lavg = mc->getParamDouble("foc_motor_l");
+        mTrajLd = Lavg - mTrajLdlq / 2.0;
+        mTrajLq = Lavg + mTrajLdlq / 2.0;
         imax = mc->getParamDouble("l_current_max");
+        mTrajIs = imax;
+        mTrajImax = mc->getParamDouble("foc_traj_imax");
+        mTrajNmax = mc->getParamDouble("foc_traj_nmax");
+        double dmax = mc->getParamDouble("l_max_duty");
+        if (dmax > 0.1) { duty = dmax; }
+        mTrajLut.resize(8 * 7);
+        for (int i = 0; i < mTrajLut.size(); i++) {
+            mTrajLut[i] = mc->getParamDouble(QString("foc_traj_lut__%1").arg(i));
+        }
+        mTrajHasTable = mTrajImax > 0.0 && mTrajNmax > 0.0;
         mVesc->rtLogReloadTorque(); // FEA saturated torque map (shared via QSettings), if loaded
         mTrajHaveCfg = true;
     }
 
-    double iMag = 0.0, nMax = 0.0, tMax = 0.0, tMin = 0.0;
+    double iMag = 0.0, nMax = 0.0, tMax = 0.0, tMin = 0.0, vinSum = 0.0;
+    int vinN = 0;
     QMap<int, double> binMax; // speed bin (150 rpm) -> max |torque| (empirical envelope)
     for (const auto &d : log) {
         double id = d[mInd_id], iq = d[mInd_iq];
         double n = fabs(d[mInd_erpm]) / mTrajPp;
+        if (mInd_v_in >= 0) { vinSum += d[mInd_v_in]; vinN++; }
         double T = trajTorque(id, iq);
         iMag = qMax(iMag, sqrt(id * id + iq * iq));
         nMax = qMax(nMax, n); tMax = qMax(tMax, T); tMin = qMin(tMin, T);
@@ -1158,9 +1238,12 @@ void PageLogAnalysis::updateTrajPlots()
         }
     }
 
-    // dq: current-limit circle + fixed symmetric range (the circle bounds the operating points)
-    double R = imax > 1.0 ? imax : iMag;
-    double M = qMax(R, iMag) * 1.12;
+    // dq: current-limit circle + fixed symmetric range. Use max(config limit, log's peak |I|) so the
+    // circle always encloses the operating points — the config limit is wrong/stale when disconnected
+    // or when the log was recorded with a different current limit.
+    double R = qMax(imax, iMag);
+    mTrajIs = R; // sweep the locus / max-power trajectory out to the operating-current envelope
+    double M = R * 1.12;
     QVector<double> cx, cy;
     for (int a = 0; a <= 360; a += 3) {
         double th = a * M_PI / 180.0;
@@ -1169,6 +1252,51 @@ void PageLogAnalysis::updateTrajPlots()
     ui->trajDq->graph(0)->setData(cx, cy);
     ui->trajDq->xAxis->setRange(-M, M);
     ui->trajDq->yAxis->setRange(-M, M);
+
+    // Vmax + base speed (linear flux model), used by the max-power trajectory + voltage ellipses.
+    // Bus = the log's mean input voltage (the real bus while the run was recorded).
+    double Vbus = vinN > 0 ? vinSum / vinN : 0.0;
+    mTrajVmax = (1.0 / sqrt(3.0)) * duty * Vbus;
+    double Is = mTrajIs; // current-limit radius for the trajectory sweeps
+    if (mTrajHasTable && mTrajVmax > 0.0 && mTrajLd > 1e-9) {
+        double idS = trajLookupId(Is, 0.0);
+        double iqS = sqrt(qMax(0.0, Is * Is - idS * idS));
+        double psd = mTrajLambda + mTrajLd * idS, psq = mTrajLq * iqS;
+        double psi = sqrt(psd * psd + psq * psq);
+        double wbaseElec = psi > 1e-9 ? mTrajVmax / psi : 0.0;
+        mTrajBaseRpm = wbaseElec * 60.0 / (2.0 * M_PI * mTrajPp);
+
+        // max-power trajectory: id*(Is, speed), iq* = sqrt(Is² − id*²), swept over speed
+        QVector<double> tx, ty;
+        double rmax = qMax(mTrajNmax, mTrajBaseRpm * 4.0);
+        for (int s = 0; s <= 80; s++) {
+            double r = rmax * s / 80.0;
+            double idr = trajLookupId(Is, r);
+            tx << idr; ty << sqrt(qMax(0.0, Is * Is - idr * idr));
+        }
+        ui->trajDq->graph(1)->setData(tx, ty);
+
+        // voltage-limit ellipses: (Ld·id+λ)² + (Lq·iq)² = (Vmax/ωe)², centre (−λ/Ld, 0)
+        double idC = mTrajLd > 1e-9 ? -mTrajLambda / mTrajLd : 0.0;
+        double mult[4] = {1.0, 1.6, 2.6, 4.2};
+        for (int e = 0; e < 4; e++) {
+            double wElec = mTrajBaseRpm * mult[e] * 2.0 * M_PI * mTrajPp / 60.0;
+            double VoW = wElec > 1e-6 ? mTrajVmax / wElec : 0.0;
+            double aId = mTrajLd > 1e-9 ? VoW / mTrajLd : 0.0;
+            double aIq = mTrajLq > 1e-9 ? VoW / mTrajLq : 0.0;
+            QVector<double> ux, uy;
+            for (int k = 0; k <= 60; k++) {
+                double th = 2.0 * M_PI * k / 60.0;
+                ux << idC + aId * cos(th); uy << aIq * sin(th);
+            }
+            ui->trajDq->graph(2 + e)->setData(ux, uy);
+        }
+    } else {
+        // no LUT/config (e.g. disconnected with no config read) → leave the config-derived overlays empty
+        for (int g = 1; g <= 5; g++) {
+            ui->trajDq->graph(g)->data()->clear();
+        }
+    }
 
     // torque-speed: empirical max-per-bin, ideal const-T → const-P, base-speed line
     QVector<double> en, eT, lows;
@@ -1243,13 +1371,28 @@ void PageLogAnalysis::updateTrajCursor(double time)
         tid << id; tiq << iq;
         tn_ << fabs(d[mInd_erpm]) / mTrajPp; tT << trajTorque(id, iq);
     }
-    ui->trajDq->graph(1)->setData(tid, tiq);
+    ui->trajDq->graph(7)->setData(tid, tiq);
     ui->trajTn->graph(3)->setData(tn_, tT);
 
     const auto &c = mLogTruncated[idx];
     double cid = c[mInd_id], ciq = c[mInd_iq];
     double cn = fabs(c[mInd_erpm]) / mTrajPp, cT = trajTorque(cid, ciq);
-    ui->trajDq->graph(2)->setData(QVector<double>{cid}, QVector<double>{ciq});
+
+    // table locus at the current scrub speed: id*(|I|, cn) swept over |I| (graph 6)
+    if (mTrajHasTable) {
+        QVector<double> lx, ly;
+        double Is = mTrajIs;
+        for (int s = 0; s <= 60; s++) {
+            double I = Is * s / 60.0;
+            double idr = trajLookupId(I, cn);
+            lx << idr; ly << sqrt(qMax(0.0, I * I - idr * idr));
+        }
+        ui->trajDq->graph(6)->setData(lx, ly);
+    } else {
+        ui->trajDq->graph(6)->data()->clear();
+    }
+
+    ui->trajDq->graph(8)->setData(QVector<double>{cid}, QVector<double>{ciq});
     ui->trajTn->graph(4)->setData(QVector<double>{cn}, QVector<double>{cT});
 
     ui->trajDq->replotWhenVisible();

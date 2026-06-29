@@ -198,9 +198,13 @@ private:
     void updateTrajPlots();         // static overlays (circle/envelope/base speed) + axis ranges
     void updateTrajCursor(double time); // moving operating point + trailing tail, driven by the scrubber
     double trajTorque(double id, double iq); // torque from cached config / shared FEA map
-    // cached config for the trajectory torque model (set in updateTrajPlots, used while scrubbing)
+    double trajLookupId(double imag, double rpm); // 2-D trajectory LUT bilinear (ported from PageRtData)
+    // cached config for the trajectory overlays (set in updateTrajPlots, reused while scrubbing)
     double mTrajPp = 1.0, mTrajLambda = 0.0, mTrajLdlq = 0.0;
-    bool mTrajHaveCfg = false;
+    double mTrajImax = 0.0, mTrajNmax = 0.0, mTrajLd = 0.0, mTrajLq = 0.0;
+    double mTrajIs = 0.0, mTrajVmax = 0.0, mTrajBaseRpm = 0.0;
+    bool mTrajHaveCfg = false, mTrajHasTable = false;
+    QVector<double> mTrajLut;
     void updateSelectedDataItems();
     void updateSelectedDataItemValues();
     void updateStats();
