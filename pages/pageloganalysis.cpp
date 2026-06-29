@@ -60,6 +60,18 @@ PageLogAnalysis::PageLogAnalysis(QWidget *parent) :
 
     resetInds();
 
+    // SynRM trajectory view of the log (toggled against the GPS map). Additive + backwards
+    // compatible: default view is the map, and the trajectory view is empty for logs without
+    // id/iq/erpm columns.
+    setupTrajPlots();
+    connect(ui->viewCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, [this](int idx) {
+        ui->mapStack->setCurrentIndex(idx);
+        if (idx == 1) {
+            updateTrajPlots();
+        }
+    });
+
     ui->centerButton->setIcon(Utility::getIcon("icons/icons8-target-96.png"));
     ui->playButton->setIcon(Utility::getIcon("icons/Circled Play-96.png"));
     ui->logListRefreshButton->setIcon(Utility::getIcon("icons/Refresh-96.png"));
@@ -1032,6 +1044,216 @@ void PageLogAnalysis::updateGraphs()
     }
 
     ui->plot->replotWhenVisible();
+
+    updateTrajPlots(); // keep the trajectory view in sync with the selection (no-op unless visible)
+}
+
+// --- SynRM trajectory view of the log: dq locus + torque-speed (map/trajectory toggle) ---
+
+void PageLogAnalysis::setupTrajPlots()
+{
+    QCustomPlot *plots[2] = {ui->trajDq, ui->trajTn};
+    for (auto p : plots) {
+        Utility::setPlotColors(p);
+        p->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+        p->legend->setVisible(true);
+        p->legend->setBrush(QBrush(QColor(0, 0, 0, 100)));
+    }
+    QColor cLive = Utility::getAppQColor("plot_graph2"); // moving point + trail
+    QColor cAux  = Utility::getAppQColor("plot_graph1"); // current limit / empirical
+    QColor cEnv  = Utility::getAppQColor("plot_graph3"); // ideal envelope / base speed
+    QColor cTrail(cLive.red(), cLive.green(), cLive.blue(), 110);
+
+    // dq plane: current-limit circle (0) [static], trail (1), current point (2)
+    ui->trajDq->addGraph();
+    ui->trajDq->graph(0)->setPen(QPen(cAux, 1, Qt::DashLine));
+    ui->trajDq->graph(0)->setName(tr("Current limit"));
+    ui->trajDq->addGraph();
+    ui->trajDq->graph(1)->setPen(QPen(cTrail, 1));
+    ui->trajDq->graph(1)->setName(tr("Recent"));
+    ui->trajDq->addGraph();
+    ui->trajDq->graph(2)->setLineStyle(QCPGraph::lsNone);
+    ui->trajDq->graph(2)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, cLive, 12));
+    ui->trajDq->graph(2)->setName(tr("Now"));
+    ui->trajDq->xAxis->setLabel(tr("id (A)   ← field weakening"));
+    ui->trajDq->yAxis->setLabel(tr("iq (A)  (torque)"));
+
+    // torque-speed: ideal envelope (0), empirical max (1), base speed (2) [static], trail (3), now (4)
+    ui->trajTn->addGraph();
+    ui->trajTn->graph(0)->setPen(QPen(cEnv, 2, Qt::DashLine));
+    ui->trajTn->graph(0)->setName(tr("Ideal const-T → const-P"));
+    ui->trajTn->addGraph();
+    ui->trajTn->graph(1)->setPen(QPen(cAux, 2));
+    ui->trajTn->graph(1)->setName(tr("Empirical max torque"));
+    ui->trajTn->addGraph();
+    ui->trajTn->graph(2)->setPen(QPen(cEnv, 1, Qt::DotLine));
+    ui->trajTn->graph(2)->setName(tr("Base speed"));
+    ui->trajTn->addGraph();
+    ui->trajTn->graph(3)->setPen(QPen(cTrail, 1));
+    ui->trajTn->graph(3)->setName(tr("Recent"));
+    ui->trajTn->addGraph();
+    ui->trajTn->graph(4)->setLineStyle(QCPGraph::lsNone);
+    ui->trajTn->graph(4)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, cLive, 12));
+    ui->trajTn->graph(4)->setName(tr("Now"));
+    ui->trajTn->xAxis->setLabel(tr("speed (rpm, mech)"));
+    ui->trajTn->yAxis->setLabel(tr("torque (Nm)"));
+}
+
+double PageLogAnalysis::trajTorque(double id, double iq)
+{
+    double T = mTrajHaveCfg ? mVesc->rtLogTorque(id, iq, mTrajPp) : 0.0;
+    if (T == 0.0) {
+        T = 1.5 * mTrajPp * iq * (mTrajLambda - mTrajLdlq * id); // linear fallback (no FEA map)
+    }
+    return T;
+}
+
+// Static overlays + fixed axis ranges (recomputed on log/selection change, NOT while scrubbing).
+// The moving point + trail are drawn by updateTrajCursor() as the scrubber advances.
+void PageLogAnalysis::updateTrajPlots()
+{
+    if (ui->mapStack->currentIndex() != 1) {
+        return; // only when the trajectory view is visible
+    }
+    // Backwards compatible: logs without the FOC dq columns just show an empty trajectory.
+    if (mInd_id < 0 || mInd_iq < 0 || mInd_erpm < 0) {
+        for (int g = 0; g < 3; g++) ui->trajDq->graph(g)->data()->clear();
+        for (int g = 0; g < 5; g++) ui->trajTn->graph(g)->data()->clear();
+        ui->trajDq->replotWhenVisible();
+        ui->trajTn->replotWhenVisible();
+        return;
+    }
+    const QVector<QVector<double> > &log = mLogTruncated.isEmpty() ? mLog : mLogTruncated;
+    if (log.isEmpty()) {
+        return;
+    }
+
+    // Cache the torque model so scrubbing is cheap.
+    mTrajPp = 1.0; mTrajLambda = 0.0; mTrajLdlq = 0.0; mTrajHaveCfg = false;
+    double imax = 0.0;
+    if (mVesc) {
+        ConfigParams *mc = mVesc->mcConfig();
+        int poles = mc->getParamInt("si_motor_poles");
+        if (poles >= 2) {
+            mTrajPp = poles / 2.0;
+        }
+        mTrajLambda = mc->getParamDouble("foc_motor_flux_linkage");
+        mTrajLdlq = mc->getParamDouble("foc_motor_ld_lq_diff");
+        imax = mc->getParamDouble("l_current_max");
+        mVesc->rtLogReloadTorque(); // FEA saturated torque map (shared via QSettings), if loaded
+        mTrajHaveCfg = true;
+    }
+
+    double iMag = 0.0, nMax = 0.0, tMax = 0.0, tMin = 0.0;
+    QMap<int, double> binMax; // speed bin (150 rpm) -> max |torque| (empirical envelope)
+    for (const auto &d : log) {
+        double id = d[mInd_id], iq = d[mInd_iq];
+        double n = fabs(d[mInd_erpm]) / mTrajPp;
+        double T = trajTorque(id, iq);
+        iMag = qMax(iMag, sqrt(id * id + iq * iq));
+        nMax = qMax(nMax, n); tMax = qMax(tMax, T); tMin = qMin(tMin, T);
+        int b = int(n / 150.0 + 0.5);
+        if (!binMax.contains(b) || fabs(T) > binMax[b]) {
+            binMax[b] = fabs(T);
+        }
+    }
+
+    // dq: current-limit circle + fixed symmetric range (the circle bounds the operating points)
+    double R = imax > 1.0 ? imax : iMag;
+    double M = qMax(R, iMag) * 1.12;
+    QVector<double> cx, cy;
+    for (int a = 0; a <= 360; a += 3) {
+        double th = a * M_PI / 180.0;
+        cx << R * cos(th); cy << R * sin(th);
+    }
+    ui->trajDq->graph(0)->setData(cx, cy);
+    ui->trajDq->xAxis->setRange(-M, M);
+    ui->trajDq->yAxis->setRange(-M, M);
+
+    // torque-speed: empirical max-per-bin, ideal const-T → const-P, base-speed line
+    QVector<double> en, eT, lows;
+    for (auto it = binMax.constBegin(); it != binMax.constEnd(); ++it) {
+        en << it.key() * 150.0; eT << it.value();
+        if (it.key() * 150.0 < 0.45 * nMax) {
+            lows << it.value();
+        }
+    }
+    ui->trajTn->graph(1)->setData(en, eT);
+    double plateau = 0.0;
+    if (!lows.isEmpty()) {
+        std::sort(lows.begin(), lows.end());
+        plateau = lows[lows.size() / 2]; // const-T value = median low-speed max torque
+    }
+    double base = nMax * 0.6;
+    for (auto it = binMax.constBegin(); it != binMax.constEnd(); ++it) {
+        if (it.key() * 150.0 > 0.2 * nMax && it.value() < 0.9 * plateau) {
+            base = it.key() * 150.0; // knee: torque first falls 10% below the plateau
+            break;
+        }
+    }
+    QVector<double> tn_n, tn_T;
+    double dn = nMax / 120.0 + 1.0;
+    for (double n = 0; n <= nMax * 1.02; n += dn) {
+        tn_n << n; tn_T << (n <= base ? plateau : plateau * base / n);
+    }
+    ui->trajTn->graph(0)->setData(tn_n, tn_T);
+    QVector<double> bx, by;
+    bx << base << base; by << qMin(0.0, tMin) * 1.1 << qMax(plateau, tMax) * 1.1;
+    ui->trajTn->graph(2)->setData(bx, by);
+    ui->trajTn->xAxis->setRange(0, nMax * 1.05);
+    ui->trajTn->yAxis->setRange(qMin(0.0, tMin) * 1.1, qMax(plateau, tMax) * 1.12);
+
+    // draw the moving point at the current scrub position (keeps the view in sync on load/switch)
+    updateTrajCursor(mPlayPosNow);
+}
+
+// Light up only the sample at the scrub position, with a trailing tail of recent samples. Fixed
+// axes (set in updateTrajPlots) so the point moves against a stable backdrop while scrubbing.
+void PageLogAnalysis::updateTrajCursor(double time)
+{
+    if (ui->mapStack->currentIndex() != 1) {
+        return;
+    }
+    if (mInd_id < 0 || mInd_iq < 0 || mInd_erpm < 0 || mLogTruncated.isEmpty()) {
+        return;
+    }
+
+    // Resolve the scrub time (relative to the first selected sample) to an index.
+    int idx = mLogTruncated.size() - 1;
+    if (mInd_t_day >= 0) {
+        double start = mLogTruncated.first()[mInd_t_day];
+        for (int i = 0; i < mLogTruncated.size(); i++) {
+            double tn = mLogTruncated[i][mInd_t_day] - start;
+            if (tn < 0) {
+                tn += 60 * 60 * 24; // midnight wrap
+            }
+            if (tn >= time) {
+                idx = i;
+                break;
+            }
+        }
+    }
+
+    const int TRAIL = 100; // ~3 s of tail at 36 Hz
+    int i0 = qMax(0, idx - TRAIL);
+    QVector<double> tid, tiq, tn_, tT;
+    for (int i = i0; i <= idx; i++) {
+        const auto &d = mLogTruncated[i];
+        double id = d[mInd_id], iq = d[mInd_iq];
+        tid << id; tiq << iq;
+        tn_ << fabs(d[mInd_erpm]) / mTrajPp; tT << trajTorque(id, iq);
+    }
+    ui->trajDq->graph(1)->setData(tid, tiq);
+    ui->trajTn->graph(3)->setData(tn_, tT);
+
+    const auto &c = mLogTruncated[idx];
+    double cid = c[mInd_id], ciq = c[mInd_iq];
+    double cn = fabs(c[mInd_erpm]) / mTrajPp, cT = trajTorque(cid, ciq);
+    ui->trajDq->graph(2)->setData(QVector<double>{cid}, QVector<double>{ciq});
+    ui->trajTn->graph(4)->setData(QVector<double>{cn}, QVector<double>{cT});
+
+    ui->trajDq->replotWhenVisible();
+    ui->trajTn->replotWhenVisible();
 }
 
 void PageLogAnalysis::updateSelectedDataItems()
@@ -1472,6 +1694,8 @@ void PageLogAnalysis::updateDataAndPlot(double time)
     mVerticalLine->setData(x, y);
     mVerticalLine->setVisible(true);
     ui->plot->replotWhenVisible();
+
+    updateTrajCursor(mPlayPosNow); // move the trajectory "Now" point + trail with the scrubber
 
     auto sample = getLogSample(time);
     auto first = mLogTruncated.first();

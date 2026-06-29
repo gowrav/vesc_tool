@@ -119,6 +119,11 @@ private:
     int mInd_roll;
     int mInd_pitch;
     int mInd_yaw;
+    int mInd_id;
+    int mInd_iq;
+    int mInd_erpm;
+    int mInd_v_in;
+    int mInd_curr_motor;
     QVector<int> mInd_fault;
 
     struct SelectoData {
@@ -148,6 +153,11 @@ private:
         mInd_roll = -1;
         mInd_pitch = -1;
         mInd_yaw = -1;
+        mInd_id = -1;
+        mInd_iq = -1;
+        mInd_erpm = -1;
+        mInd_v_in = -1;
+        mInd_curr_motor = -1;
         mInd_fault.clear();
     }
 
@@ -172,6 +182,11 @@ private:
                 else if (e.key == "roll") mInd_roll = i;
                 else if (e.key == "pitch") mInd_pitch = i;
                 else if (e.key == "yaw") mInd_yaw = i;
+                else if (e.key == "id") mInd_id = i;
+                else if (e.key == "iq") mInd_iq = i;
+                else if (e.key == "erpm") mInd_erpm = i;
+                else if (e.key == "v_in") mInd_v_in = i;
+                else if (e.key == "setup_curr_motor") mInd_curr_motor = i;
                 else if (e.key == "fault") mInd_fault.append(i);
             }
         }
@@ -179,6 +194,13 @@ private:
 
     void truncateDataAndPlot(bool zoomGraph = true);
     void updateGraphs();
+    void setupTrajPlots();          // SynRM dq-locus + torque-speed view (map/trajectory toggle)
+    void updateTrajPlots();         // static overlays (circle/envelope/base speed) + axis ranges
+    void updateTrajCursor(double time); // moving operating point + trailing tail, driven by the scrubber
+    double trajTorque(double id, double iq); // torque from cached config / shared FEA map
+    // cached config for the trajectory torque model (set in updateTrajPlots, used while scrubbing)
+    double mTrajPp = 1.0, mTrajLambda = 0.0, mTrajLdlq = 0.0;
+    bool mTrajHaveCfg = false;
     void updateSelectedDataItems();
     void updateSelectedDataItemValues();
     void updateStats();

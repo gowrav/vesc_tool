@@ -285,6 +285,11 @@ public:
     Q_INVOKABLE bool isBlockFwSwap() const;
     Q_INVOKABLE void setBlockFwSwap(bool newBlockFwSwap);
 
+    // SynRM saturated torque map (shared via QSettings) — also used by the Log Analysis
+    // trajectory view to compute torque from logged (id, iq).
+    void rtLogReloadTorque();                       // restore the map from QSettings
+    double rtLogTorque(double idPk, double iqPk, double pp); // saturated Nm (RMS-aware), 0 if no map
+
 signals:
     void statusMessage(const QString &msg, bool isGood);
     void messageDialog(const QString &title, const QString &msg, bool isGood, bool richText);
@@ -376,8 +381,7 @@ private:
     double mRtTqMin, mRtTqMax;
     int mRtTqN;
     bool mRtTqLoaded;
-    void rtLogReloadTorque();                       // restore the map from QSettings (call at log start)
-    double rtLogTorque(double idPk, double iqPk, double pp); // saturated Nm (RMS-aware), 0 if no map
+    // rtLogReloadTorque() / rtLogTorque() are declared public above (shared with PageLogAnalysis).
     QVector<ConfigParams*> mCustomConfigs;
     bool mCustomConfigsLoaded;
     bool mCustomConfigRxDone;

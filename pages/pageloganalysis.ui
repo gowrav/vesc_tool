@@ -39,20 +39,72 @@
      <widget class="QWidget" name="layoutWidget">
       <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0">
        <item>
-        <widget class="MapWidget" name="map" native="true">
+        <widget class="QStackedWidget" name="mapStack">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="mapPage">
+          <layout class="QVBoxLayout" name="mapPageLayout">
+           <property name="leftMargin"><number>0</number></property>
+           <property name="topMargin"><number>0</number></property>
+           <property name="rightMargin"><number>0</number></property>
+           <property name="bottomMargin"><number>0</number></property>
+           <item>
+            <widget class="MapWidget" name="map" native="true">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="trajPage">
+          <layout class="QHBoxLayout" name="trajPageLayout">
+           <property name="leftMargin"><number>0</number></property>
+           <property name="topMargin"><number>0</number></property>
+           <property name="rightMargin"><number>0</number></property>
+           <property name="bottomMargin"><number>0</number></property>
+           <item>
+            <widget class="QCustomPlot" name="trajDq" native="true"/>
+           </item>
+           <item>
+            <widget class="QCustomPlot" name="trajTn" native="true"/>
+           </item>
+          </layout>
+         </widget>
         </widget>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,0,0,0,0,1,0,0">
+        <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,0,0,0,0,0,1,0,0">
          <property name="spacing">
           <number>2</number>
          </property>
+         <item>
+          <widget class="QComboBox" name="viewCombo">
+           <property name="toolTip">
+            <string>Switch the left panel between the GPS map and the SynRM trajectory view (dq locus + torque-speed) of the logged data.</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>Map</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Trajectory</string>
+            </property>
+           </item>
+          </widget>
+         </item>
          <item>
           <widget class="QCheckBox" name="gridBox">
            <property name="text">
