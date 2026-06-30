@@ -573,17 +573,24 @@ void PageRtData::setupTrajTab()
     mTrajDq->xAxis->setLabel("id (A)   ← field weakening");
     mTrajDq->yAxis->setLabel("iq (A)  (torque)");
 
-    // --- torque vs speed: envelope (0), live point (1) ---
+    // --- torque vs speed: realistic envelope (0), live point (1), realistic base (2),
+    //     theoretical envelope (3), theoretical base (4) ---
     mTrajTn->addGraph();
     mTrajTn->graph(0)->setPen(QPen(cCurve, 2));
-    mTrajTn->graph(0)->setName("Envelope (const-T → const-P)");
+    mTrajTn->graph(0)->setName("Realistic envelope (~26 V realized)");
     mTrajTn->addGraph();
     mTrajTn->graph(1)->setLineStyle(QCPGraph::lsNone);
     mTrajTn->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, cLive, 12));
     mTrajTn->graph(1)->setName("Now");
-    mTrajTn->addGraph(); // 2: base-speed line
-    mTrajTn->graph(2)->setPen(QPen(cAux, 1, Qt::DashLine));
-    mTrajTn->graph(2)->setName("Base speed");
+    mTrajTn->addGraph(); // 2: realistic base-speed line
+    mTrajTn->graph(2)->setPen(QPen(cCurve, 1, Qt::DotLine));
+    mTrajTn->graph(2)->setName("Base speed (realistic)");
+    mTrajTn->addGraph(); // 3: theoretical envelope (full SVPWM ceiling)
+    mTrajTn->graph(3)->setPen(QPen(cAux, 2, Qt::DashLine));
+    mTrajTn->graph(3)->setName("Theoretical envelope (~36 V ceiling)");
+    mTrajTn->addGraph(); // 4: theoretical base-speed line
+    mTrajTn->graph(4)->setPen(QPen(cAux, 1, Qt::DotLine));
+    mTrajTn->graph(4)->setName("Base speed (theoretical)");
     mTrajTn->xAxis->setLabel("speed (rpm, mech)");
     mTrajTn->yAxis->setLabel("torque (Nm)");
 
@@ -744,21 +751,26 @@ void PageRtData::computeBaseSpeed()
     double Tmax = mHasTorqueLut ? lookupTorque(id0, iq0)
                                 : 1.5 * pp * iq0 * (lambda - ldlqdiff * id0);
 
-    // Envelope: constant torque up to base speed, then constant power (T = Tmax·base/speed).
-    // Knee sits exactly on the base-speed line.
-    QVector<double> ex, ey;
-    double rpmMax = qMax(qMax(mTrajNmax, rpm * 2.5), mTrajLiveRpm);
+    // Two envelopes (const-T up to base speed, then const-P): theoretical at the full SVPWM ceiling,
+    // and realistic at the realized AC voltage (~72% of the ceiling after modulation margin + dead-time
+    // + R·I + bus sag, ≈26 V vs ≈36 V). `rpm` is the base speed at the duty-capped Vmax; undo the duty
+    // to get the full-ceiling (theoretical) knee, then scale by kVoltUtil for the realistic knee.
+    const double kVoltUtil = 0.72;
+    double baseTheo = duty > 0.05 ? rpm / duty : rpm;
+    double baseReal = baseTheo * kVoltUtil;
+    QVector<double> ex, ey, hx, hy;
+    double rpmMax = qMax(qMax(mTrajNmax, baseTheo * 1.6), mTrajLiveRpm);
     if (rpmMax < 1.0) {
         rpmMax = 3000.0;
     }
     const int NSP = 200;
     for (int s = 0; s <= NSP; s++) {
         double r = rpmMax * s / double(NSP);
-        double T = (rpm < 1.0 || r <= rpm) ? Tmax : Tmax * rpm / r;
-        ex.append(r);
-        ey.append(T);
+        ex.append(r); ey.append((baseReal < 1.0 || r <= baseReal) ? Tmax : Tmax * baseReal / r);
+        hx.append(r); hy.append((baseTheo < 1.0 || r <= baseTheo) ? Tmax : Tmax * baseTheo / r);
     }
-    mTrajTn->graph(0)->setData(ex, ey);
+    mTrajTn->graph(0)->setData(ex, ey); // realistic
+    mTrajTn->graph(3)->setData(hx, hy); // theoretical
     if (Tmax > 0.0) {
         mTrajTn->yAxis->setRange(0, Tmax * 1.15);
     }
@@ -788,12 +800,14 @@ void PageRtData::computeBaseSpeed()
     mTrajTn->xAxis->setRange(0, xmax);
     mTrajMap->xAxis->setRange(0, xmax);
 
-    // vertical base-speed line on T-N and map
+    // vertical base-speed lines on T-N (realistic + theoretical) and on the map (realistic)
     double tnTop = mTrajTn->yAxis->range().upper;
-    mTrajTn->graph(2)->setData(QVector<double>() << rpm << rpm,
+    mTrajTn->graph(2)->setData(QVector<double>() << baseReal << baseReal,
+                               QVector<double>() << 0.0 << tnTop);
+    mTrajTn->graph(4)->setData(QVector<double>() << baseTheo << baseTheo,
                                QVector<double>() << 0.0 << tnTop);
     double mapTop = mTrajImax > 0.0 ? mTrajImax : mTrajMap->yAxis->range().upper;
-    mTrajMap->graph(1)->setData(QVector<double>() << rpm << rpm,
+    mTrajMap->graph(1)->setData(QVector<double>() << baseReal << baseReal,
                                 QVector<double>() << 0.0 << mapTop);
 
     // dq plane: max-power trajectory (id*,iq* at Iₛ over speed) + voltage-limit ellipses

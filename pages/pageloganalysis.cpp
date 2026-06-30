@@ -624,6 +624,9 @@ void PageLogAnalysis::loadVescLog(QVector<LOG_DATA> log)
     ui->currentLog->setText("Realtime");
     storeSelection();
 
+    // The trajectory view uses the logged torque_nm + rpm_mech directly; flag whether this log carries them.
+    mLogHasMeasuredTq = log.first().hasDerived;
+
     resetInds();
 
     mLog.clear();
@@ -686,6 +689,8 @@ void PageLogAnalysis::loadVescLog(QVector<LOG_DATA> log)
     mLogHeader.append(LOG_HEADER("iq_target", "iq*", "A"));
     mLogHeader.append(LOG_HEADER("vd_set", "vd*", "V"));
     mLogHeader.append(LOG_HEADER("vq_set", "vq*", "V"));
+    mLogHeader.append(LOG_HEADER("rpm_mech", "Speed (mech)", "rpm", 0));
+    mLogHeader.append(LOG_HEADER("torque_nm", "Torque", "Nm"));
 
     LOG_DATA bestPoint = log.first();
     foreach (auto &d, log) {
@@ -802,6 +807,8 @@ void PageLogAnalysis::loadVescLog(QVector<LOG_DATA> log)
         e.append(d.values.iq_target);
         e.append(d.values.vd_set);
         e.append(d.values.vq_set);
+        e.append(d.rpm_mech);
+        e.append(d.torque_nm);
 
         mLog.append(e);
     }
@@ -1133,14 +1140,14 @@ void PageLogAnalysis::setupTrajPlots()
 
     // torque-speed: ideal envelope (0), empirical max (1), base speed (2) [static], trail (3), now (4)
     ui->trajTn->addGraph();
-    ui->trajTn->graph(0)->setPen(QPen(cEnv, 2, Qt::DashLine));
-    ui->trajTn->graph(0)->setName(tr("Ideal const-T → const-P"));
+    ui->trajTn->graph(0)->setPen(QPen(cLive, 2));
+    ui->trajTn->graph(0)->setName(tr("Realistic envelope (~26 V realized)"));
     ui->trajTn->addGraph();
     ui->trajTn->graph(1)->setPen(QPen(cAux, 2));
-    ui->trajTn->graph(1)->setName(tr("Empirical max torque"));
+    ui->trajTn->graph(1)->setName(tr("Measured max (log)"));
     ui->trajTn->addGraph();
-    ui->trajTn->graph(2)->setPen(QPen(cEnv, 1, Qt::DotLine));
-    ui->trajTn->graph(2)->setName(tr("Base speed"));
+    ui->trajTn->graph(2)->setPen(QPen(cLive, 1, Qt::DotLine));
+    ui->trajTn->graph(2)->setName(tr("Base speed (realistic)"));
     ui->trajTn->addGraph();
     ui->trajTn->graph(3)->setPen(QPen(cTrail, 1));
     ui->trajTn->graph(3)->setName(tr("Recent"));
@@ -1148,6 +1155,12 @@ void PageLogAnalysis::setupTrajPlots()
     ui->trajTn->graph(4)->setLineStyle(QCPGraph::lsNone);
     ui->trajTn->graph(4)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, cLive, 12));
     ui->trajTn->graph(4)->setName(tr("Now"));
+    ui->trajTn->addGraph();
+    ui->trajTn->graph(5)->setPen(QPen(cEnv, 2, Qt::DashLine));
+    ui->trajTn->graph(5)->setName(tr("Theoretical envelope (~36 V ceiling)"));
+    ui->trajTn->addGraph();
+    ui->trajTn->graph(6)->setPen(QPen(cEnv, 1, Qt::DotLine));
+    ui->trajTn->graph(6)->setName(tr("Base speed (theoretical)"));
     ui->trajTn->xAxis->setLabel(tr("speed (rpm, mech)"));
     ui->trajTn->yAxis->setLabel(tr("torque (Nm)"));
 }
@@ -1185,8 +1198,10 @@ void PageLogAnalysis::updateTrajPlots()
     if (ui->mapStack->currentIndex() != 1) {
         return; // only when the trajectory view is visible
     }
-    // Backwards compatible: logs without the FOC dq columns just show an empty trajectory.
-    if (mInd_id < 0 || mInd_iq < 0 || mInd_erpm < 0) {
+    // Only show the trajectory for logs that carry the logged torque + mech-rpm columns (and the dq
+    // currents). Older logs without them are ignored — we no longer re-derive mech rpm from erpm/pp
+    // (that double-divided by pole pairs and halved the speed).
+    if (!mLogHasMeasuredTq || mInd_rpm_mech < 0 || mInd_torque_nm < 0 || mInd_id < 0 || mInd_iq < 0) {
         for (int g = 0; g < ui->trajDq->graphCount(); g++) ui->trajDq->graph(g)->data()->clear();
         for (int g = 0; g < ui->trajTn->graphCount(); g++) ui->trajTn->graph(g)->data()->clear();
         ui->trajDq->replotWhenVisible();
@@ -1235,9 +1250,9 @@ void PageLogAnalysis::updateTrajPlots()
     QMap<int, double> binMax; // speed bin (150 rpm) -> max |torque| (empirical envelope)
     for (const auto &d : log) {
         double id = d[mInd_id], iq = d[mInd_iq];
-        double n = fabs(d[mInd_erpm]) / mTrajPp;
+        double n = fabs(d[mInd_rpm_mech]);  // logged mech rpm (|·| so reverse runs plot positive)
         if (mInd_v_in >= 0) { vinSum += d[mInd_v_in]; vinN++; }
-        double T = trajTorque(id, iq);
+        double T = d[mInd_torque_nm];       // logged FEA torque
         iMag = qMax(iMag, sqrt(id * id + iq * iq));
         nMax = qMax(nMax, n); tMax = qMax(tMax, T); tMin = qMin(tMin, T);
         int b = int(n / 150.0 + 0.5);
@@ -1323,21 +1338,32 @@ void PageLogAnalysis::updateTrajPlots()
     double base = nMax * 0.6;
     for (auto it = binMax.constBegin(); it != binMax.constEnd(); ++it) {
         if (it.key() * 150.0 > 0.2 * nMax && it.value() < 0.9 * plateau) {
-            base = it.key() * 150.0; // knee: torque first falls 10% below the plateau
+            base = it.key() * 150.0; // empirical knee: torque first falls 10% below the plateau
             break;
         }
     }
-    QVector<double> tn_n, tn_T;
-    double dn = nMax / 120.0 + 1.0;
-    for (double n = 0; n <= nMax * 1.02; n += dn) {
-        tn_n << n; tn_T << (n <= base ? plateau : plateau * base / n);
+    // Two envelopes: theoretical (full SVPWM ceiling, ~36 V) and realistic (the realized AC voltage,
+    // ~72% of the ceiling ≈ 26 V, after modulation margin + dead-time + R·I + bus sag). Base speed
+    // scales linearly with voltage, so the realistic knee sits at kVoltUtil × the theoretical knee.
+    const double kVoltUtil = 0.72;
+    double baseTheo = (mTrajBaseRpm > 1.0) ? mTrajBaseRpm / qMax(0.3, duty) : base / kVoltUtil;
+    double baseReal = baseTheo * kVoltUtil;
+    double nEnd = qMax(nMax, baseTheo * 1.2);
+    QVector<double> rn, rT, hn, hT; // realistic, theoretical
+    double dn = nEnd / 160.0 + 1.0;
+    for (double n = 0; n <= nEnd * 1.02; n += dn) {
+        rn << n; rT << (n <= baseReal ? plateau : plateau * baseReal / n);
+        hn << n; hT << (n <= baseTheo ? plateau : plateau * baseTheo / n);
     }
-    ui->trajTn->graph(0)->setData(tn_n, tn_T);
-    QVector<double> bx, by;
-    bx << base << base; by << qMin(0.0, tMin) * 1.1 << qMax(plateau, tMax) * 1.1;
-    ui->trajTn->graph(2)->setData(bx, by);
-    ui->trajTn->xAxis->setRange(0, nMax * 1.05);
-    ui->trajTn->yAxis->setRange(qMin(0.0, tMin) * 1.1, qMax(plateau, tMax) * 1.12);
+    ui->trajTn->graph(0)->setData(rn, rT); // realistic
+    ui->trajTn->graph(5)->setData(hn, hT); // theoretical
+    double yLo = qMin(0.0, tMin) * 1.1, yHi = qMax(plateau, tMax) * 1.12;
+    QVector<double> brx, bry; brx << baseReal << baseReal; bry << yLo << yHi;
+    ui->trajTn->graph(2)->setData(brx, bry);
+    QVector<double> bhx, bhy; bhx << baseTheo << baseTheo; bhy << yLo << yHi;
+    ui->trajTn->graph(6)->setData(bhx, bhy);
+    ui->trajTn->xAxis->setRange(0, nEnd * 1.05);
+    ui->trajTn->yAxis->setRange(yLo, yHi);
 
     // draw the moving point at the current scrub position (keeps the view in sync on load/switch)
     updateTrajCursor(mPlayPosNow);
@@ -1350,7 +1376,8 @@ void PageLogAnalysis::updateTrajCursor(double time)
     if (ui->mapStack->currentIndex() != 1) {
         return;
     }
-    if (mInd_id < 0 || mInd_iq < 0 || mInd_erpm < 0 || mLogTruncated.isEmpty()) {
+    if (!mLogHasMeasuredTq || mInd_rpm_mech < 0 || mInd_torque_nm < 0 ||
+            mInd_id < 0 || mInd_iq < 0 || mLogTruncated.isEmpty()) {
         return;
     }
 
@@ -1377,14 +1404,14 @@ void PageLogAnalysis::updateTrajCursor(double time)
         const auto &d = mLogTruncated[i];
         double id = d[mInd_id], iq = d[mInd_iq];
         tid << id; tiq << iq;
-        tn_ << fabs(d[mInd_erpm]) / mTrajPp; tT << trajTorque(id, iq);
+        tn_ << fabs(d[mInd_rpm_mech]); tT << d[mInd_torque_nm];
     }
     ui->trajDq->graph(7)->setData(tid, tiq);
     ui->trajTn->graph(3)->setData(tn_, tT);
 
     const auto &c = mLogTruncated[idx];
     double cid = c[mInd_id], ciq = c[mInd_iq];
-    double cn = fabs(c[mInd_erpm]) / mTrajPp, cT = trajTorque(cid, ciq);
+    double cn = fabs(c[mInd_rpm_mech]), cT = c[mInd_torque_nm];
 
     // table locus at the current scrub speed: id*(|I|, cn) swept over |I| (graph 6)
     if (mTrajHasTable) {
@@ -2166,6 +2193,8 @@ void PageLogAnalysis::openLog(QString name, QByteArray data)
         }
 
         updateInds();
+        // Exported-CSV (rich header) path: the trajectory columns are present only if the file carried them.
+        mLogHasMeasuredTq = (mInd_torque_nm >= 0 && mInd_rpm_mech >= 0);
 
         generateMissingEntries();
 

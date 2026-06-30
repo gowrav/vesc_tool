@@ -1365,6 +1365,9 @@ public:
     double vVel;
     double hAcc;
     double vAcc;
+    double torque_nm = 0.0;   // logged FEA torque (rtLogTorque), present only in newer RT-log CSVs
+    double rpm_mech = 0.0;    // logged mechanical rpm = erpm / pole-pairs (avoids re-dividing here)
+    bool hasDerived = false;  // true when torque_nm/rpm_mech were actually read from the log
 };
 
 Q_DECLARE_METATYPE(LOG_DATA)

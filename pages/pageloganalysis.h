@@ -124,6 +124,9 @@ private:
     int mInd_erpm;
     int mInd_v_in;
     int mInd_curr_motor;
+    int mInd_torque_nm;
+    int mInd_rpm_mech;
+    bool mLogHasMeasuredTq = false; // true when the loaded log carried logged torque_nm + rpm_mech
     QVector<int> mInd_fault;
 
     struct SelectoData {
@@ -158,6 +161,8 @@ private:
         mInd_erpm = -1;
         mInd_v_in = -1;
         mInd_curr_motor = -1;
+        mInd_torque_nm = -1;
+        mInd_rpm_mech = -1;
         mInd_fault.clear();
     }
 
@@ -187,6 +192,8 @@ private:
                 else if (e.key == "erpm") mInd_erpm = i;
                 else if (e.key == "v_in") mInd_v_in = i;
                 else if (e.key == "setup_curr_motor") mInd_curr_motor = i;
+                else if (e.key == "torque_nm") mInd_torque_nm = i;
+                else if (e.key == "rpm_mech") mInd_rpm_mech = i;
                 else if (e.key == "fault") mInd_fault.append(i);
             }
         }

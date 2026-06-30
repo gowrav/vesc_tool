@@ -2065,6 +2065,13 @@ bool VescInterface::loadRtLogFile(QByteArray data)
                 d.vAcc = tokens.at(54).toDouble();
             }
 
+            // Logged FEA torque (Nm) + mechanical rpm (cols 55/56) — newer logs only. Used directly by
+            // Log Analysis so it doesn't re-derive mech rpm (which double-divided by pole pairs).
+            if (tokens.size() >= 57) {
+                d.torque_nm = tokens.at(55).toDouble();
+                d.rpm_mech = tokens.at(56).toDouble();
+                d.hasDerived = true;
+            }
             // FOC setpoints id*/iq* (after torque_nm[55], rpm_mech[56]) + voltage refs vd*/vq*; new logs only.
             if (tokens.size() >= 59) {
                 d.values.id_target = tokens.at(57).toDouble();
