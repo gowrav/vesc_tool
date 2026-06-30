@@ -189,6 +189,29 @@ PageRtData::PageRtData(QWidget *parent) :
         ui->focPlot->graph(graphIndex)->setPen(pq);
         ui->focPlot->graph(graphIndex)->setName("Q Current*");
         graphIndex++;
+        // Commanded (pre-saturation) voltage reference vd*/vq* on the voltage axis (dashed). vs the
+        // applied D/Q Voltage this shows the voltage wall — they diverge when the bus clamps.
+        QPen pvd(Utility::getAppQColor("plot_graph3")); pvd.setStyle(Qt::DashLine);
+        ui->focPlot->addGraph(ui->focPlot->xAxis, ui->focPlot->yAxis2);
+        ui->focPlot->graph(graphIndex)->setPen(pvd);
+        ui->focPlot->graph(graphIndex)->setName("D Voltage*");
+        graphIndex++;
+        QPen pvq(Utility::getAppQColor("plot_graph4")); pvq.setStyle(Qt::DashLine);
+        ui->focPlot->addGraph(ui->focPlot->xAxis, ui->focPlot->yAxis2);
+        ui->focPlot->graph(graphIndex)->setPen(pvq);
+        ui->focPlot->graph(graphIndex)->setName("Q Voltage*");
+        graphIndex++;
+        // Current-magnitude traces |I| (measured) and |I*| (commanded) on the current axis, so the
+        // voltage-wall current backoff (|I*| sagging below the limit) is visible directly.
+        ui->focPlot->addGraph();
+        ui->focPlot->graph(graphIndex)->setPen(QPen(Utility::getAppQColor("plot_graph5"), 2));
+        ui->focPlot->graph(graphIndex)->setName("|I| meas");
+        graphIndex++;
+        QPen pim(Utility::getAppQColor("plot_graph6")); pim.setStyle(Qt::DashLine); pim.setWidth(2);
+        ui->focPlot->addGraph();
+        ui->focPlot->graph(graphIndex)->setPen(pim);
+        ui->focPlot->graph(graphIndex)->setName("|I|* cmd");
+        graphIndex++;
     }
 
     QFont legendFont = font();
@@ -371,6 +394,10 @@ void PageRtData::timerSlot()
         ui->focPlot->graph(graphIndex++)->setData(xAxis, mVqVec);
         ui->focPlot->graph(graphIndex++)->setData(xAxis, mIdSetVec);
         ui->focPlot->graph(graphIndex++)->setData(xAxis, mIqSetVec);
+        ui->focPlot->graph(graphIndex++)->setData(xAxis, mVdSetVec);
+        ui->focPlot->graph(graphIndex++)->setData(xAxis, mVqSetVec);
+        ui->focPlot->graph(graphIndex++)->setData(xAxis, mImagVec);
+        ui->focPlot->graph(graphIndex++)->setData(xAxis, mImagSetVec);
 
         if (ui->autoscaleButton->isChecked()) {
             ui->currentPlot->rescaleAxes();
@@ -436,6 +463,10 @@ void PageRtData::valuesReceived(MC_VALUES values, unsigned int mask)
     appendDoubleAndTrunc(&mIqVec, values.iq, maxS);
     appendDoubleAndTrunc(&mIdSetVec, values.id_target, maxS);
     appendDoubleAndTrunc(&mIqSetVec, values.iq_target, maxS);
+    appendDoubleAndTrunc(&mVdSetVec, values.vd_set, maxS);
+    appendDoubleAndTrunc(&mVqSetVec, values.vq_set, maxS);
+    appendDoubleAndTrunc(&mImagVec, sqrt(values.id * values.id + values.iq * values.iq), maxS);
+    appendDoubleAndTrunc(&mImagSetVec, sqrt(values.id_target * values.id_target + values.iq_target * values.iq_target), maxS);
     appendDoubleAndTrunc(&mDutyVec, values.duty_now, maxS);
     appendDoubleAndTrunc(&mRpmVec, values.rpm, maxS);
     appendDoubleAndTrunc(&mVdVec, values.vd, maxS);

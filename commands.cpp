@@ -298,6 +298,17 @@ void Commands::processPacket(QByteArray data)
                 values.iq_target = vb.vbPopFrontDouble32(1e2);
             }
         }
+        // Commanded (pre-saturation) voltage reference vd*/vq* (newer firmware; length-guarded).
+        if (vb.size() >= 4) {
+            if (mask & (uint32_t(1) << 24)) {
+                values.vd_set = vb.vbPopFrontDouble32(1e3);
+            }
+        }
+        if (vb.size() >= 4) {
+            if (mask & (uint32_t(1) << 25)) {
+                values.vq_set = vb.vbPopFrontDouble32(1e3);
+            }
+        }
 
         emit valuesReceived(values, mask);
     } break;

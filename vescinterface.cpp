@@ -534,6 +534,8 @@ VescInterface::VescInterface(QObject *parent) : QObject(parent)
             os << (v.rpm / ppLog) << ";";                 // mechanical rpm = erpm / pole pairs
             os << v.id_target << ";";                     // FOC current setpoint id* (loop reference)
             os << v.iq_target << ";";                     // FOC current setpoint iq*
+            os << v.vd_set << ";";                        // FOC commanded (pre-saturation) vd*
+            os << v.vq_set << ";";                        // FOC commanded (pre-saturation) vq*
             os << "\n";
             os.flush();
 
@@ -1895,6 +1897,8 @@ bool VescInterface::openRtLogFile(QString outDirectory)
         os << "rpm_mech" << ";";
         os << "id_target" << ";";
         os << "iq_target" << ";";
+        os << "vd_set" << ";";
+        os << "vq_set" << ";";
         os << "\n";
         os.flush();
     }
@@ -2061,10 +2065,14 @@ bool VescInterface::loadRtLogFile(QByteArray data)
                 d.vAcc = tokens.at(54).toDouble();
             }
 
-            // FOC current setpoints id*/iq* (after torque_nm[55], rpm_mech[56]); newer logs only.
+            // FOC setpoints id*/iq* (after torque_nm[55], rpm_mech[56]) + voltage refs vd*/vq*; new logs only.
             if (tokens.size() >= 59) {
                 d.values.id_target = tokens.at(57).toDouble();
                 d.values.iq_target = tokens.at(58).toDouble();
+            }
+            if (tokens.size() >= 61) {
+                d.values.vd_set = tokens.at(59).toDouble();
+                d.values.vq_set = tokens.at(60).toDouble();
             }
 
             mRtLogData.append(d);

@@ -254,6 +254,8 @@ public:
     double vq;
     double id_target = 0.0;  // FOC current setpoint id* (loop reference, post-MTPA)
     double iq_target = 0.0;  // FOC current setpoint iq*
+    double vd_set = 0.0;     // FOC commanded (pre-saturation) voltage vd*
+    double vq_set = 0.0;     // FOC commanded (pre-saturation) voltage vq*
     bool has_timeout;
     bool kill_sw_active;
 };

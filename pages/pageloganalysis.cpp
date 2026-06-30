@@ -684,6 +684,8 @@ void PageLogAnalysis::loadVescLog(QVector<LOG_DATA> log)
     mLogHeader.append(LOG_HEADER("num_vesc", "VESC num", "", 0));
     mLogHeader.append(LOG_HEADER("id_target", "id*", "A"));
     mLogHeader.append(LOG_HEADER("iq_target", "iq*", "A"));
+    mLogHeader.append(LOG_HEADER("vd_set", "vd*", "V"));
+    mLogHeader.append(LOG_HEADER("vq_set", "vq*", "V"));
 
     LOG_DATA bestPoint = log.first();
     foreach (auto &d, log) {
@@ -798,6 +800,8 @@ void PageLogAnalysis::loadVescLog(QVector<LOG_DATA> log)
         e.append(d.setupValues.num_vescs);
         e.append(d.values.id_target);
         e.append(d.values.iq_target);
+        e.append(d.values.vd_set);
+        e.append(d.values.vq_set);
 
         mLog.append(e);
     }

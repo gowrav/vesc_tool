@@ -84,6 +84,10 @@ private:
     QVector<double> mIqVec;
     QVector<double> mIdSetVec;
     QVector<double> mIqSetVec;
+    QVector<double> mVdSetVec;
+    QVector<double> mVqSetVec;
+    QVector<double> mImagVec;
+    QVector<double> mImagSetVec;
     QVector<double> mDutyVec;
     QVector<double> mRpmVec;
     QVector<double> mPositionVec;
