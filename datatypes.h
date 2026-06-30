@@ -252,6 +252,8 @@ public:
     QString fault_str;
     double vd;
     double vq;
+    double id_target = 0.0;  // FOC current setpoint id* (loop reference, post-MTPA)
+    double iq_target = 0.0;  // FOC current setpoint iq*
     bool has_timeout;
     bool kill_sw_active;
 };

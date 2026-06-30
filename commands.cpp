@@ -286,6 +286,18 @@ void Commands::processPacket(QByteArray data)
                 values.kill_sw_active = (status >> 1) & 1;
             }
         }
+        // FOC current setpoints id*/iq* (appended in newer firmware; length-guarded so older
+        // firmware that doesn't send them leaves these at the MC_VALUES defaults).
+        if (vb.size() >= 4) {
+            if (mask & (uint32_t(1) << 22)) {
+                values.id_target = vb.vbPopFrontDouble32(1e2);
+            }
+        }
+        if (vb.size() >= 4) {
+            if (mask & (uint32_t(1) << 23)) {
+                values.iq_target = vb.vbPopFrontDouble32(1e2);
+            }
+        }
 
         emit valuesReceived(values, mask);
     } break;

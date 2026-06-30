@@ -682,6 +682,8 @@ void PageLogAnalysis::loadVescLog(QVector<LOG_DATA> log)
     mLogHeader.append(LOG_HEADER("gnss_h_acc", "H. Accuracy GNSS", "m"));
     mLogHeader.append(LOG_HEADER("gnss_v_acc", "V. Accuracy GNSS", "m"));
     mLogHeader.append(LOG_HEADER("num_vesc", "VESC num", "", 0));
+    mLogHeader.append(LOG_HEADER("id_target", "id*", "A"));
+    mLogHeader.append(LOG_HEADER("iq_target", "iq*", "A"));
 
     LOG_DATA bestPoint = log.first();
     foreach (auto &d, log) {
@@ -794,6 +796,8 @@ void PageLogAnalysis::loadVescLog(QVector<LOG_DATA> log)
         e.append(d.hAcc);
         e.append(d.vAcc);
         e.append(d.setupValues.num_vescs);
+        e.append(d.values.id_target);
+        e.append(d.values.iq_target);
 
         mLog.append(e);
     }

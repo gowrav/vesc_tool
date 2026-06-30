@@ -532,6 +532,8 @@ VescInterface::VescInterface(QObject *parent) : QObject(parent)
             }
             os << rtLogTorque(v.id, v.iq, ppLog) << ";"; // saturated FEA torque (Nm), 0 if no map
             os << (v.rpm / ppLog) << ";";                 // mechanical rpm = erpm / pole pairs
+            os << v.id_target << ";";                     // FOC current setpoint id* (loop reference)
+            os << v.iq_target << ";";                     // FOC current setpoint iq*
             os << "\n";
             os.flush();
 
@@ -1891,6 +1893,8 @@ bool VescInterface::openRtLogFile(QString outDirectory)
 
         os << "torque_nm" << ";";
         os << "rpm_mech" << ";";
+        os << "id_target" << ";";
+        os << "iq_target" << ";";
         os << "\n";
         os.flush();
     }
@@ -2055,6 +2059,12 @@ bool VescInterface::loadRtLogFile(QByteArray data)
                 d.vVel = tokens.at(52).toDouble();
                 d.hAcc = tokens.at(53).toDouble();
                 d.vAcc = tokens.at(54).toDouble();
+            }
+
+            // FOC current setpoints id*/iq* (after torque_nm[55], rpm_mech[56]); newer logs only.
+            if (tokens.size() >= 59) {
+                d.values.id_target = tokens.at(57).toDouble();
+                d.values.iq_target = tokens.at(58).toDouble();
             }
 
             mRtLogData.append(d);

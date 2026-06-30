@@ -82,6 +82,8 @@ private:
     QVector<double> mCurrMotorVec;
     QVector<double> mIdVec;
     QVector<double> mIqVec;
+    QVector<double> mIdSetVec;
+    QVector<double> mIqSetVec;
     QVector<double> mDutyVec;
     QVector<double> mRpmVec;
     QVector<double> mPositionVec;

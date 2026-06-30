@@ -176,6 +176,21 @@ PageRtData::PageRtData(QWidget *parent) :
     ui->focPlot->graph(graphIndex)->setName("Q Voltage");
     graphIndex++;
 
+    // Current SETPOINTS id*/iq* (dashed, same colours as the measured D/Q current, on the current
+    // axis) so commanded vs achieved is directly visible. Populated only if the firmware sends them.
+    {
+        QPen pd(Utility::getAppQColor("plot_graph1")); pd.setStyle(Qt::DashLine);
+        ui->focPlot->addGraph();
+        ui->focPlot->graph(graphIndex)->setPen(pd);
+        ui->focPlot->graph(graphIndex)->setName("D Current*");
+        graphIndex++;
+        QPen pq(Utility::getAppQColor("plot_graph2")); pq.setStyle(Qt::DashLine);
+        ui->focPlot->addGraph();
+        ui->focPlot->graph(graphIndex)->setPen(pq);
+        ui->focPlot->graph(graphIndex)->setName("Q Current*");
+        graphIndex++;
+    }
+
     QFont legendFont = font();
     legendFont.setPointSize(9);
 
@@ -354,6 +369,8 @@ void PageRtData::timerSlot()
         ui->focPlot->graph(graphIndex++)->setData(xAxis, mIqVec);
         ui->focPlot->graph(graphIndex++)->setData(xAxis, mVdVec);
         ui->focPlot->graph(graphIndex++)->setData(xAxis, mVqVec);
+        ui->focPlot->graph(graphIndex++)->setData(xAxis, mIdSetVec);
+        ui->focPlot->graph(graphIndex++)->setData(xAxis, mIqSetVec);
 
         if (ui->autoscaleButton->isChecked()) {
             ui->currentPlot->rescaleAxes();
@@ -417,6 +434,8 @@ void PageRtData::valuesReceived(MC_VALUES values, unsigned int mask)
     appendDoubleAndTrunc(&mCurrMotorVec, values.current_motor, maxS);
     appendDoubleAndTrunc(&mIdVec, values.id, maxS);
     appendDoubleAndTrunc(&mIqVec, values.iq, maxS);
+    appendDoubleAndTrunc(&mIdSetVec, values.id_target, maxS);
+    appendDoubleAndTrunc(&mIqSetVec, values.iq_target, maxS);
     appendDoubleAndTrunc(&mDutyVec, values.duty_now, maxS);
     appendDoubleAndTrunc(&mRpmVec, values.rpm, maxS);
     appendDoubleAndTrunc(&mVdVec, values.vd, maxS);
