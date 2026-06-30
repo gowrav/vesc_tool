@@ -1245,9 +1245,11 @@ void PageLogAnalysis::updateTrajPlots()
         mTrajHaveCfg = true;
     }
 
-    double iMag = 0.0, nMax = 0.0, tMax = 0.0, tMin = 0.0, vinSum = 0.0;
+    double iMag = 0.0, nMax = 0.0, tMax = 0.0, tMin = 0.0, vinSum = 0.0, vMagMax = 0.0;
     int vinN = 0;
+    bool haveVset = (mInd_vd_set >= 0 && mInd_vq_set >= 0);
     QMap<int, double> binMax; // speed bin (150 rpm) -> max |torque| (empirical envelope)
+    QMap<int, double> binV;   // speed bin -> max |V*| (measured voltage-wall base speed)
     for (const auto &d : log) {
         double id = d[mInd_id], iq = d[mInd_iq];
         double n = fabs(d[mInd_rpm_mech]);  // logged mech rpm (|·| so reverse runs plot positive)
@@ -1258,6 +1260,11 @@ void PageLogAnalysis::updateTrajPlots()
         int b = int(n / 150.0 + 0.5);
         if (!binMax.contains(b) || fabs(T) > binMax[b]) {
             binMax[b] = fabs(T);
+        }
+        if (haveVset) {
+            double v = sqrt(d[mInd_vd_set] * d[mInd_vd_set] + d[mInd_vq_set] * d[mInd_vq_set]);
+            vMagMax = qMax(vMagMax, v);
+            if (!binV.contains(b) || v > binV[b]) { binV[b] = v; }
         }
     }
 
@@ -1346,8 +1353,20 @@ void PageLogAnalysis::updateTrajPlots()
     // ~72% of the ceiling ≈ 26 V, after modulation margin + dead-time + R·I + bus sag). Base speed
     // scales linearly with voltage, so the realistic knee sits at kVoltUtil × the theoretical knee.
     const double kVoltUtil = 0.72;
-    double baseTheo = (mTrajBaseRpm > 1.0) ? mTrajBaseRpm / qMax(0.3, duty) : base / kVoltUtil;
-    double baseReal = baseTheo * kVoltUtil;
+    // Realistic base speed = the MEASURED voltage wall: lowest speed where |V*| reaches ~its peak.
+    // This avoids the linear-flux base-speed error (config λ/L are off — G34 — which put the knee
+    // ~2.8× too low). Theoretical knee = realistic / util (the full 36 V ceiling).
+    double baseReal = 0.0;
+    if (haveVset && vMagMax > 1.0) {
+        for (auto it = binV.constBegin(); it != binV.constEnd(); ++it) {
+            if (it.key() * 150.0 > 0.12 * nMax && it.value() >= 0.90 * vMagMax) {
+                baseReal = it.key() * 150.0;
+                break;
+            }
+        }
+    }
+    if (baseReal < 1.0) { baseReal = base; } // fallback: empirical torque knee
+    double baseTheo = baseReal / kVoltUtil;
     double nEnd = qMax(nMax, baseTheo * 1.2);
     QVector<double> rn, rT, hn, hT; // realistic, theoretical
     double dn = nEnd / 160.0 + 1.0;

@@ -126,6 +126,8 @@ private:
     int mInd_curr_motor;
     int mInd_torque_nm;
     int mInd_rpm_mech;
+    int mInd_vd_set;
+    int mInd_vq_set;
     bool mLogHasMeasuredTq = false; // true when the loaded log carried logged torque_nm + rpm_mech
     QVector<int> mInd_fault;
 
@@ -163,6 +165,8 @@ private:
         mInd_curr_motor = -1;
         mInd_torque_nm = -1;
         mInd_rpm_mech = -1;
+        mInd_vd_set = -1;
+        mInd_vq_set = -1;
         mInd_fault.clear();
     }
 
@@ -194,6 +198,8 @@ private:
                 else if (e.key == "setup_curr_motor") mInd_curr_motor = i;
                 else if (e.key == "torque_nm") mInd_torque_nm = i;
                 else if (e.key == "rpm_mech") mInd_rpm_mech = i;
+                else if (e.key == "vd_set") mInd_vd_set = i;
+                else if (e.key == "vq_set") mInd_vq_set = i;
                 else if (e.key == "fault") mInd_fault.append(i);
             }
         }
