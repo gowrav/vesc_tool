@@ -536,6 +536,8 @@ VescInterface::VescInterface(QObject *parent) : QObject(parent)
             os << v.iq_target << ";";                     // FOC current setpoint iq*
             os << v.vd_set << ";";                        // FOC commanded (pre-saturation) vd*
             os << v.vq_set << ";";                        // FOC commanded (pre-saturation) vq*
+            os << v.synrm_phase_adv << ";";               // experimental: hall phase-advance [deg]
+            os << v.synrm_sat_cf << ";";                  // experimental: saturation de-rate factor [0..1]
             os << "\n";
             os.flush();
 
@@ -1899,6 +1901,8 @@ bool VescInterface::openRtLogFile(QString outDirectory)
         os << "iq_target" << ";";
         os << "vd_set" << ";";
         os << "vq_set" << ";";
+        os << "synrm_phase_adv" << ";";
+        os << "synrm_sat_cf" << ";";
         os << "\n";
         os.flush();
     }
@@ -2080,6 +2084,11 @@ bool VescInterface::loadRtLogFile(QByteArray data)
             if (tokens.size() >= 61) {
                 d.values.vd_set = tokens.at(59).toDouble();
                 d.values.vq_set = tokens.at(60).toDouble();
+            }
+            // Experimental SynRM aids: phase-advance[61], sat-cf[62]; newest logs only.
+            if (tokens.size() >= 63) {
+                d.values.synrm_phase_adv = tokens.at(61).toDouble();
+                d.values.synrm_sat_cf = tokens.at(62).toDouble();
             }
 
             mRtLogData.append(d);

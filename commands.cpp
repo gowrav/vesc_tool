@@ -309,6 +309,17 @@ void Commands::processPacket(QByteArray data)
                 values.vq_set = vb.vbPopFrontDouble32(1e3);
             }
         }
+        // Experimental SynRM tuning aids: hall phase-advance [deg] and saturation de-rate factor.
+        if (vb.size() >= 4) {
+            if (mask & (uint32_t(1) << 26)) {
+                values.synrm_phase_adv = vb.vbPopFrontDouble32(1e3);
+            }
+        }
+        if (vb.size() >= 4) {
+            if (mask & (uint32_t(1) << 27)) {
+                values.synrm_sat_cf = vb.vbPopFrontDouble32(1e3);
+            }
+        }
 
         emit valuesReceived(values, mask);
     } break;

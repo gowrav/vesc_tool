@@ -256,6 +256,8 @@ public:
     double iq_target = 0.0;  // FOC current setpoint iq*
     double vd_set = 0.0;     // FOC commanded (pre-saturation) voltage vd*
     double vq_set = 0.0;     // FOC commanded (pre-saturation) voltage vq*
+    double synrm_phase_adv = 0.0; // experimental SynRM hall phase-advance angle [deg]
+    double synrm_sat_cf = 1.0;    // experimental SynRM saturation anti-windup de-rate factor [0..1]
     bool has_timeout;
     bool kill_sw_active;
 };

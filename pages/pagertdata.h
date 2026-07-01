@@ -88,6 +88,8 @@ private:
     QVector<double> mVqSetVec;
     QVector<double> mImagVec;
     QVector<double> mImagSetVec;
+    QVector<double> mPhaseAdvVec; // experimental SynRM hall phase-advance [deg]
+    QVector<double> mSatCfVec;    // experimental SynRM saturation de-rate factor, stored x10 for plot visibility
     QVector<double> mDutyVec;
     QVector<double> mRpmVec;
     QVector<double> mPositionVec;

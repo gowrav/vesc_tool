@@ -212,6 +212,18 @@ PageRtData::PageRtData(QWidget *parent) :
         ui->focPlot->graph(graphIndex)->setPen(pim);
         ui->focPlot->graph(graphIndex)->setName("|I|* cmd");
         graphIndex++;
+        // Experimental SynRM tuning aids on the voltage axis: hall phase-advance [deg] and the
+        // saturation de-rate factor (plotted x10, so 10 = 1.0 = no de-rate, dips show engagement).
+        QPen ppa(Utility::getAppQColor("plot_graph1")); ppa.setStyle(Qt::DotLine); ppa.setWidth(2);
+        ui->focPlot->addGraph(ui->focPlot->xAxis, ui->focPlot->yAxis2);
+        ui->focPlot->graph(graphIndex)->setPen(ppa);
+        ui->focPlot->graph(graphIndex)->setName("PhaseAdv (deg)");
+        graphIndex++;
+        QPen pcf(Utility::getAppQColor("plot_graph2")); pcf.setStyle(Qt::DotLine); pcf.setWidth(2);
+        ui->focPlot->addGraph(ui->focPlot->xAxis, ui->focPlot->yAxis2);
+        ui->focPlot->graph(graphIndex)->setPen(pcf);
+        ui->focPlot->graph(graphIndex)->setName("SatCF x10");
+        graphIndex++;
     }
 
     QFont legendFont = font();
@@ -398,6 +410,8 @@ void PageRtData::timerSlot()
         ui->focPlot->graph(graphIndex++)->setData(xAxis, mVqSetVec);
         ui->focPlot->graph(graphIndex++)->setData(xAxis, mImagVec);
         ui->focPlot->graph(graphIndex++)->setData(xAxis, mImagSetVec);
+        ui->focPlot->graph(graphIndex++)->setData(xAxis, mPhaseAdvVec);
+        ui->focPlot->graph(graphIndex++)->setData(xAxis, mSatCfVec);
 
         if (ui->autoscaleButton->isChecked()) {
             ui->currentPlot->rescaleAxes();
@@ -467,6 +481,8 @@ void PageRtData::valuesReceived(MC_VALUES values, unsigned int mask)
     appendDoubleAndTrunc(&mVqSetVec, values.vq_set, maxS);
     appendDoubleAndTrunc(&mImagVec, sqrt(values.id * values.id + values.iq * values.iq), maxS);
     appendDoubleAndTrunc(&mImagSetVec, sqrt(values.id_target * values.id_target + values.iq_target * values.iq_target), maxS);
+    appendDoubleAndTrunc(&mPhaseAdvVec, values.synrm_phase_adv, maxS);      // deg
+    appendDoubleAndTrunc(&mSatCfVec, values.synrm_sat_cf * 10.0, maxS);     // x10 for plot visibility
     appendDoubleAndTrunc(&mDutyVec, values.duty_now, maxS);
     appendDoubleAndTrunc(&mRpmVec, values.rpm, maxS);
     appendDoubleAndTrunc(&mVdVec, values.vd, maxS);
